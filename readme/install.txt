@@ -1,0 +1,12 @@
+安装配置FileAdmin
+
+先安装好JDK, TOMCAT，Struts
+
+##  1. 配置访问文件目录
+--------------------------------------
+* fileadmin.properties 
+   path: E:\webapps\fileadmin\src
+   修改  fileadmin.root.path = 你的文件目录
+
+
+
