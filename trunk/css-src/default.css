@@ -18,8 +18,9 @@ html,body{height:100%;}
 .hd-panel div.control-panel{font-size:14px;margin-right:10px;background:}
 .user-bar{top:0;right:0;text-align:right;position:absolute;;color:#666;margin:5px 5px 0 0;height:20px}
 
-.dir-list-container{overflow:auto;white-space:nowrap;background:;float:left;width:200px;}
-.dir-list{background:;width:;min-height:100%;height:auto;top:0;bottom:0;}
+/*.dir-list-container{overflow:auto;white-space:nowrap;background:;float:left;width:200px;}*/
+.dir-root{float:left;width:200px;background:green}
+.dir-list{background:;clear:left;min-height:100%;height:auto;top:0;bottom:0;overflow:auto;white-space:nowrap;float:left;width:200px;}
 .dir-list a{color:#333;}
 .dir-list {white-space:nowrap;}
 .dir-list div{display:block;width:100%;}
@@ -83,5 +84,7 @@ height:24px;white-space:nowrap;}
 .rm{background:url(../img/icon/ico_rm.gif) no-repeat scroll left center;}
 
 .login-form{text-align:center;}
-.login-form form{text-align:left;background:;width:350px;margin: 0 auto;border:1px outset #f1f1f1;padding:10px}
+.login-form form{text-align:left;background:;width:350px;margin: 0 auto;border-left:2px solid #b7c5e3;padding-left:30px}
 .login-tit{font-size:16px;}
+.validate-tips{font-size:11px;color:#999}
+.login-tips{font-size:11px;color:red;margin-left:10px}

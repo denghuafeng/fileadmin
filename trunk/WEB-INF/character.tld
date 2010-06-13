@@ -10,10 +10,17 @@
   <uri>http://fileadmin.youngli.com/character</uri>
 
   <function>  
-    <description>encode字符返回</description>    
+    <description>encode字符编码</description>    
     <name>encode</name>
     <function-class>com.youngli.fileadmin.common.CharacterCode</function-class>
     <function-signature>java.lang.String encode(java.lang.String)</function-signature>
+ </function> 
+ 
+   <function>  
+    <description>decode字符解码</description>    
+    <name>decode</name>
+    <function-class>com.youngli.fileadmin.common.CharacterCode</function-class>
+    <function-signature>java.lang.String decode(java.lang.String)</function-signature>
  </function> 
  
    <function>  

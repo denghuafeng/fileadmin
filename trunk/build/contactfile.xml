@@ -39,7 +39,6 @@
 	<target name="merge core.js" depends="">	
     	<echo message="Concat Code Files Begin" />
         <concat destfile="${js-path}/core.js" encoding="utf-8">
-        	
 			<fileset dir="${js-src-path}/lib/" includes="string.js" />
         	<fileset dir="${js-src-path}/lib/" includes="browser.js" />
         	<fileset dir="${js-src-path}/lib/" includes="dom.js" />
@@ -47,7 +46,8 @@
         	<fileset dir="${js-src-path}/lib/" includes="event.js" />
         	<fileset dir="${js-src-path}/lib/" includes="array.js" />
         	
-			<fileset dir="${js-src-path}/util/menu/" includes="dtree.js" />
+			<fileset dir="${js-src-path}/util/tree/" includes="dhtmlxcommon.js" />
+			<fileset dir="${js-src-path}/util/tree/" includes="dhtmlxtree.js" />
         	
 			<fileset dir="${js-src-path}/util/upload/" includes="swfupload.js" />
         	<fileset dir="${js-src-path}/util/upload/" includes="swfupload.queue.js" />

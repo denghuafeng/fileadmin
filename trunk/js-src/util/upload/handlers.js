@@ -1,3 +1,4 @@
+
 /* Demo Note:  This demo uses a FileProgress class that handles the UI for displaying the file name and percent complete.
 The FileProgress class is not part of SWFUpload.
 */

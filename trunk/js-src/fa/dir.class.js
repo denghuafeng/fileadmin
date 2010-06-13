@@ -24,8 +24,27 @@ Directory.prototype.getHTML = function() {
 	return this.html;
 }
 
+Directory.prototype.listDirTree = function() {	
+	 function dirClick(id, text) {
+	    DirAction.getDirJSON(id);
+	}	
+	
+	tree = new dhtmlXTreeObject("DirList", "100%", "100%", 0);			
+	tree.setSkin('dhx_skyblue');
+	tree.setImagePath("img/tree/");
+	tree.enableDragAndDrop(0);
+	tree.enableTreeLines(false);
+	tree.setEscapingMode('utf8')
+	tree.setImageArrays("plus", null, null, null, "plus_ar.gif");
+	tree.setImageArrays("minus", null, null, null, "minus_ar.gif");
+	tree.setStdImages("folderClosed.gif", "folderOpen.gif", "folderClosed.gif");
+	tree.setXMLAutoLoading("dir!getTree.action");
+	tree.setOnClickHandler(dirClick);
+	tree.loadXML("dir!getTree.action", function(){});
+}
+
 /**
- * 得到文件夹列表的html
+ * 得到文件夹列表的html，采用listDirTree替代本方法
  * @param {object} _DIR 
  * @return {string}
  */
@@ -37,16 +56,20 @@ Directory.prototype.getDirListHTML = function(_DIR) {
 		var len = folders.nameList.length;
 		var i, href, name, path = '';
 
+		
+		
+		
+	// dtree采用dhtmlXtree方案
 		var d = new dTree('tree');
 		d.add(0, -1, DIR.root);
 		for (i = 0; i < len; i++) {
 			path = DIR.absolutePath + folders.nameList[i];
 			name = folders.nameList[i];			
-			//html.push('<a href="#" onclick="DirAction.getDirJSON(\''+ (path) +'\');">' + name + '</a>');
+			html.push('<a href="#" onclick="DirAction.getDirJSON(\''+ (path) +'\');">' + name + '</a>');
 			d.add(i + 1, 0, name,'path?');
 		}
 		html.push(d);
-
+		
    /**
    // 采用dtree替代下面的方案
 		html.push('<div class="dir-root">');
@@ -95,6 +118,8 @@ Directory.prototype.getFileAndFolderTheadHTML = function() {
  */
 Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 	var DIR = _DIR ? _DIR : this.DIR;
+	// 每次都更新下上传地址;
+	UploadActoin.uploadPath = _DIR.path ? _DIR.path : _DIR.absolutePath;
 	var html = [];
 	if (DIR) {
 		var filesList = DIR.FilesList;
@@ -129,8 +154,14 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 			hrefClass = getHrefClass(ext);
 			var nameLink = "", type = "&nbsp;";
 			if (file.type == 'folder') {
-				href = global.DIR_PATH + '?path=' + encodeURIComponent(name);
+				// 以后再更改成点击文件夹相当于点击了左侧导航，暂时新打开文件夹
+				//href = global.DIR_PATH + '?path=' + encodeURIComponent(name);
 				//type = file.type;
+				href = '#';
+				if (global.FIEL_WEB_ROOT_URL) {
+					href = global.FIEL_WEB_ROOT_URL + DIR.relationPath + encodeURIComponent(name);				
+				} 
+				
 				hrefClass = getFolderIconCss();
 			} else {
 				href = '#';
@@ -213,9 +244,11 @@ Directory.prototype.getInfoPanelHTML = function(_DIR) {
 }
 
 Directory.prototype.setDirAndFileList = function(_DIR) {
+	if (hasError()) return false; 
 	var DIR = _DIR ? _DIR : this.DIR;
-	this.setDirList(DIR);
+	//this.setDirList(DIR);
 	//this.setFileList(DIR);
+	this.listDirTree();
 	this.setFileAndFolderList(DIR);
 }
 
@@ -224,6 +257,7 @@ Directory.prototype.setDirList = function(_DIR) {
 }
 
 Directory.prototype.setFileAndFolderList = function(_DIR) {
+	if (hasError()) return false; 
 	this.FileListTitle.innerHTML = this.getFileAndFolderTheadHTML(_DIR);
 	this.FileListContent.innerHTML = this.getFileAndFolderListHTML(_DIR);
 }

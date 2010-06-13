@@ -1,8 +1,6 @@
 package com.youngli.fileadmin.act;
 
-import java.util.Map;
-
-import com.opensymphony.xwork2.ActionContext;
+import com.youngli.fileadmin.common.ConstantSession;
 
 /**
  * @author lichunping 2010-5
@@ -10,12 +8,22 @@ import com.opensymphony.xwork2.ActionContext;
  * 
  */
 public class LogoutAction {
+	
+	String userName;
 
 	public String execute() {
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		session.remove("userName");
-		session.remove("randomNumber");
+		SessionAction sessionAction = new SessionAction();
+		sessionAction.removeUserName();
+		sessionAction.remove(ConstantSession.RANDOM_NUMBER);
 		return "success";
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 }

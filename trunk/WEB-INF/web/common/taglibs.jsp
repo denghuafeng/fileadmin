@@ -1,6 +1,11 @@
-<% 
+<%
 request.setCharacterEncoding("utf-8");
 response.setCharacterEncoding("utf-8");
+response.setHeader("Pragma", "No-cache");
+response.setHeader("Cache-Control", "no-store"); 
+response.setHeader("Cache-Control", "no-cache");
+response.setHeader("Cache-Control", "must-revalidate");
+response.setDateHeader("Expires",0);
 %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

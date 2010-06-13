@@ -4,6 +4,7 @@ package com.youngli.fileadmin.common;
  * 
  */
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public class CharacterCode {
@@ -30,6 +31,17 @@ public class CharacterCode {
 	public static String encode(String str) {
 		try {
 			str = URLEncoder.encode(str, "utf-8");
+			//str = str.replaceAll("%2F", "/");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return str;		
+	}
+	
+	public static String decode(String str) {
+		try {
+			str = URLDecoder.decode(str, "utf-8");
 			//str = str.replaceAll("%2F", "/");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

@@ -20,7 +20,7 @@ response.setCharacterEncoding("utf-8");
 </head>
 <body>
 目录：${path}<br/>
-<c:set var="root" value="e:/ut/"></c:set>
+<c:set var="root" value="${root}"></c:set>
 ${uploadFile}<br>
 ${uploadFileContentType}
 

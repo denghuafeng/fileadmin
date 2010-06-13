@@ -15,7 +15,8 @@
 		'./js-src/lib/event.js',
 		'./js-src/lib/array.js',
 
-		'./js-src/util/menu/dtree.js',
+		'./js-src/util/tree/dhtmlxcommon.js',
+		'./js-src/util/tree/dhtmlxtree.js',
 
 		'./js-src/util/upload/swfupload.js',
 		'./js-src/util/upload/swfupload.queue.js',

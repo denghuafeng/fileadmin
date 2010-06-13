@@ -1,9 +1,7 @@
 package com.youngli.fileadmin.act;
 
 import java.io.File;
-import java.util.Map;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.youngli.fileadmin.common.ConfigProperties;
 import com.youngli.fileadmin.common.FilePath;
 
@@ -16,38 +14,25 @@ public class LoginAction {
 	
 	private String userName, passWord, validateCode;
 	private double random;
-	private String randomNumber;
 	
 	private String message;
 
+	
 	public String execute() {
 		
+		 // 给验证码加随机数防止图片被缓存
 		setRandom(Math.random() * 1000);		
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		setRandomNumber( (String)session.get("randomNumber"));
 		
 		if (userName == null || passWord == null || validateCode == null) {
 			return "failed";
-		}		
-		if (checkUserName() && checkPassWord() && checkValidateCode()) {
-			session.put("userName", userName);
+		}				
+		if (checkUserName(userName) && checkPassWord(passWord) && checkValidateCode(validateCode)) {
+			new SessionAction().setUserName(userName);
 			setMessage("loginSuccess");
 			return "success";
 		}
 		setMessage("loginFailed");
 		return "failed";
-	}
-	
-	public boolean checkUserName() {
-		if (userName != null) {	
-			String webInfPath = new File(FilePath.class.getResource("/").getPath()).getParent();
-			String propertiesPath = webInfPath + "/classes/fileadmin.properties";			
-			ConfigProperties configProps = new ConfigProperties(propertiesPath);
-			String user = configProps.getValue("fileadmin.admin.username");
-			
-			return userName.toLowerCase().equals(user);
-		}
-		return false;
 	}
 	
 	public boolean checkUserName(String userName) {
@@ -61,8 +46,20 @@ public class LoginAction {
 		}
 		return false;
 	}
+
+	public boolean isLogon() {	
+		SessionAction sessionAction = new SessionAction();
+		String userName = sessionAction.getUserName();	
+		if (userName == null || userName.length() <= 0)  	
+			return false;
+		return checkUserName(userName);
+	}
 	
-	public boolean checkPassWord() {
+	public boolean logon() {
+		return isLogon();
+	}
+	
+	public boolean checkPassWord(String passWord) {
 		if (passWord != null) {
 			String webInfPath = new File(FilePath.class.getResource("/").getPath()).getParent();
 			String propertiesPath = webInfPath + "/classes/fileadmin.properties";			
@@ -74,7 +71,9 @@ public class LoginAction {
 		return false;
 	}
 	
-	public boolean checkValidateCode() {
+	public boolean checkValidateCode(String validateCode) {
+		SessionAction sessionAction = new SessionAction();
+		String randomNumber = sessionAction.getRandomNumber();
 		if (validateCode != null && randomNumber != null)
 			return validateCode.toLowerCase().equals(randomNumber.toLowerCase());
 		
@@ -111,14 +110,6 @@ public class LoginAction {
 
 	public void setValidateCode(String validateCode) {
 		this.validateCode = validateCode;
-	}
-
-	public String getRandomNumber() {
-		return randomNumber;
-	}
-
-	public void setRandomNumber(String randomNumber) {
-		this.randomNumber = randomNumber;
 	}
 
 	public String getMessage() {
