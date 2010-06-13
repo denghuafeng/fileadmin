@@ -1,3 +1,4 @@
+
 /*
 	A simple class for displaying file information and progress
 	Note: This is a demonstration only and not part of SWFUpload.

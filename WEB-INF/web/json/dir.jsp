@@ -19,7 +19,6 @@ DIR.Files = {
 	<c:forEach var="name" items="${filesName}">'<c:out value="${name}"/>'<c:set var="count" value="${count+1}"/><c:if test="${count != filesLength}" >,</c:if>
 	</c:forEach>]
 };
-
 DIR.FilesList = {
 	<c:set var="count" value="0"/>	
 	<c:forEach var="item" items="${fileListMap}">

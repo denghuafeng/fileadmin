@@ -1,9 +1,8 @@
 package com.youngli.fileadmin;
-import java.util.Map;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.youngli.fileadmin.act.LoginAction;
+import com.youngli.fileadmin.act.SessionAction;
 import com.youngli.fileadmin.common.CharacterCode;
 /**
  * @author lichunping
@@ -20,19 +19,14 @@ public class Index extends ActionSupport {
 	}
 	
 	public String execute() {
-		//message = "Welcome";
+		message = "Welcome to File Administortion system";
 		
 		if (login != null) 
 			return "login";
 		
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		userName = (String)session.get("userName");
-		LoginAction login = new LoginAction();
-		if (userName == null) {
+		if (!new LoginAction().logon()) {
 			return "login";
-		} else if (!login.checkUserName(userName)) {
-			return "login";
-		}		
+		}
 		
 		return SUCCESS;
 	}

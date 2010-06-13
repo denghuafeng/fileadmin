@@ -1,6 +1,10 @@
 package com.youngli.fileadmin.common;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -12,7 +16,7 @@ public class FilePath {
 	public static String ROOT_PATH = getRootPath();
 	
 	public FilePath() {
-
+		ROOT_PATH = getRootPath();
 	}
 	
 	public static String getRootPath() {
@@ -176,6 +180,23 @@ public class FilePath {
 		return isContainExt(ext, exts);
 	}	
 	
+	public static int getSubDirLength(String name, List<Map<String, Integer>> list) {
+		int len = 0;
+		if (name == "") return len;
+		for (Map<String, Integer> item : list) {
+			if (item.containsKey(name)) {
+				len = item.get(name);
+			}
+		}
+		/*
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).containsKey(name)) {
+				len = list.get(i).get(name);
+			}
+		}*/
+		return len;
+	}
+	
 	/**
 	 * path Test Program
 	 * main:
@@ -185,6 +206,20 @@ public class FilePath {
 	 * @since
 	 */
 	public static void main(String[] args) throws Exception {
+
+		
+		List<Map<String, Integer>> list = new ArrayList<Map<String, Integer>>();
+		Map<String, Integer> o = new HashMap<String, Integer>();
+		o.put("a", 10);
+		//o = new HashMap();
+		o.put("b", 3);
+		//o = new HashMap();
+		o.put("c", 1);
+		list.add(o);
+		System.out.println(getSubDirLength("b", list));
+		
+		
+		
 		System.out.println(Thread.currentThread().getContextClassLoader().getResource(""));
 		//System.out.println(Class.class.getClassLoader().getResource("/"));
 		System.out.println(ClassLoader.getSystemResource(""));
@@ -204,17 +239,21 @@ public class FilePath {
 			System.out.println(f.length());
 		} 
 		
+		
 		String webinfPath = new File(FilePath.class.getResource("/").getPath()).getParent()+"/WEB-INF/";
 		System.out.println(webinfPath);
-				
+		
+		/*
 		String root = new ConfigProperties(webAppPath).getValue("fileadmin.root.path");
 		System.out.println(root);
 		System.out.println(ROOT_PATH);
+		
 		
 		//Class
 		System.out.println(new File("/").getAbsolutePath());
 		System.out.println(System.getProperty("user.dir")); 
 		System.out.println("物理路径分割符是： " + System.getProperty("file.separator") );
+		*/
 	}
 
 }

@@ -13,9 +13,9 @@ public class Directory {
 	private String path;
 	private File file; 
 	// read the directory to get the file array
-	private ArrayList<File> fileList =  new ArrayList<File>();
+	private List<File> fileList =  new ArrayList<File>();
 	// files and folders list table;
-	private ArrayList<Map<String, String>> fileListMap = new ArrayList<Map<String, String>>();
+	private List<Map<String, String>> fileListMap = new ArrayList<Map<String, String>>();
 	// file properties for fileListMap
 	private Map<String, String> properties = new HashMap<String, String>();
 	private String[] propertiesName = {"name", "type", "ext", "date", "length", "readonly", "hidden", "totalSpace", "freeSpace", "useableSpace"};
@@ -23,6 +23,8 @@ public class Directory {
 	// get the all file name by directory
 	private ArrayList<String> filesName =  new ArrayList<String>();
 	private ArrayList<String> foldersName =  new ArrayList<String>();
+	
+	private List<Map<String, Integer>> foldersHasSubDir = new ArrayList<Map<String, Integer>>();
 	
 	public Directory() {
 
@@ -44,7 +46,7 @@ public class Directory {
 	/**
 	 * @return file list
 	 */
-	public ArrayList<File> getFileList() {
+	public List<File> getFileList() {
 		return fileList;
 	}
 	
@@ -64,7 +66,11 @@ public class Directory {
 				String name = file.getName();
 				
 				if (file.isDirectory()) {
-					foldersName.add(name);
+					foldersName.add(name);	
+					// 添加是否有子文件夹信息
+					Map<String, Integer> hasSubDirList = new HashMap<String, Integer>();
+					hasSubDirList.put(name, hasSubDir(file));
+					foldersHasSubDir.add(hasSubDirList);
 				} else if(file.isFile()){
 					filesName.add(name);
 				}
@@ -78,7 +84,23 @@ public class Directory {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}	
+	}
+	
+	private int hasSubDir(File folder) {
+		int count = 0;
+		try {
+			File fileArray[] = folder.listFiles();
+			for (int i = 0; i < fileArray.length; i++) {
+				File file = fileArray[i];
+				if (file.isDirectory()) {
+					count ++;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
 	
 	public void addProperties(File file) {
 		addProperty(propertiesName[0], file.getName());
@@ -160,12 +182,15 @@ public class Directory {
 	public ArrayList<String> getFilesName() {
 		return filesName;
 	}
-	/**
-	 * @return file list Name
-	 */
-	public ArrayList<String> getFolderName() {
+	
+	public void setFoldersName(ArrayList<String> foldersName) {
+		this.foldersName = foldersName;
+	}
+	
+	public ArrayList<String> getFoldersName() {
 		return foldersName;
 	}
+
 	/**
 	 * @return the file at array list
 	 */
@@ -188,23 +213,15 @@ public class Directory {
 		this.properties = properties;
 	}
 
-	public ArrayList<String> getFoldersName() {
-		return foldersName;
-	}
-
-	public void setFoldersName(ArrayList<String> foldersName) {
-		this.foldersName = foldersName;
-	}
-
-	public void setFileList(ArrayList<File> fileList) {
+	public void setFileList(List<File> fileList) {
 		this.fileList = fileList;
 	}
 
-	public void setFileListMap(ArrayList<Map<String, String>> fileListMap) {
+	public void setFileListMap(List<Map<String, String>> fileListMap) {
 		this.fileListMap = fileListMap;
 	}
 	
-	public ArrayList<Map<String, String>> getFileListMap() {
+	public List<Map<String, String>> getFileListMap() {
 		return fileListMap;
 	}
 	
@@ -222,6 +239,14 @@ public class Directory {
 	
 	public void resetProperty() {
 		properties = new HashMap<String, String>();
+	}
+
+	public List<Map<String, Integer>> getFoldersHasSubDir() {
+		return foldersHasSubDir;
+	}
+
+	public void setFoldersHasSubDir(List<Map<String, Integer>> foldersHasSubDir) {
+		this.foldersHasSubDir = foldersHasSubDir;
 	}
 
 }
