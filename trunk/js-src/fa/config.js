@@ -7,6 +7,7 @@ var global = {
 	DIR_ROOT  : "",
 	DIR_PATH  : "dir",
 	FILE_PATH : "file",
+	UPLOAD_PATH : "upload",
 	
 	// 如果有web访问地址
 	FIEL_WEB_ROOT_URL : "http://127.0.0.1/ut/tmp/",

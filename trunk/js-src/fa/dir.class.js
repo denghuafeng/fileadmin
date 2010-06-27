@@ -29,18 +29,20 @@ Directory.prototype.listDirTree = function() {
 	    DirAction.getDirJSON(id);
 	}	
 	
-	tree = new dhtmlXTreeObject("DirList", "100%", "100%", 0);			
-	tree.setSkin('dhx_skyblue');
-	tree.setImagePath("img/tree/");
-	tree.enableDragAndDrop(0);
-	tree.enableTreeLines(false);
-	tree.setEscapingMode('utf8')
-	tree.setImageArrays("plus", null, null, null, "plus_ar.gif");
-	tree.setImageArrays("minus", null, null, null, "minus_ar.gif");
-	tree.setStdImages("folderClosed.gif", "folderOpen.gif", "folderClosed.gif");
-	tree.setXMLAutoLoading("dir!getTree.action");
-	tree.setOnClickHandler(dirClick);
-	tree.loadXML("dir!getTree.action", function(){});
+	Tree = new dhtmlXTreeObject("DirList", "100%", "100%", 0);	
+	Tree.parentObject.style.overflow = 'auto';
+	Tree.setSkin('dhx_skyblue');
+	Tree.enableHighlighting(1);
+	Tree.setImagePath("img/tree/");
+	Tree.enableDragAndDrop(0);
+	Tree.enableTreeLines(false);
+	Tree.setEscapingMode('utf8')
+	Tree.setImageArrays("plus", null, null, null, "plus_ar.gif");
+	Tree.setImageArrays("minus", null, null, null, "minus_ar.gif");
+	Tree.setStdImages("folderClosed.gif", "folderOpen.gif", "folderClosed.gif");
+	Tree.setXMLAutoLoading("dir!getTree.action");
+	Tree.setOnClickHandler(dirClick);
+	Tree.loadXML("dir!getTree.action", function(){});
 }
 
 /**
@@ -59,7 +61,7 @@ Directory.prototype.getDirListHTML = function(_DIR) {
 		
 		
 		
-	// dtree采用dhtmlXtree方案
+	// dtree方案，因无法动态加载而选用dhtmlXTree方案
 		var d = new dTree('tree');
 		d.add(0, -1, DIR.root);
 		for (i = 0; i < len; i++) {
@@ -119,7 +121,7 @@ Directory.prototype.getFileAndFolderTheadHTML = function() {
 Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 	var DIR = _DIR ? _DIR : this.DIR;
 	// 每次都更新下上传地址;
-	UploadActoin.uploadPath = _DIR.path ? _DIR.path : _DIR.absolutePath;
+	UPLOAD.uploadPath = _DIR.path ? _DIR.path : _DIR.absolutePath;
 	var html = [];
 	if (DIR) {
 		var filesList = DIR.FilesList;
@@ -149,28 +151,49 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 		function getFileTrHTML(obj) {
 			var file = obj ? obj : null;
 			if (file == null) return "";
-			name = file.name;
-			ext = getExt(name);
-			hrefClass = getHrefClass(ext);
+			var name = file.name;
+			var relationPath = DIR.relationPath + getSlash(DIR.relationPath);
+			var ext = getExt(name);
+			var hrefClass = getHrefClass(ext);
 			var nameLink = "", type = "&nbsp;";
 			if (file.type == 'folder') {
-				// 以后再更改成点击文件夹相当于点击了左侧导航，暂时新打开文件夹
+
 				//href = global.DIR_PATH + '?path=' + encodeURIComponent(name);
 				//type = file.type;
 				href = '#';
-				if (global.FIEL_WEB_ROOT_URL) {
-					href = global.FIEL_WEB_ROOT_URL + DIR.relationPath + encodeURIComponent(name);				
-				} 
 				
-				hrefClass = getFolderIconCss();
+				//relationPath = decodeHTML(relationPath);
+				//name         = decodeHTML(name);
+				// 文件夹链接
+				/**
+				 * 直接打开文件夹
+				 
+				if (global.FIEL_WEB_ROOT_URL) {
+					var _path = decodeHTML(relationPath) + decodeHTML(name);
+					href = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
+				}
+				target = '_blank';
+				*/
+				
+				var _path = decodeHTML(relationPath) + decodeHTML(name);
+				_path = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
+				target = '';
+				href = 'javascript:DirAction.openFolder(\'' +  _path + '\');';
+				hrefClass = getFolderIconCss();			
+				
 			} else {
+				// 文件链接
 				href = '#';
 				if (global.FIEL_WEB_ROOT_URL) {
-					href = global.FIEL_WEB_ROOT_URL + DIR.relationPath + encodeURIComponent(name);				
+					var _path = decodeHTML(relationPath) + decodeHTML(name);
+					href = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
 				} 
+				
+				// office在线阅读链接
 				if (isOfficeFile(ext) != -1 && global.DOC_WEB_ROOT_URL) {
 					// is office file read online
-					href = global.DOC_WEB_ROOT_URL + '?file='+ DIR.absolutePath + encodeURIComponent(name);
+					href = global.DOC_WEB_ROOT_URL + '?file='+ encodeURIComponent(decodeHTML(DIR.absolutePath)) + encodeURIComponent(decodeHTML(name));
+					//href = global.DOC_WEB_ROOT_URL + '?file='+ (decodeHTML(DIR.absolutePath)) + getSlash(relationPath) + (decodeHTML(name));
 				}
 				target = '_blank';
 				type   = ext;

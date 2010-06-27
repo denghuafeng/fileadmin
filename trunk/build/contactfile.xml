@@ -28,8 +28,11 @@
         <concat destfile="${js-path}/fa.js" encoding="utf-8">
         	<fileset dir="${js-src-path}/fa/" includes="config.js" />
         	<fileset dir="${js-src-path}/com/" includes="com.js" />
+        	<fileset dir="${js-src-path}/fa/" includes="action.js" />        	
         	<fileset dir="${js-src-path}/fa/" includes="dir.class.js" />        	
-        	<fileset dir="${js-src-path}/fa/" includes="action.js" />
+        	<fileset dir="${js-src-path}/fa/" includes="dir.act.js" />
+        	<fileset dir="${js-src-path}/fa/" includes="file.class.js" />
+        	<fileset dir="${js-src-path}/fa/" includes="file.act.js" />
 
         </concat>        
     	<echo message="Concat Code Files Finished" />		
@@ -67,6 +70,7 @@
         <concat destfile="${css-path}/fa.css" encoding="utf-8">
         	<fileset dir="${css-src-path}/" includes="default.css" />
         	<fileset dir="${css-src-path}/" includes="swfupload.css" />
+        	<fileset dir="${css-src-path}/" includes="tree.css" />
         </concat>
     	<echo message="Concat CSS Files Finished" />		
     </target> 

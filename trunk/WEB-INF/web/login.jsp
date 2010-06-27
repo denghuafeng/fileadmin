@@ -2,7 +2,7 @@
     pageEncoding="utf-8"%>
 <%@ include file="common/taglibs.jsp" %>
 <jsp:include page="common/header.jsp" flush="true" ></jsp:include>
-<body style="background:#fcfdff">
+<body class="login">
 <div class="page">
 	<div class="hd">
 	<div class="logo"><a href="#"> </a></div>
@@ -33,7 +33,7 @@
 	</div>
 	<br/><br/>
 	<div class="line-bar">&nbsp;</div>
-	<div class="info-panel" style="height:10px">&nbsp;</div>
+	<div class="login-info-panel">&nbsp;</div>
 	</div> 
 <jsp:include page="common/footer.jsp" flush="true"></jsp:include>
 </div>

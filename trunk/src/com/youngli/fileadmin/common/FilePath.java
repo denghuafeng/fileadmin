@@ -65,6 +65,7 @@ public class FilePath {
 		if (!lastChar.equals("/")) {
 			path += "/";
 		}
+		//CharacterCode.encodeHTML(path)
 		path = getPath(path);  // check root path
 		return path;
 	}

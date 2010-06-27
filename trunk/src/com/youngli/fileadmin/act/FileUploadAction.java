@@ -39,7 +39,7 @@ public class FileUploadAction extends ActionSupport {
 				setMessage("INFO", " not select file.");
 				return "input";
 			}
-			path = FilePath.getDirRealPath(path);
+			//path = FilePath.getDirRealPath(path);
 			fileUpload = new FileUpload();
 			if (uploads != null) { 
 				setUploadsList();

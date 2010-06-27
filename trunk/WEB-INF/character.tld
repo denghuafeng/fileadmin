@@ -30,5 +30,11 @@
     <function-signature>java.lang.String encodeCovert(java.lang.String, java.lang.String, java.lang.String)</function-signature>
  </function> 
 
-
+   <function>  
+    <description>encodeHTML字符</description>    
+    <name>encodeHTML</name>
+    <function-class>com.youngli.fileadmin.common.CharacterCode</function-class>
+    <function-signature>java.lang.String encodeHTML(java.lang.String)</function-signature>
+ </function> 
+ 
 </taglib>
