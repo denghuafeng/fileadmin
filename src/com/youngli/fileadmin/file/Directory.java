@@ -4,9 +4,13 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
+import com.youngli.fileadmin.common.FilePath;
+
+import com.youngli.fileadmin.common.CharacterCode;
+
 /**
  * @author lichunping 2010-5 jarryli@gmail.com 
- * 
+ * @sinace 1.0
  */
 public class Directory {
 	// the directory path
@@ -18,12 +22,15 @@ public class Directory {
 	private List<Map<String, String>> fileListMap = new ArrayList<Map<String, String>>();
 	// file properties for fileListMap
 	private Map<String, String> properties = new HashMap<String, String>();
-	private String[] propertiesName = {"name", "type", "ext", "date", "length", "readonly", "hidden", "totalSpace", "freeSpace", "useableSpace"};
+	private String[] propertiesName = {"name", "type", "ext", "date", "length", 
+										"readonly", "hidden", "totalSpace",
+										"freeSpace", "useableSpace"};
 	
 	// get the all file name by directory
 	private ArrayList<String> filesName =  new ArrayList<String>();
 	private ArrayList<String> foldersName =  new ArrayList<String>();
 	
+	// <Map<文件夹名称><子文件夹数量>>
 	private List<Map<String, Integer>> foldersHasSubDir = new ArrayList<Map<String, Integer>>();
 	
 	public Directory() {
@@ -43,9 +50,6 @@ public class Directory {
 		return path;
 	}
 
-	/**
-	 * @return file list
-	 */
 	public List<File> getFileList() {
 		return fileList;
 	}
@@ -64,10 +68,10 @@ public class Directory {
 				File file = fileArray[i];
 				fileList.add(file);
 				String name = file.getName();
-				
+				//name = CharacterCode.iso2utf8(name);
 				if (file.isDirectory()) {
 					foldersName.add(name);	
-					// 添加是否有子文件夹信息
+					// added sub directory info
 					Map<String, Integer> hasSubDirList = new HashMap<String, Integer>();
 					hasSubDirList.put(name, hasSubDir(file));
 					foldersHasSubDir.add(hasSubDirList);
@@ -81,6 +85,11 @@ public class Directory {
 				resetProperty();
 				//set empty
 			}
+			
+			// 添加硬盘大小信息
+			addHardSizeToProperties(file);
+			//resetProperty();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -102,21 +111,19 @@ public class Directory {
 		return count;
 	}
 	
-	public void addProperties(File file) {
-		addProperty(propertiesName[0], file.getName());
-		addProperty(propertiesName[1], file.isDirectory() ? "folder" : "file");
-		addProperty(propertiesName[2], file.isFile() ? getExt(file.getName()) : null);
-		//Date date = new Date(file.lastModified());
-		String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(file.lastModified());
-		addProperty(propertiesName[3], String.valueOf(date));
-		
-		/**
-		 * 换算大小
-		 */
+	/**
+	 * 添加硬盘大小到属性集合
+	 * addHardSizeToProperties:
+	 *
+	 * @param file      
+	 * @since
+	 */
+	public void addHardSizeToProperties(File file)
+		throws IOException {
+		// 换算大小
 		DecimalFormat numFormat = new DecimalFormat("#0.00");		
 		double size;
 		size = (double)file.length() / (double)1024;
-		String len = numFormat.format(size);
 		//size  = Double.valueOf(len);
 		size  = (double)file.getTotalSpace() / 1024 / 1024 / 1024;
 		String totalSpace = numFormat.format(size);		
@@ -126,13 +133,29 @@ public class Directory {
 		//size  = (double)file.getFreeSpace() / 1024 / 1024 / 1024;
 		//String freeSpace  = numFormat.format(size);	
 		double useableSpace = Double.valueOf(totalSpace) - Double.valueOf(freeSpace);
-
-		addProperty(propertiesName[4], String.valueOf(len));
-		addProperty(propertiesName[5], String.valueOf(file.canRead()));	
-		addProperty(propertiesName[6], String.valueOf(file.isHidden()));
+		
 		addProperty(propertiesName[7], String.valueOf(totalSpace));
 		addProperty(propertiesName[8], String.valueOf(freeSpace));
 		addProperty(propertiesName[9], String.valueOf(useableSpace));
+	}
+	
+	public void addProperties(File file) 
+		throws IOException {
+		addProperty(propertiesName[0], file.getName());
+		addProperty(propertiesName[1], file.isDirectory() ? "folder" : "file");
+		addProperty(propertiesName[2], file.isFile() ? getExt(file.getName()) : null);
+		//Date date = new Date(file.lastModified());
+		String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(file.lastModified());
+		addProperty(propertiesName[3], String.valueOf(date));
+		// 格式
+		DecimalFormat numFormat = new DecimalFormat("#0.00");		
+		double size;
+		size = (double)file.length() / (double)1024;
+		String len = numFormat.format(size);
+		addProperty(propertiesName[4], String.valueOf(len));
+		addProperty(propertiesName[5], String.valueOf(file.canRead()));	
+		addProperty(propertiesName[6], String.valueOf(file.isHidden()));
+		//addHardSizeToProperties(file);
 	}
 	
 	public int getListLength() {
@@ -240,6 +263,8 @@ public class Directory {
 	public void resetProperty() {
 		properties = new HashMap<String, String>();
 	}
+	
+	
 
 	public List<Map<String, Integer>> getFoldersHasSubDir() {
 		return foldersHasSubDir;

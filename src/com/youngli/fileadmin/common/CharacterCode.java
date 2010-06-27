@@ -49,4 +49,22 @@ public class CharacterCode {
 		}
 		return str;		
 	}
+	
+	/**
+	 * html转义字符
+	 * encodeHTML:
+	 *
+	 * @param html
+	 * @return      
+	 * @since
+	 */
+	public static String encodeHTML(String html) {
+		html = html.replaceAll("&", "&amp;");
+		html = html.replaceAll("'", "&#039;");
+		// ' = &rsquo;  = &#039;
+		html = html.replaceAll("\"", "&quot;");
+		html = html.replaceAll("<", "&lt;");	
+		html = html.replaceAll(">", "&gt;");				
+		return html;
+	}
 }

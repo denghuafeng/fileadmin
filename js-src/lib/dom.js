@@ -59,6 +59,124 @@ dom.children = function (element) {
     return children;    
 };
 
+/**
+ * 获取目标元素所属的document对象
+ *
+ * @param {HTMLElement|string} element 目标元素或目标元素的id
+ * @return {HTMLDocument} element所属的document对象
+ */
+dom.getDocument = function (element) {
+    element = dom.g(element);
+    return element.nodeType == 9 ? element : element.ownerDocument || element.document;
+};
+
+/*
+ * 获取目标元素元素相对于整个文档左上角的位置
+ *
+ * @param {HTMLElement|string} element 目标元素或目标元素的id
+ * @return {Object} 
+ *   {
+ *       left:xx,//{integer} 页面距离页面左上角的水平偏移量
+ *       top:xx //{integer} 页面距离页面坐上角的垂直偏移量
+ *   }
+ */
+dom.getPosition = function (element) {
+    var doc = dom.getDocument(element);
+       // browser = browser;
+
+    element = dom.g(element);
+
+    // Gecko browsers normally use getBoxObjectFor to calculate the position.
+    // When invoked for an element with an implicit absolute position though it
+    // can be off by one. Therefor the recursive implementation is used in those
+    // (relatively rare) cases.
+    var BUGGY_GECKO_BOX_OBJECT = browser.isGecko > 0 && 
+                                 doc.getBoxObjectFor &&
+                                 dom.getStyle(element, 'position') == 'absolute' &&
+                                 (element.style.top === '' || element.style.left === '');
+
+    // NOTE(arv): If element is hidden (display none or disconnected or any the
+    // ancestors are hidden) we get (0,0) by default but we still do the
+    // accumulation of scroll position.
+
+    var pos = {"left":0,"top":0};
+
+    var viewportElement = (browser.ie && !browser.isStrict) ? doc.body : doc.documentElement;
+    
+    if(element == viewportElement){
+        // viewport is always at 0,0 as that defined the coordinate system for this
+        // function - this avoids special case checks in the code below
+        return pos;
+    }
+
+    var parent = null;
+    var box;
+
+    if(element.getBoundingClientRect){ // IE and Gecko 1.9+
+        box = element.getBoundingClientRect();
+
+        pos.left = Math.floor(box.left) + Math.max(doc.documentElement.scrollLeft, doc.body.scrollLeft);
+        pos.top  = Math.floor(box.top)  + Math.max(doc.documentElement.scrollTop,  doc.body.scrollTop);
+	        
+        // IE adds the HTML element's border, by default it is medium which is 2px
+        // IE 6 and 7 quirks mode the border width is overwritable by the following css html { border: 0; }
+        // IE 7 standards mode, the border is always 2px
+        // This border/offset is typically represented by the clientLeft and clientTop properties
+        // However, in IE6 and 7 quirks mode the clientLeft and clientTop properties are not updated when overwriting it via CSS
+        // Therefore this method will be off by 2px in IE while in quirksmode
+        pos.left -= doc.documentElement.clientLeft;
+        pos.top  -= doc.documentElement.clientTop;
+
+        if(browser.ie && !browser.isStrict){
+            pos.left -= 2;
+            pos.top  -= 2;
+        }
+    } else if (doc.getBoxObjectFor && !BUGGY_GECKO_BOX_OBJECT/* && !goog.style.BUGGY_CAMINO_*/){ // gecko
+        // Gecko ignores the scroll values for ancestors, up to 1.9.  See:
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=328881 and
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=330619
+
+        box = doc.getBoxObjectFor(element);
+        var vpBox = doc.getBoxObjectFor(viewportElement);
+        pos.left = box.screenX - vpBox.screenX;
+        pos.top  = box.screenY - vpBox.screenY;
+    } else { // safari/opera
+        parent = element;
+
+        do {
+            pos.left += parent.offsetLeft;
+            pos.top  += parent.offsetTop;
+      
+            // In Safari when hit a position fixed element the rest of the offsets
+            // are not correct.
+            if (browser.isWebkit > 0 && dom.getStyle(parent, 'position') == 'fixed') {
+                pos.left += doc.body.scrollLeft;
+                pos.top  += doc.body.scrollTop;
+                break;
+            }
+            
+            parent = parent.offsetParent;
+        } while (parent && parent != element);
+
+        // opera & (safari absolute) incorrectly account for body offsetTop
+        if(browser.opera > 0 || (browser.isWebkit > 0 && dom.getStyle(element, 'position') == 'absolute')){
+            pos.top  -= doc.body.offsetTop;
+        }
+
+        // accumulate the scroll positions for everything but the body element
+        parent = element.offsetParent;
+        while (parent && parent != doc.body) {
+            pos.left -= parent.scrollLeft;
+            // see https://bugs.opera.com/show_bug.cgi?id=249965
+            if (!b.opera || parent.tagName != 'TR') {
+                pos.top -= parent.scrollTop;
+            }
+            parent = parent.offsetParent;
+        }
+    }
+
+    return pos;
+};
 
 /**
  * 提供给setStyle与getStyle使用

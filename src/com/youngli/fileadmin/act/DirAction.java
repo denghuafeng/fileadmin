@@ -19,6 +19,7 @@ public class DirAction {
 	private ArrayList<String> foldersName; 
 	
 	private String[] propertiesName;
+	private Map<String, String> properties = new HashMap<String, String>();
 
 	private int listLength;
 	private int filesLength, foldersLength, fileListMapLength;
@@ -39,6 +40,7 @@ public class DirAction {
 		foldersHasSubDir = dir.getFoldersHasSubDir();		
 		
 		propertiesName = dir.getPropertiesName(); 
+		properties     = dir.getProperties();
 		fileListMap    = dir.getFileListMap();
 		fileListMapLength = fileListMap.size();
 		
@@ -140,6 +142,14 @@ public class DirAction {
 
 	public void setPropertiesName(String[] propertiesName) {
 		this.propertiesName = propertiesName;
+	}
+
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Map<String, String> properties) {
+		this.properties = properties;
 	}
 
 	public int getListLength() {
