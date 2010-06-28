@@ -1,281 +1,186 @@
 package com.youngli.fileadmin.file;
 import java.io.*;
 
-import com.youngli.fileadmin.common.FilePath;
-
-//import com.youngli.fileadmin.common.FilePath;
-
 /**
- * @author lichunping 2010-5 jarryli@gmail.com 
- * 
+ * FileEdit 对外的接口
+ * @author lichunping 
+ * 		   jarryli@gmail.com 2010-5  
+ * @sinace 1.0
  */
-public class FileEdit {
-	private File file;
-	private String path;
-	private final String COPY_TEXT_NAME = "-\u590d\u5236"; // 复制
-	private int copyIndex = 0;
+public interface FileEdit {
+
+	/**
+	 * 设置目录的路径
+	 * @author lichunping
+	 * @param path      
+	 * @since 1.0
+	 */
+	public void setPath(String path);
 	
-	public FileEdit() {
-		
-	}
-	public FileEdit(String path) {
-		if (path == null) return;
-		setPath(path);
-		setFile(path); 
-	}
+	//public String getPath();
 	
-	public void setPath(String path) {
-		if (path != null)this.path = path;
-	}
+	/**
+	 * 设置文件的路径
+	 * @author lichunping
+	 * @param path      
+	 * @since 1.0
+	 */
+	public void setFile(String path);
 	
-	public String getPath() {
-		return path;
-	}
-	
-	public void setFile(String path) {
-		if (path == null) return;
-		this.file = new File(path);
-	}
-	
-	public void setFile(File file) {
-		this.file = file;
-	}
+	/**
+	 * 设置文件
+	 * @author lichunping
+	 * @param 文件对象      
+	 * @since 1.0
+	 */
+	//public void setFile(File file);
 
 	/**
 	 * remove file and folders
+	 * @author lichunping
 	 * @param file
 	 * @see delete(File);
-	 * @return
+	 * @since 1.0
+	 * @return true || false
 	 */
-	public boolean deleteFolder(File file) {
-		boolean delSuccess = true; 
-		try {
-		    if (file.exists()) {
-				 if (file.isDirectory()) {
-					File files[] = file.listFiles();
-					for (int i = 0; i < files.length; i++) {
-						deleteFolder(files[i]);
-					}
-				}			 
-				if (!file.delete()) {
-					delSuccess = false;
-				}
-		    }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		 return delSuccess;
-	}
+	public boolean deleteFolder(File file);
 	
-	public File getFile() {
-		return file;
-	}
+	/**
+	 * 获得文件
+	 * @author lichunping
+	 * @since 1.0
+	 * @return 文件对象
+	 */
+	public File getFile();
 	
-	public boolean delete() {
-		if (file == null || !file.exists()) return false;
-		if (file.isFile()) {
-			return file.delete();
-		} else {
-			return deleteFolder(file);
-		}
-	}
+	/**
+	 * 删除定义的文件
+	 * @author lichunping
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean delete();
 	
-	public boolean mkdir() {
-		return file.mkdir();
-	}
+	/**
+	 * 建立文件夹，路径在构造函数中指定
+	 * @author lichunping
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean mkdir();
 	
-	public boolean canceReadOnly(File newName) {
-		if (file.exists()) {
-			file.setWritable(true);
-			return file.setReadable(true);
-		}
-		return false;
-	}
+	/**
+	 * 是否为只读文件
+	 * @author lichunping
+	 * @param  文件对象
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean canceReadOnly(File newName);
 	
-	public boolean setReadOnly(File newName) {
-		if (file.exists()) {
-			return file.setReadOnly();
-		}
-		return false;
-	}
+	/**
+	 * 设置为只读文件
+	 * @author lichunping
+	 * @param  文件对象 
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean setReadOnly(File newName);
 	
-	public boolean moveTo(String toPath) {
-		try {
-			if (toPath != null && file.exists()) {
-				int toPathLen = toPath.length();
-				String last = toPath.substring(toPathLen - 1, toPathLen);
-				if (!last.equals("/")) toPath += "/";
-				File newFile = new File(toPath + file.getName());   
-				return file.renameTo(newFile);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+	/**
+	 * 移动文件
+	 * @author lichunping
+	 * @param  toPath 移动目的地 
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean moveTo(String toPath);
 	
-	public boolean createNewFile(File file) {
-		if (file != null && !file.exists()) {
-			try {
-				return file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
+	/**
+	 * 设置为只读文件
+	 * @author lichunping
+	 * @param  文件对象 
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean createNewFile(File file);
+	
 	/**
 	 * 得到复制文件后的文件名
 	 * 复制一个文件都需要给该文件名增加 -复制 名字
 	 * 当再次复制文件时，已存在-复制名字了，就需要给文件增加-复制(i)名字了，i递增.
-	 * @param copyNewPath
-	 * @return
+	 * @author lichunping
+	 * @param copyNewPath 要复制的文件路径
+	 * @return 复制后的文件路径
+	 * @since 1.0
 	 */
-	public String getCopyNewPath(String copyNewPath) {
-		String parentPath = "", newPath = "", name = "", ext = "";
-		try {
-		parentPath = file.getParent();
-		parentPath = parentPath.replaceAll("\\\\", "/");
-		name = FilePath.getRealName(file.getName());
-		ext = FilePath.getExt(file.getName());
-		ext = ext.length() > 0 ? ("." + ext) : ext;
-		if (copyNewPath == null || copyNewPath.length() <= 0) {	
-			// 判断是否存在 -复制 这样的名字
-			newPath = parentPath + "/" + name + COPY_TEXT_NAME + ext;
-		} else {
-			newPath = copyNewPath;
-		}
-		
-		File newFile = new File(newPath);
-		if (newFile.exists()) {
-			// 如果存在 -复制 这样的名字，即增加-复制(i)名字
-			copyIndex++;
-			copyNewPath = parentPath + "/" + name + COPY_TEXT_NAME + "(" + String.valueOf(copyIndex) + ")" + ext;
-			newPath = getCopyNewPath(copyNewPath);
-		}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return newPath;
-	}
+	public String getCopyNewPath(String copyNewPath);	
 	
-	public boolean copy(String from, String to) {
-		if (to != null) {
-			File fromFile = new File(from);
-			if (!fromFile.exists()) return false;
-			
-			if (fromFile.isFile()) {
-				return copyFile(from, to);
-			} else {
-				return copyFolder(from, to);
-			} 				
-		}
-		return false;
-	}
+	/**
+	 * 复制对象，含文件与目录
+	 * @author lichunping
+	 * @param  from 来源路径
+	 * @param  to 目的路径 
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean copy(String from, String to);
 	
-	public boolean copyFile(String from, String to) {
-        try {  
-            FileInputStream in = new FileInputStream(from);  
-            FileOutputStream out = new FileOutputStream(to);  
-            byte[] bt = new byte[16 * 1024];  
-            int count;  
-            while ((count = in.read(bt)) > 0) {  
-                out.write(bt, 0, count);  
-            }
-            in.close();  
-            out.close();  
-            return true;  
-        } catch (IOException ex) {  
-            return false;  
-        }  
-    }
+	/**
+	 * 复制文件
+	 * @author lichunping
+	 * @param  from 来源路径
+	 * @param  to 目的路径 
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean copyFile(String from, String to);
+	
 	/**
 	 * 递归复制所有文件夹
-	 * @param from
-	 * @param to
-	 * @return
+	 * @author lichunping
+	 * @param  from 来源路径
+	 * @param  to 目的路径 
+	 * @since 1.0
+	 * @return true || false
 	 */
-	public boolean copyFolderAll(String from, String to) {
-		boolean copySuccess = true; 
-		try {
-			String fromPath, toPath;
-			File fromFolder = new File(from);
-		    if (!fromFolder.exists()) return false; 
-			
-		    if (fromFolder.isDirectory()) {
-		    	File toFolder = new File(to);
-				toFolder.mkdir();
-				
-		    	File files[] = fromFolder.listFiles();
-				for (int i = 0; i < files.length; i++) {
-					fromPath = from + "/"+ files[i].getName();
-					toPath   = to   + "/"+ files[i].getName();
-					if (files[i].isFile()) {
-						// 如果是文件直接复制
-						copyFile(fromPath, toPath);
-					} else {
-						// 如果是文件夹则递归执行
-						copyFolderAll(fromPath, toPath);
-					}
-				}
-			}			 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		 return copySuccess;
-	} 
+	public boolean copyFolderAll(String from, String to);
 	
-	public boolean copyFolder(String from, String to) {
-		try {
-			File toFolder = new File(to);
-			if (!toFolder.exists()) {
-				File files[] = file.listFiles();
-				if (files.length <= 0) {
-					return toFolder.mkdir();
-				} else {
-					return copyFolderAll(from, to);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+	/**
+	 * 复制文件夹
+	 * @author lichunping
+	 * @param  from 来源路径
+	 * @param  to 目的路径 
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean copyFolder(String from, String to);
 	
-	public boolean renameTo(String name) {
-		try {
-			if (name != null && file.exists()) {
-				String path = file.getParent();
-				path = path.replaceAll("\\\\", "/");
-				path += "/" + name;
-				// added file extension
-				//path += "." + FilePath.getExt(file.getName());
-				File newFile = new File(path);
-				if (newFile.exists()) return false;
-				return file.renameTo(newFile);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+	/**
+	 * 重命名文件
+	 * @author lichunping
+	 * @param  name 新的文件路径与名称
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean renameTo(String name);
 	
-	public boolean rename(File newFile) {
-		if (file.exists()) {
-			return file.renameTo(newFile);
-		}
-		return false;
-	}
+	/**
+	 * 重命名文件
+	 * @author lichunping
+	 * @newFile  新的文件对象
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean rename(File newFile);
 	
-	public boolean mkfile(File newName) {
-		if (file.exists() && file.isDirectory()) {
-			try {
-				return file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
+	/**
+	 * 创建一个对象，文件或者文件夹
+	 * @author lichunping
+	 * @newName  新的文件对象
+	 * @since 1.0
+	 * @return true || false
+	 */
+	public boolean mkfile(File newName);
 	
 }

@@ -1,14 +1,15 @@
 package com.youngli.fileadmin.act;
 
 import java.util.*;
-
 import com.youngli.fileadmin.common.*;
 import com.youngli.fileadmin.file.*;
+import com.youngli.fileadmin.file.impl.DirectoryImpl;
 
 /**
- * @author lichunping 2010-5
- *         jarryli@gmail.com 
- * 
+ * 获取目录信息Action
+ * @author lichunping 
+ * 		   jarryli@gmail.com 2010-5  
+ * @sinace 1.0
  */
 public class DirAction {
 
@@ -25,12 +26,16 @@ public class DirAction {
 	private int filesLength, foldersLength, fileListMapLength;
 	private List<Map<String, Integer>> foldersHasSubDir = new ArrayList<Map<String, Integer>>();
 	
+	private Directory dir;
+	
 	public void setFiles() {
 		try {
 		absolutePath = FilePath.getDirRealPath(path);
 		root = FilePath.getRootPath();
 		previousPath = FilePath.getPreviousPath(absolutePath);
-		Directory dir = new Directory(absolutePath);
+		//DirectoryImpl dir = new DirectoryImpl(absolutePath);
+		dir = new DirectoryImpl(absolutePath);
+		dir.setPath(absolutePath);
 		filesName = dir.getFilesName();
 		foldersName = dir.getFoldersName();
 		

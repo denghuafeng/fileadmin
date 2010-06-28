@@ -1,115 +1,27 @@
 package com.youngli.fileadmin.file;
 
-import java.io.*;
-import java.text.*;
 import java.util.*;
 
-import com.youngli.fileadmin.common.FilePath;
-
-import com.youngli.fileadmin.common.CharacterCode;
-
 /**
- * @author lichunping 2010-5 jarryli@gmail.com 
+ * Directory 对外的接口，把不需要提供的注释了
+ * @author lichunping jarryli@gmail.com 2010-5  
  * @sinace 1.0
  */
-public class Directory {
-	// the directory path
-	private String path;
-	private File file; 
-	// read the directory to get the file array
-	private List<File> fileList =  new ArrayList<File>();
-	// files and folders list table;
-	private List<Map<String, String>> fileListMap = new ArrayList<Map<String, String>>();
-	// file properties for fileListMap
-	private Map<String, String> properties = new HashMap<String, String>();
-	private String[] propertiesName = {"name", "type", "ext", "date", "length", 
-										"readonly", "hidden", "totalSpace",
-										"freeSpace", "useableSpace"};
+public interface Directory {
 	
-	// get the all file name by directory
-	private ArrayList<String> filesName =  new ArrayList<String>();
-	private ArrayList<String> foldersName =  new ArrayList<String>();
+	/**
+	 * 设置目录的路径
+	 * @author lichunping
+	 * @param path      
+	 * @since 1.0
+	 */
+	public void setPath(String path);
 	
-	// <Map<文件夹名称><子文件夹数量>>
-	private List<Map<String, Integer>> foldersHasSubDir = new ArrayList<Map<String, Integer>>();
-	
-	public Directory() {
+	//public String getPath();
 
-	}
+	//public List<File> getFileList();
 	
-	public Directory(String path) {
-		setPath(path);
-		setFileList();
-	}
-	
-	public void setPath(String path) {
-	    this.path = path;
-	}
-	
-	public String getPath() {
-		return path;
-	}
-
-	public List<File> getFileList() {
-		return fileList;
-	}
-	
-	public void setFileList() {
-		if (path == null) return;
-		file = new File(path);
-		if (!file.exists()) {
-		        System.out.println(this.path +" the folder not exists");
-		        return;
-		}
-		
-		File fileArray[] = file.listFiles();
-		try {
-			for (int i = 0; i < fileArray.length; i++) {
-				File file = fileArray[i];
-				fileList.add(file);
-				String name = file.getName();
-				//name = CharacterCode.iso2utf8(name);
-				if (file.isDirectory()) {
-					foldersName.add(name);	
-					// added sub directory info
-					Map<String, Integer> hasSubDirList = new HashMap<String, Integer>();
-					hasSubDirList.put(name, hasSubDir(file));
-					foldersHasSubDir.add(hasSubDirList);
-				} else if(file.isFile()){
-					filesName.add(name);
-				}
-				
-				// set fileListMap
-				addProperties(file);
-				addPropertiesRow(null);
-				resetProperty();
-				//set empty
-			}
-			
-			// 添加硬盘大小信息
-			addHardSizeToProperties(file);
-			//resetProperty();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private int hasSubDir(File folder) {
-		int count = 0;
-		try {
-			File fileArray[] = folder.listFiles();
-			for (int i = 0; i < fileArray.length; i++) {
-				File file = fileArray[i];
-				if (file.isDirectory()) {
-					count ++;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return count;
-	}
+	//public void setFileList();
 	
 	/**
 	 * 添加硬盘大小到属性集合
@@ -118,160 +30,110 @@ public class Directory {
 	 * @param file      
 	 * @since
 	 */
-	public void addHardSizeToProperties(File file)
-		throws IOException {
-		// 换算大小
-		DecimalFormat numFormat = new DecimalFormat("#0.00");		
-		double size;
-		size = (double)file.length() / (double)1024;
-		//size  = Double.valueOf(len);
-		size  = (double)file.getTotalSpace() / 1024 / 1024 / 1024;
-		String totalSpace = numFormat.format(size);		
-		size  = (double)file.getUsableSpace() / 1024 / 1024 / 1024;
-		String freeSpace = numFormat.format(size);
-		
-		//size  = (double)file.getFreeSpace() / 1024 / 1024 / 1024;
-		//String freeSpace  = numFormat.format(size);	
-		double useableSpace = Double.valueOf(totalSpace) - Double.valueOf(freeSpace);
-		
-		addProperty(propertiesName[7], String.valueOf(totalSpace));
-		addProperty(propertiesName[8], String.valueOf(freeSpace));
-		addProperty(propertiesName[9], String.valueOf(useableSpace));
-	}
+	//public void addHardSizeToProperties(File file) throws IOException;
 	
-	public void addProperties(File file) 
-		throws IOException {
-		addProperty(propertiesName[0], file.getName());
-		addProperty(propertiesName[1], file.isDirectory() ? "folder" : "file");
-		addProperty(propertiesName[2], file.isFile() ? getExt(file.getName()) : null);
-		//Date date = new Date(file.lastModified());
-		String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(file.lastModified());
-		addProperty(propertiesName[3], String.valueOf(date));
-		// 格式
-		DecimalFormat numFormat = new DecimalFormat("#0.00");		
-		double size;
-		size = (double)file.length() / (double)1024;
-		String len = numFormat.format(size);
-		addProperty(propertiesName[4], String.valueOf(len));
-		addProperty(propertiesName[5], String.valueOf(file.canRead()));	
-		addProperty(propertiesName[6], String.valueOf(file.isHidden()));
-		//addHardSizeToProperties(file);
-	}
-	
-	public int getListLength() {
-		return filesName.size() + foldersName.size();
-	}
-	
-	public int getFilesLength() {
-		return filesName.size();
-	}
-	
-	public int getFoldersLength() {
-		return foldersName.size();
-	}
-	
-	private String getExt(String fileName) {
-		try {
-			if (fileName != null && fileName.length() > 0) {
-				int lastDotAt = fileName.lastIndexOf(".");
-				if (lastDotAt != -1) {
-					fileName = fileName.substring(lastDotAt + 1, fileName.length());
-				} else {
-					fileName = null;
-				}
-			}
-		} catch(Exception e) {
-	        System.out.println(e.getMessage());
-		}
-		return fileName;
-	}
-	
-	
-	public File getFile() {
-		return file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-	}	
-
-	public void setFilesName(ArrayList<String> filesName) {
-		this.filesName = filesName;
-	}
+	//public void addProperties(File file) throws IOException ;
 	
 	/**
-	 * @return file list Name
+	 * 获得文件与文件夹列表长度
+	 * @author lichunping
+	 * @return 数量    
+	 * @since 1.0
 	 */
-	public ArrayList<String> getFilesName() {
-		return filesName;
-	}
+	public int getListLength();
 	
-	public void setFoldersName(ArrayList<String> foldersName) {
-		this.foldersName = foldersName;
-	}
+	/**
+	 * 获得文件列表长度
+	 * @author lichunping
+	 * @return 数量    
+	 * @since 1.0
+	 */
+	public int getFilesLength();
 	
-	public ArrayList<String> getFoldersName() {
-		return foldersName;
-	}
+	/**
+	 * 获得文件夹列表长度
+	 * @author lichunping
+	 * @return 数量    
+	 * @since 1.0
+	 */
+	public int getFoldersLength();
+	
+	//public File getFile();
+
+
+	//public void setFile(File file);
+
+	//public void setFilesName(ArrayList<String> filesName);
+	
+	/**
+	 * 获得文件名列表
+	 * @author lichunping
+	 * @return 文件名列表    
+	 * @since 1.0
+	 */
+	public ArrayList<String> getFilesName();
+	
+	//public void setFoldersName(ArrayList<String> foldersName);
+	
+	/**
+	 * 获得文件夹名列表
+	 * @author lichunping
+	 * @return 文件夹名列表    
+	 * @since 1.0
+	 */
+	public ArrayList<String> getFoldersName();
 
 	/**
 	 * @return the file at array list
 	 */
-	public File getFile(int index) {
-		return fileList.get(index);
-	}
+	//public File getFile(int index);
 	
-	public void addPropertiesRow(Map<String, String> properties) {
-		if (properties != null) {
-			this.properties = properties;
-		}
-		fileListMap.add(this.properties);
-	}	
+	//public void addPropertiesRow(Map<String, String> properties);
 
-	public Map<String, String> getProperties() {
-		return properties;
-	}
+	/**
+	 * 获得文件属性列表，这里主要用于获得硬盘尺寸空间信息
+	 * @author lichunping
+	 * @return 文件属性列表   
+	 * @since 1.0
+	 */
+	public Map<String, String> getProperties();
 
-	public void setProperties(Map<String, String> properties) {
-		this.properties = properties;
-	}
+	//public void setProperties(Map<String, String> properties);
 
-	public void setFileList(List<File> fileList) {
-		this.fileList = fileList;
-	}
+	//public void setFileList(List<File> fileList);
 
-	public void setFileListMap(List<Map<String, String>> fileListMap) {
-		this.fileListMap = fileListMap;
-	}
+	//public void setFileListMap(List<Map<String, String>> fileListMap);
 	
-	public List<Map<String, String>> getFileListMap() {
-		return fileListMap;
-	}
+	/**
+	 * 获得文件详细信息
+	 * @author lichunping
+	 * @return 文详细信息Map
+	 * @since 1.0
+	 */
+	public List<Map<String, String>> getFileListMap();
 	
-	public String[] getPropertiesName() {
-		return propertiesName;
-	}
+	/**
+	 * 获得定义的属性名称
+	 * @author lichunping
+	 * @return 属性名数组
+	 * @since 1.0
+	 */
+	public String[] getPropertiesName();
 		
-	public void setPropertiesName(String[] propertiesName) {
-		this.propertiesName = propertiesName;
-	}
+	//public void setPropertiesName(String[] propertiesName);
 
-	public void addProperty(String key, String value) {
-		properties.put(key, value);
-	}
+	//public void addProperty(String key, String value);
 	
-	public void resetProperty() {
-		properties = new HashMap<String, String>();
-	}
-	
-	
+	//public void resetProperty();	
 
-	public List<Map<String, Integer>> getFoldersHasSubDir() {
-		return foldersHasSubDir;
-	}
+	/**
+	 * 获得当前目录是否有子文件夹信息，含子文件夹数量
+	 * @author lichunping
+	 * @return 
+	 * @since 1.0
+	 */
+	public List<Map<String, Integer>> getFoldersHasSubDir();
 
-	public void setFoldersHasSubDir(List<Map<String, Integer>> foldersHasSubDir) {
-		this.foldersHasSubDir = foldersHasSubDir;
-	}
+	//public void setFoldersHasSubDir(List<Map<String, Integer>> foldersHasSubDir);
 
 }

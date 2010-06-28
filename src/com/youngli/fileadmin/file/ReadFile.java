@@ -1,5 +1,5 @@
 package com.youngli.fileadmin.file;
 
-public class ReadFile {
+public interface ReadFile {
 
 }
