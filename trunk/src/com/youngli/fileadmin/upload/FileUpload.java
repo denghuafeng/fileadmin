@@ -4,125 +4,111 @@ import java.io.*;
 import java.util.*;
 
 /**
- * @author lichunping 2010-5 jarryli@gmail.com 
- * upload file and save
+ * 文件上传接口类
+ * @author lichunping 
+ * 		   jarryli@gmail.com 2010-5  
+ * save upload files name and type
+ * @see FileUploadAction.java
  */
-public class FileUpload {
-	/**
-	 * save upload files name and type
-	 * @see FileUploadAction.java
-	 */
-	private ArrayList<Map<String, String>> uploadsList = new ArrayList<Map<String, String>>();
-	private Map<String, String> properties = new HashMap<String, String>();
-	
-    public FileUpload() {
 
-    }
-     
-    public ArrayList<Map<String, String>> getUploadsList() {
-    	return uploadsList;
-    }
+public interface FileUpload {
+
+	/**
+	 * 获得上传文件列表
+	 * @author lichunping
+	 * @return 文件列表    
+	 * @since 1.0
+	 */
+    public ArrayList<Map<String, String>> getUploadsList();
     
-	public void setUploadsList(ArrayList<Map<String, String>> uploadsList) {
-		this.uploadsList = uploadsList;
-	}
+	/**
+	 * 设置上传文件列表
+	 * @author lichunping
+	 * @param uploadsList 文件列表    
+	 * @since 1.0
+	 */
+	public void setUploadsList(ArrayList<Map<String, String>> uploadsList);
     
-    public void addProperty(String key, String value) {
-    	properties.put(key, value);
-    }
+	/**
+	 * 添加到属性map中
+	 * @author lichunping
+	 * @param key 
+	 * @param value
+	 * @since 1.0
+	 */
+    public void addProperty(String key, String value);
     
-    public void addUploadsListRow(Map<String, String> properties) {
-		if (properties != null) {
-			this.properties = properties;
-		}
-		uploadsList.add(this.properties);
-    }
+	/**
+	 * 添加上传信息到属性map中
+	 * @author lichunping
+	 * @param properties  
+	 * @since 1.0
+	 */
+    public void addUploadsListRow(Map<String, String> properties);
     
-	public void resetProperty() {
-		properties = new HashMap<String, String>();
-	}
+	/**
+	 * 重置属性列表
+	 * @author lichunping
+	 * @since 1.0
+	 */
+	public void resetProperty();
     
-    /**
+	/**
      * move upload file to the path;
-     * @param file
-     * @param to
-     * @return
+	 * @author lichunping
+     * @param from 来源路径
+     * @param to   目的路径
+     * @return true || false
+	 * @since 1.0
      */
-	public boolean move(String from, String to) {
-		try {
-			File fromFile = new File(to);
-			File toFile   = new File(to);
-			if (!toFile.exists()) {
-				return fromFile.renameTo(toFile);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+	public boolean move(String from, String to);
 	
-	public boolean move(File fromFile, String to) {
-		try {
-			String toPath = to;
-			File toFile   = new File(toPath);
-			if (fromFile.exists() && !toFile.exists()) {
-				return fromFile.renameTo(toFile);
-				// move or copy file to new path
-				//FileEdit fileEdit = new FileEdit();
-				//return fileEdit.copyFile(fromFile.getAbsolutePath(), toPath);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+	/**
+     * move upload file to the path;
+	 * @author lichunping 
+	 * @param fromFile 来源文件
+     * @param to       目的路径
+     * @return true || false
+	 * @since 1.0
+     */
+	public boolean move(File fromFile, String to);
 	
 	/**
 	 * moveFileReplace:
 	 * 移动文件，若已存在移动到的同名文件，则提前删除
-	 * @param fromFile
-	 * @param to
-	 * @return      
-	 * @since
-	 */
-	public boolean moveFileReplace(File fromFile, String to) {
-		try {
-			String toPath = to;
-			File toFile   = new File(toPath);
-			if (toFile.exists()) {
-				toFile.delete();
-			}
-			if (fromFile.exists()) {
-				return fromFile.renameTo(toFile);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+	 * @author lichunping
+	 * @param fromFile 来源文件
+     * @param to       目的路径
+     * @return true || false
+	 * @since 1.0
+     */
+	public boolean moveFileReplace(File fromFile, String to);
 	
-	public boolean moveFiles(ArrayList<File> from, String toPath) {
-		boolean moveSuccess = true;
-		try {
-			for (int i = 0; i < from.size(); i++) {
-				File file = from.get(i);
-				Map<String, String> uploadFile = uploadsList.get(i);
-				if (!moveFileReplace(file, toPath + uploadFile.get("name"))) {
-					moveSuccess = false;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return moveSuccess;
-	}
+	/**
+	 * moveFiles:
+	 * 批量移动文件
+	 * @author lichunping
+	 * @param from 来源文件集合
+     * @param toPath    目的路径
+     * @return true || false
+	 * @since 1.0
+     */
+	public boolean moveFiles(ArrayList<File> from, String toPath);
 
-	public Map<String, String> getProperties() {
-		return properties;
-	}
+	/**
+	 * 得到属性
+	 * @author lichunping
+     * @return 属性Map
+	 * @since 1.0
+     */
+	public Map<String, String> getProperties();
 
-	public void setProperties(Map<String, String> properties) {
-		this.properties = properties;
-	}
+	/**
+	 * 设置属性列表
+	 * @author lichunping
+     * @param properties 属性Map
+	 * @since 1.0
+     */
+	public void setProperties(Map<String, String> properties);
 	
 }

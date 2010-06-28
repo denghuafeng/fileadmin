@@ -6,9 +6,12 @@ import java.util.Map;
 
 import com.youngli.fileadmin.common.*;
 import com.youngli.fileadmin.file.*;
+import com.youngli.fileadmin.file.impl.FileEditImpl;
 /**
- * @author lichunping 2010-5 jarryli@gmail.com 
- * 
+ * 文件操作Action
+ * @author lichunping 
+ * 		   jarryli@gmail.com 2010-5  
+ * @sinace 1.0
  */
 public class FileEditAction extends DirAction {
 	private String path, name, toPath, newName;
@@ -18,6 +21,7 @@ public class FileEditAction extends DirAction {
 	/*HasMap = {
 		INFO, DELETE_RESULT, RENAME_RESULT, MKDIR_RESULT 
 	}*/
+	private FileEdit fileEdit;
 	public FileEditAction() {
 		
 	}
@@ -28,7 +32,8 @@ public class FileEditAction extends DirAction {
 		}
 		
 		path = FilePath.getFileRealPath(path);
-		FileEdit fileEdit = new FileEdit(path);
+		//FileEdit fileEdit = new FileEditImpl(path);
+		fileEdit = new FileEditImpl(path);
 		File file = fileEdit.getFile();	
 		
 		// for delete the file or directory

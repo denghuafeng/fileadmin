@@ -4,12 +4,14 @@ import java.io.*;
 import java.util.*;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.youngli.fileadmin.common.*;
 import com.youngli.fileadmin.upload.*;
+import com.youngli.fileadmin.upload.impl.FileUploadImpl;
 
 /**
- * @author lichunping 2010-5 jarryli@gmail.com 
- * 
+ * 文件上传Action
+ * @author lichunping 
+ * 		   jarryli@gmail.com 2010-5  
+ * @sinace 1.0
  */
 public class FileUploadAction extends ActionSupport {
 	
@@ -28,10 +30,8 @@ public class FileUploadAction extends ActionSupport {
 	private String uploadFileContentType;
 
 	public String path;
-	
 	public Map<String, String> MESSAGE = new HashMap<String, String>();
-	
-	public final long MAX_SIZE = 300 * 1024 * 1024;   
+	public final long MAX_SIZE = 300 * 1024 * 1024;  
 	
 	public String execute() {
 		try {
@@ -40,7 +40,8 @@ public class FileUploadAction extends ActionSupport {
 				return "input";
 			}
 			//path = FilePath.getDirRealPath(path);
-			fileUpload = new FileUpload();
+			fileUpload = new FileUploadImpl();
+
 			if (uploads != null) { 
 				setUploadsList();
 				saveFiles();
