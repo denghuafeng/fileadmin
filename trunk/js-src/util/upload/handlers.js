@@ -62,6 +62,9 @@ function fileQueueError(file, errorCode, message) {
 
 function fileDialogComplete(numFilesSelected, numFilesQueued) {
 	try {
+		// set upload path when path be changed. added by jarry
+		UploadAction.setSWFUploadPath();
+
 		if (numFilesSelected > 0) {
 			document.getElementById(this.customSettings.cancelButtonId).disabled = false;
 		}
