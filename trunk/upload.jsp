@@ -31,13 +31,18 @@ if (request.getParameter("path") != null) {
 	path = "/home/work/www/";
 }
 %>
+${path}
+<s:property value="path"/>
 <c:set var="path" value=""></c:set>
-上传目录：<%=path%></p><%=java.net.URLEncoder.encode(path)%>
+上传目录：<%=path%></p>
+|| <%=java.net.URLEncoder.encode(path)%>
 <center>
+<script type="text/javascript" src="js/core.js"></script>
+<!--
 <script type="text/javascript" src="js-src/util/upload/swfupload.js"></script>
 <script type="text/javascript" src="js-src/util/upload/swfupload.queue.js"></script>
 <script type="text/javascript" src="js-src/util/upload/fileprogress.js"></script>
-<script type="text/javascript" src="js-src/util/upload/handlers.js"></script>
+<script type="text/javascript" src="js-src/util/upload/handlers.js"></script>-->
 <script type="text/javascript">
 		var swfu;
 
@@ -46,7 +51,7 @@ if (request.getParameter("path") != null) {
 				flash_url : "swf/swfupload.swf",
 				upload_url: "upload.action",
 				file_post_name : "uploads",
-				post_params: {"path" : "<%=path%>"},
+				post_params: {"path" : "<%=path%>/"},
 				file_size_limit : "1024 MB",
 				file_types : "*.*",
 				file_types_description : "All Files",

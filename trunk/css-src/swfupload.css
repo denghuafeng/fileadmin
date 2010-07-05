@@ -174,17 +174,22 @@ form {
 
 
 div.fieldset {
-	border:  1px solid #afe14c;
+	/*border:  1px solid #afe14c;*/
+	border:1px solid #b7c5e3;
 	margin: 10px 0;
 	padding: 20px 10px;
+	
 }
 div.fieldset span.legend {
 	position: relative;
 	background-color: #FFF;
 	padding: 3px;
-	top: -30px;
-	font: 700 14px Arial, Helvetica, sans-serif;
-	color: #73b304;
+	/*top: -30px;*/
+	top:-25px;
+	/*font: 700 14px Arial, Helvetica, sans-serif;
+	color: #73b304;*/
+	color:#999;
+	font-size:12px;
 }
 
 div.flash {

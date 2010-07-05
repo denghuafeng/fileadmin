@@ -50,14 +50,20 @@ DirAction = function() {
 	// 点击文件夹，load相应目录树 
 	var openFolder = function(path) {
 		var s = '';
-		try {
-			for (var item in Tree) {
-				s += (item + ' : ' + Tree[item] + ' | ');
-			}
-		} catch(e) {
-			alert(e);
+		if (null != path && path != '') {
+			path = decodeHTML(path);
 		}
-		alert(s + '\r\n------\r\n' + path);
+//		try {
+//			for (var item in Tree) {
+//				s += (item + ' : ' + Tree[item] + ' | ');
+//			}
+//		} catch(e) {
+//			alert(e);
+//		}
+//		alert(s + '\r\n------\r\n' + path);
+//		可以通过找到tree里面的几点，刷新相应节点的数据，做到同步响应
+		
+		window.open(path);
 	}
 	
 	return {

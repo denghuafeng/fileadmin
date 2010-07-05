@@ -16,9 +16,11 @@ File.prototype = {
 	},
 	
 	insertRow : function(folder) {
-		//alert(this._getFolderTr(folder));
-		// 需要改为动态dom操作，而非动态请求数据
-		DirAction.getDirJSON(UPLOAD.uploadPath);
+//		alert(this._getFolderTr(folder));
+// 		需要改为动态dom操作，而非动态请求数据
+//		FILE 作为传递过来的JSON数据，可以根据这个数据insertBefore到table的某行中
+//		这样可以减少一次请求，有时间再升级
+		DirAction.getDirJSON(decodeHTML(UPLOAD.uploadPath));
 	},
 	
 	/**

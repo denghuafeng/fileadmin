@@ -123,6 +123,26 @@ var decodeHTML = function(html) {
 	return html;
 } 
 
+var encodeURLCharForFlash = function(url) {
+	url = url.replace(/&/g, '&amp;');
+	return url;
+}
+
+/**
+ * 解开前端为了进过html字符编码的字串
+ * @param {String} str 传入的字符串
+ * @return {String} 解码后的字符串
+ * @author jarryli@gmail.com
+ */
+var decodeSpecial = function(str) {
+	str = str.replace(/&/g, '&amp;');
+	str = str.replace(/'/g, '&#039;');
+	str = str.replace(/"/g, '&quot;');
+	str = str.replace(/</g, '&lt;');
+	str = str.replace(/>/g, '&gt;');
+	return str;
+}
+
 /**
  * 根据路径名是否需要增加斜杠
  * @param {String} path 路径
@@ -139,7 +159,7 @@ var getSlash = function(path) {
 	return '/';
 }
 
-var SPECIAL_CHAR = ['\\', '/', ':', '*', '?', '"', '<', '>', '|'];
+var SPECIAL_CHAR = ['\\', '/', ':', '*', '?', '"', '<', '>', '|', '\''];
 /**
  * 校验文件名是否合法，不能含有的字符见 SPECIAL_CHAR
  * @param {String} name
@@ -147,8 +167,8 @@ var SPECIAL_CHAR = ['\\', '/', ':', '*', '?', '"', '<', '>', '|'];
  */
 var isAvailableName = function(name) {
 	if (name == null || name.length < 0) return false;
-	var regexp = /[\\\/:*?\"<>|]+/g;
-	//var reg = /[\\\/:*?\"<>|\']+/g; // 不允许单引号
+	//var regexp = /[\\\/:*?\"<>|]+/g;
+	var regexp = /[\\\/:*?\"<>|\']+/g; // 不允许单引号
 	return !regexp.test(name);
 }
 /**
@@ -248,4 +268,5 @@ var toggleMask = function(obj, act) {
 		mask.style.display = isHide ? 'block' : 'none';
 	}
 }
+
 

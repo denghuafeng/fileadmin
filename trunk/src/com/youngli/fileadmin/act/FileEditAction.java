@@ -22,8 +22,9 @@ public class FileEditAction extends DirAction {
 		INFO, DELETE_RESULT, RENAME_RESULT, MKDIR_RESULT 
 	}*/
 	private FileEdit fileEdit;
+	private String root;
 	public FileEditAction() {
-		
+		root = FilePath.getRootPath();
 	}
 
 	public void fileExecute() {
@@ -164,6 +165,14 @@ public class FileEditAction extends DirAction {
 
 	public void setMessage(Map<String, String> message) {
 		MESSAGE = message;
+	}
+
+	public String getRoot() {
+		return root;
+	}
+
+	public void setRoot(String root) {
+		this.root = root;
 	}
 	
 	
