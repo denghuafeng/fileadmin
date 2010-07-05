@@ -10,11 +10,13 @@
 var UploadActoin = UploadActoin || {};
 var DirAction   = DirAction || {};
 var FileAction   = FileAction || {};
+var UploadAction = UploadAction || {};
 
 var DIR = DIR || {};
 var FILE = FILE || {};
 var UPLOAD = UPLOAD || {};
 var Tree = Tree || {};
+var SWFUP = SWFUP || {};
 
 function hasError() {
  	

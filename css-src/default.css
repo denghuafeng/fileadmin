@@ -15,10 +15,11 @@ html,body{height:100%;}
 .ft{text-align:center;margin-top:20px;bottom:0px;line-height:24px;clear:both;font-size:12px;color:#333;}
 .logo{width:200px;height:40px;background:url(../img/bg.png) no-repeat 10px 8px;background-position:left 0 bottom -26px;}
 .hd div.logo a{display:block;width:200px;height:40px;}
-.hd-panel{display:inline;top:40px;position:absolute;background:transparent;z-index:101}
+.hd-panel{display:inline;top:40px;position:absolute;background:transparent;z-index:99}
 .hd-panel div.control-panel{font-size:14px;margin-top:-17px;margin-right:10px;margin-left:220px;background:transparent;text-align:;}
-.create-newfolder{width:220px;padding:5px;background:#fff;border:2px solid #b7c5e3;display:;position:absolute;z-index:102}
-
+.create-newfolder{width:220px;padding:5px;background:#fff;border:2px solid #b7c5e3;position:absolute;z-index:102}
+.upload-area{background:#fff;display:;position:absolute;border:2px solid #b7c5e3;z-index:102;padding:0 5px;padding-top:5px;color:#999}
+#UploadPathTips,#divStatus{font-size:12px;color:#999}
 .user-bar{top:0;right:0;text-align:right;position:absolute;;color:#666;margin:5px 5px 0 0;height:20px}
 
 /*.dir-list-container{overflow:auto;white-space:nowrap;background:;float:left;width:200px;}*/
@@ -122,4 +123,6 @@ height:24px;white-space:nowrap;}
 .login-tit{font-size:16px;}
 .validate-tips{font-size:11px;color:#999}
 .login-tips{font-size:11px;color:red;margin-left:10px}
-.mask{display:none;z-index:100;top:0;left:0;position:absolute;filter:alpha(opacity=50); -moz-opacity:0.50; opacity:0.50;background:#fdfeff;height:100%;width:100%}
+.mask{display:none;z-index:100;top:0;left:0;position:absolute;filter:alpha(opacity=50); -moz-opacity:0.50; opacity:0.50;background:#b7c5e3;height:100%;width:100%}
+
+

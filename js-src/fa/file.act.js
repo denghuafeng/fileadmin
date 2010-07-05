@@ -9,7 +9,7 @@ FileAction = (function() {
 	var init = function () {
 		event.on(g('CreateNewFolderLink'), "onclick", FileAction.setCreateFolderHTML);
 	}
-	var cancelCreateFolder = function() {
+	var hideCreateFolder = function() {
 		g('CreateNewFolder').style.display = 'none';
 		toggleMask();
 	}
@@ -23,7 +23,7 @@ FileAction = (function() {
 				div.innerHTML = html;
 				container.appendChild(div);
 				// can not add the below event for chrome
-				//event.on(g('CreateNewFolderCancelButton'), 'onclick', FileAction.cancelCreateFolder);
+				//event.on(g('CreateNewFolderCancelButton'), 'onclick', FileAction.hideCreateFolder);
 				var left = dom.getPosition(this).left;
 				var top = dom.getPosition(this).top;
 				g('CreateNewFolder').style.left = left + 'px';
@@ -32,19 +32,26 @@ FileAction = (function() {
 				alert(ex.toString());
 			}
 		}
-		//alert(g('CreateNewFolder').innerHTML);
 		var isHide = (g('CreateNewFolder').style.display == '' || g('CreateNewFolder').style.display == 'none');
 		g('CreateNewFolder').style.display = isHide ? 'block' : 'none';
+		g('NewFolderName').focus();
+		if (g('NewFolderName').value== "" )setTips(null, '');
 		toggleMask();
+	}
+	
+	var setTips = function(id, str) {
+		var obj = g(id) || g('CreateNewFolerTips');
+		obj.innerHTML = str;
+		g('NewFolderName').focus();
 	}
 	
 	var createFolder = function(path, name) {
 		if(name == null || trim(name).length == '') {
-			alert('请输入文件夹名称');
+			setTips(null, '请输入文件夹名称');
 			return false;
 		}		
 		if(!isAvailableName(name)) {
-			alert('文件夹名字不能含有:' + SPECIAL_CHAR.join(', ') + ' 字符');
+			setTips(null, '名字不能含有:' + SPECIAL_CHAR.join(', ') + ' 字符');
 			return false;
 		}
 		//fileClass.createFolder();
@@ -55,13 +62,16 @@ FileAction = (function() {
 	
 	var getFolderJSON = function(path, name) {
 		var path = path + getSlash(path);
+			path = decodeHTML(path); 
 		var url = filePath + '?mkdir=yes&path=' + encodeURIComponent(path) + '&name=' + encodeURIComponent(name);
 		xhr = ajax.get(url, parseFolderJSON);
 	}
 	
 	var parseFolderJSON = function(xhr, responseText) {
-		//eval(responseText);
-		//alert(responseText);
+//		eval(responseText);
+//		FILE 作为传递过来的JSON数据，可以根据这个数据insertBefore到table的某行中
+//		这样可以减少一次请求，有时间再升级
+
 		var FILE = {
 			newFolder : {
 				name : 'lichunping',
@@ -70,15 +80,16 @@ FileAction = (function() {
 				type : '文件夹'
 			}
 		}
+		
 		fileClass.insertRow(FILE.newFolder);
-		cancelCreateFolder();
+		hideCreateFolder();
 	}
 	
 	return {
 		init : init,
 		createFolder : createFolder,
 		setCreateFolderHTML : setCreateFolderHTML,
-		cancelCreateFolder : cancelCreateFolder,
+		hideCreateFolder : hideCreateFolder,
 		getFolderJSON : getFolderJSON,
 		parseFolderJSON : parseFolderJSON
 	}

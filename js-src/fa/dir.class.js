@@ -26,6 +26,7 @@ Directory.prototype.getHTML = function() {
 
 Directory.prototype.listDirTree = function() {	
 	 function dirClick(id, text) {
+		//UploadAction.setUploadPath(id);	 
 	    DirAction.getDirJSON(id);
 	}	
 	
@@ -121,7 +122,8 @@ Directory.prototype.getFileAndFolderTheadHTML = function() {
 Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 	var DIR = _DIR ? _DIR : this.DIR;
 	// 每次都更新下上传地址;
-	UPLOAD.uploadPath = _DIR.path ? _DIR.path : _DIR.absolutePath;
+	var _uploadPath = _DIR.path ? _DIR.path : _DIR.absolutePath;
+	UploadAction.setUploadPath(_uploadPath);
 	var html = [];
 	if (DIR) {
 		var filesList = DIR.FilesList;
@@ -176,6 +178,7 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 				*/
 				
 				var _path = decodeHTML(relationPath) + decodeHTML(name);
+				_path = decodeSpecial(_path);
 				_path = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
 				target = '';
 				href = 'javascript:DirAction.openFolder(\'' +  _path + '\');';
@@ -199,7 +202,6 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 				type   = ext;
 			}			
 			nameLink = ('<a href="' + href + '" class="' + hrefClass +  '" target="' + target + '">' + name + '</a>');
-			
 			return '<tr><td>' + nameLink +  '</td><td>' + obj.length +  '</td><td>'
 			       + obj.date +  '</td><td>' + type +  '</td><td>&nbsp;</td></tr>';		
 		}
@@ -280,7 +282,7 @@ Directory.prototype.setDirList = function(_DIR) {
 }
 
 Directory.prototype.setFileAndFolderList = function(_DIR) {
-	if (hasError()) return false; 
+	//if (hasError()) return false; 
 	this.FileListTitle.innerHTML = this.getFileAndFolderTheadHTML(_DIR);
 	this.FileListContent.innerHTML = this.getFileAndFolderListHTML(_DIR);
 }

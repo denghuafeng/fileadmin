@@ -10,19 +10,9 @@
 		<a href="./" title="FileAdmin Logo"> </a>
 	</div>
 	<div class="hd-panel">
-		 <div id="ControlPanel" class="control-panel">操作区域： <a href="#" target="_blank" onclick="window.open('upload.jsp?path=' + encodeURIComponent(UPLOAD.uploadPath), '');return false;">上传文件</a>
+		 <div id="ControlPanel" class="control-panel">操作区域： <a href="#" id="UploadFileLink">上传文件</a>
 		| <a href="#" id="CreateNewFolderLink">新建文件夹</a> | 开发中……还剩 改名、删除、复制等，后台已经完成，差前端展现
-		
-		<!-- 
-		<div class="fieldset flash" id="fsUploadProgress">
-			<span class="legend">上传文件列表</span>
-		</div>
-		<span id="divStatus">0 Files Uploaded</span>
-			<div>
-				<span id="spanButtonPlaceHolder"></span>
-				<input id="btnCancel" type="button" value="Cancel All Uploads" onclick="swfu.cancelQueue();" disabled="disabled" style="margin-left: 2px; font-size: 8pt; height: 29px;" />
-		</div>
-		 -->
+
 		 </div>
 	</div>
 		<div class="user-bar">你好，<strong>${sessionScope.userName}</strong> | <a href="logout">退出</a></div>

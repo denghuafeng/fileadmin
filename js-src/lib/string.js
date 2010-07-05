@@ -1,4 +1,5 @@
-﻿/**
+﻿
+/**
  * core.js
  * Copyright Young li inc. All rights reserved.
  * 

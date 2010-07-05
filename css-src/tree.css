@@ -10,10 +10,10 @@
 .standartTreeRow {	font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; 	font-size : 12px; -moz-user-select: none;  }
 .selectedTreeRow{ background-color : navy; color:white; font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; 		font-size : 12px;  -moz-user-select: none; }
 .dragAndDropRow{ background-color : navy; color:white; }
-.standartTreeRow_lor{	text-decoration:underline; background-color : #FFFFF0; font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; 	font-size : 12px; -moz-user-select: none; }
-.selectedTreeRow_lor{   text-decoration:underline; background-color : navy; color:white; font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; 		font-size : 12px;  -moz-user-select: none; }
+.standartTreeRow_lor{	text-decoration:none; background-color :#edf7fd;border:0px solid #b6e6fb; font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; 	font-size : 12px; -moz-user-select: none; }
+.selectedTreeRow_lor{   text-decoration:none; background-color : navy; color:white; font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; 		font-size : 12px;  -moz-user-select: none; }
 
-.standartTreeImage{ width:18px; height:18px;  overflow:hidden; border:0; padding:0; margin:0;
+.standartTreeImage{ width:18px; height:18px; overflow:hidden; border:0; padding:0; margin:0;
 font-size:1px; }
 .hiddenRow { width:1px;   overflow:hidden;  }
 .dragSpanDiv,.dragSpanDiv td{ 	font-size : 12px; 	background-color:white; z-index:999; }
@@ -72,7 +72,7 @@ background-position-y: center;
 *html .dhxtree_dhx_skyblue span.standartTreeRow{
 	margin-left:1px;	
 }
-
+/*
 .dhxtree_dhx_skyblue .standartTreeRow{
 	border-right:1px solid transparent;
 	border-left: 1px solid transparent;
@@ -84,26 +84,27 @@ background-position-y: center;
 .dhxtree_dhx_skyblue .standartTreeRow_lor{
 	font-family:Tahoma;
 	font-size:12px !important;
-}
+}*/
 .dhxtree_dhx_skyblue .selectedTreeRow_lor, .dhxtree_dhx_skyblue .selectedTreeRow{
 	background-color:white;
 	background-image:url(../img/tree/sky_blue_sel_tree.png);
-	background-repeat:repeat-x bottom;
+	background-repeat:repeat-x;
 	border:1px solid #b6e6fb;
 	color:black;
-	
-	line-height:18px;
-	
+	line-height:16px;
+	/*
 	font-size:12px !important;
-	font-family:Tahoma;
+	font-family:Tahoma;*/
 	overflow:hidden;
 }
-html > body /**/ .dhxtree_dhx_skyblue .selectedTreeRow{
+/*
+html > body /**/ /*.dhxtree_dhx_skyblue .selectedTreeRow{
 	padding:1px 0px 1px 0px;
 	line-height:normal;
 	display:inline-block !ie;
-	height:13px;
-}
+	height:15px;
+}*/
+/*
 body:nth-of-type(1) .dhxtree_dhx_skyblue span.selectedTreeRow{
 	padding:1px 0px 1px 0px;
   	display:inline-block;
@@ -112,5 +113,6 @@ body:nth-of-type(1) .dhxtree_dhx_skyblue span.selectedTreeRow{
 }
 body:nth-of-type(1) .dhxtree_dhx_skyblue span.standartTreeRow{
   	display:inline-block;
-  	height:17px;
+  	height:18px;
 }
+*/

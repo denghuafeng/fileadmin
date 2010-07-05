@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=utf-8"
+<%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <% 
 request.setCharacterEncoding("utf-8");
@@ -19,7 +19,7 @@ response.setCharacterEncoding("utf-8");
 <title>文件操作-FileAdmin</title>
 </head>
 <body>
-<c:set var="root" value="e:/ut/"></c:set>
+<c:set var="root" value="${root}"></c:set>
 ${path}
 ${toPath}
 <hr>

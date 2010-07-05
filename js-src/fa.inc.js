@@ -8,19 +8,37 @@
  (
  function() {
 	var Contact_JS_List = [
-		'./js-src/fa/tpl/js',
+        //core    
+	    './js-src/lib/string.js', 
+		'./js-src/lib/browser.js',
+	    './js-src/lib/dom.js',
+		'./js-src/lib/ajax.js',
+		'./js-src/lib/event.js',
+		'./js-src/lib/array.js',
+		
+		'./js-src/util/tree/dhtmlxcommon.js',
+		'./js-src/util/tree/dhtmlxtree.js',		
+		
+		// utility component
+		'./js-src/util/upload/swfupload.js',
+		'./js-src/util/upload/swfupload.queue.js',
+		'./js-src/util/upload/fileprogress.js',
+		'./js-src/util/upload/handlers.js',
+	    
+		// fileadmin
+		'./js-src/fa/tpl.js',
 		'./js-src/fa/config.js',
 		'./js-src/com/com.js',
 		'./js-src/fa/action.js',
+		'./js-src/fa/upload.act.js',
 		'./js-src/fa/dir.class.js',
 		'./js-src/fa/dir.act.js',
 		'./js-src/fa/file.class.js',
 		'./js-src/fa/file.act.js'
-
 	];
 
 	for (var i = 0; i < Contact_JS_List.length; i++) {
-		document.write('<script src="' + Contact_JS_List[i] + '"></script>');
+		document.write('<script src="' + Contact_JS_List[i] + '" type="text/javascript"></script>');
 	}
  }
 )();
