@@ -38,11 +38,10 @@ ${path}
 || <%=java.net.URLEncoder.encode(path)%>
 <center>
 <script type="text/javascript" src="js/core.js"></script>
-<!--
 <script type="text/javascript" src="js-src/util/upload/swfupload.js"></script>
 <script type="text/javascript" src="js-src/util/upload/swfupload.queue.js"></script>
 <script type="text/javascript" src="js-src/util/upload/fileprogress.js"></script>
-<script type="text/javascript" src="js-src/util/upload/handlers.js"></script>-->
+<script type="text/javascript" src="js-src/util/upload/handlers.js"></script>
 <script type="text/javascript">
 		var swfu;
 

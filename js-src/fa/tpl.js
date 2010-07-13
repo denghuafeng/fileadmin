@@ -20,12 +20,24 @@ var HTMLTemplate = {
 + '	<div class="fieldset flash" id="fsUploadProgress">'
 + '			<span class="legend">文件队列</span>'
 + '	</div>'
-+ '		<span id="divStatus">上传了 0 个文件</span>'
+//+ '		<span id="divStatus">上传了 0 个文件</span>'
++ '		<span id="divStatus">&nbsp;</span>'
 + '	<div>'
 + '		<span id="spanButtonPlaceHolder"></span>'
 + '		<input id="btnCancel" type="button" value="停止上传" onClick="swfu.cancelQueue();" disabled="disabled"  />'
 + '		&nbsp;<a href="javascript:UploadAction.hideUploadArea();">关闭</a>'
 + '	</div>'
-+ '</div>'
++ '</div>',
+
+	editHTML : 
+	''
++ '<span><a href="javascript:FileAction.deleteFile(FileAction.tableListTr, FileAction.tableListTrIndex)">删除</a></span>'
++ '<span><a href="javascript:FileAction.setRenameArea(FileAction.tableListTr)">改名</a></span>'
++ '<span><a href="javascript:FileAction.copyFile(FileAction.tableListTr, FileAction.tableListTrIndex)">复制</a></span>',
+
+	renameHTML : 
+	 '<input id="Rename" value="" size="30" />'
+	+ '<span><a href="javascript:FileAction.renameFile(FileAction.tableListTr, g(\'Rename\').value)">确定</a></span>'
+	+ '<span><a href="javascript:FileAction.hideRenameArea()">取消</a></span>'
 
 };

@@ -56,6 +56,13 @@ border-left:1px solid #e3e4e6;border-right:1px solid #fcfcfd;border-top:0px soli
 text-align:left;vertical-align:middle;padding-left:5px;
 height:24px;white-space:nowrap;}
 
+.tr-over {background:#edf7fd}
+.file-edit-bar{border:;position:absolute;background:#edf7fd;padding:0 5px 0 5px}
+.file-edit-bar span{margin:0 5px 0 5px;}
+.file-rename-area{background:#edf7fd;position:absolute;}
+.file-rename-area input{font-size:12px;margin:0;padding:}
+
+
 .line-bar{background:#b7c5e3;margin-left:;clear:both;height:1px;}
 .info-panel{background:url(../img/info_panel_bg.gif) repeat-x top ;margin-left:;display:block;height:40px;padding-left:200px;padding-top:8px}
 .info-panel dl{width:30%;min-width:40px;float:left;}
@@ -115,14 +122,20 @@ height:24px;white-space:nowrap;}
 .mp3{background:url(../img/icon/ico_mp3.gif) no-repeat scroll left center;}
 .rm{background:url(../img/icon/ico_rm.gif) no-repeat scroll left center;}
 */
+
+
+
 .login{background:#fcfdff}
 .login-form{text-align:center;}
 .login-form form{text-align:left;background:;width:350px;margin: 0 auto;border-left:2px solid #b7c5e3;padding-left:30px}
 .login-form form input{font-size:14px;}
+.login-form ol li.login-txt{width:60px;float:left}
+.login-form ol button{font-size:16px;font-family:'微软雅黑';border:2px outset #b7c5e3;background:#fdfeff}
 .login-info-panel{height:10px;background:url(../img/info_panel_bg.gif) repeat-x top ;margin-left:;display:block;height:40px;padding-left:200px;padding-top:8px}
 .login-tit{font-size:16px;}
 .validate-tips{font-size:11px;color:#999}
 .login-tips{font-size:11px;color:red;margin-left:10px}
 .mask{display:none;z-index:100;top:0;left:0;position:absolute;filter:alpha(opacity=50); -moz-opacity:0.50; opacity:0.50;background:#b7c5e3;height:100%;width:100%}
+
 
 

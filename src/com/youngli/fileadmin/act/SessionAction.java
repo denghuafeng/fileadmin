@@ -26,7 +26,8 @@ public class SessionAction {
 	 * @since
 	 */
 	public void remove(String sessionName) {
-		session.remove(sessionName);	
+		if (getUserName() != null)
+			session.remove(sessionName);	
 	}
 	
 	/**

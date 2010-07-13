@@ -34,6 +34,11 @@ public class FileUploadAction extends ActionSupport {
 	public final long MAX_SIZE = 300 * 1024 * 1024;  
 	
 	public String execute() {
+		
+//     使用 swf控件时检测session无效，此处不做登录验证		
+//		if (!new LoginAction().logon()) {
+//			return "not_logon";
+//		}
 		try {
 			if (uploads == null && uploadFile == null) {
 				setMessage("INFO", " not select file.");

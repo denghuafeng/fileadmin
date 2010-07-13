@@ -1,19 +1,18 @@
  
 DirAction = function() {
-	/**
-	 * 设置页面高度
-	 */
-	 
+
 	var dirClass = new Directory();
 	var page     = g('Page');
 
 	var DIR      = dirClass.DIR; // 与directory类相同
 	var dirPath  = global.DIR_PATH;
-	//var FileList = dirClass.FileList; 
 	var FileListContent = dirClass.FileListContent; 
 	var DirList = dirClass.DirList;
 	var FileList = dirClass.FileList;
-	 
+	
+	/**
+	 * 设置页面高度
+	 */ 
 	var setPageHeight = function() {
 		var h = document.body.offsetHeight ;
 		h = h > 200 ? h : 200;
@@ -26,8 +25,9 @@ DirAction = function() {
 	 * 初始化函数
 	 */
 	var pageInit = function() {
-		dirClass.setDirAndFileList();
-		dirClass.setInfoPanel();		
+//		初始化传入空路径
+		getDirJSON('');
+		dirClass.setDirAndFileList();		
 		setPageHeight();
 		event.on(window, "onresize", DirAction.setPageHeight);
 	}
@@ -42,28 +42,23 @@ DirAction = function() {
 	 */
 	var parseDirJSON = function(xhr, responseText) {
 		eval(responseText);
-		//dirClass.setDirAndFileList(DIR);
 		dirClass.setFileAndFolderList(DIR);
 		dirClass.setInfoPanel(DIR);
+//		初始化table里面的tr，增加事件
+		FileAction.initTableListRowEvent();
 	}
-	 
-	// 点击文件夹，load相应目录树 
+
+	/**
+	 * 点击文件夹，load相应目录树 
+	 */
 	var openFolder = function(path) {
-		var s = '';
-		if (null != path && path != '') {
-			path = decodeHTML(path);
-		}
-//		try {
-//			for (var item in Tree) {
-//				s += (item + ' : ' + Tree[item] + ' | ');
-//			}
-//		} catch(e) {
-//			alert(e);
-//		}
-//		alert(s + '\r\n------\r\n' + path);
+		alert(path + " \n\r " + encodeURL(path));
 //		可以通过找到tree里面的几点，刷新相应节点的数据，做到同步响应
-		
-		window.open(path);
+		var url = encodeURL(path);
+		if (global.OPEN_FILE_REDIRECT) {
+			url = 'redir?url=' + url;		
+		}
+		window.open(url);
 	}
 	
 	return {
@@ -71,7 +66,6 @@ DirAction = function() {
 		setPageHeight : setPageHeight,       //  设置页面高度
 		getDirJSON    : getDirJSON,          //  得到dir的JSON数据
 		openFolder    : openFolder
-		//parseDirJSON  : parseDirJSON         //  解析dir的JSON数据，不一定要公开
 	}
 	
 }();

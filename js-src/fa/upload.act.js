@@ -38,8 +38,6 @@ UploadAction = (function () {
 	var setUploadPath = function(path) {
 		path = path +　getSlash(path);
 		UPLOAD.uploadPath = decodeHTML(path);
-//		alert(UPLOAD.uploadPath);
-//		alert(encodeURLCharForFlash(UPLOAD.uploadPath));
 	 };
 
 	
@@ -58,8 +56,8 @@ UploadAction = (function () {
 				progressTarget : "fsUploadProgress",
 				cancelButtonId : "btnCancel"
 			},
+//			debug: true,
 			debug: false,
-
 			// Button settings
 			button_image_url: "img/upload-button.png",
 			button_width: "90",
@@ -77,14 +75,13 @@ UploadAction = (function () {
 			upload_complete_handler : uploadComplete,
 			queue_complete_handler : queueComplete	// Queue plugin event
 		};
-		//alert(settings.post_params['path'])
 		SWFUP = new SWFUpload(settings);	
 		//alert(UPLOAD.uploadPath +  ' |　' + (this.uploadPath) + SWFUP.setPostParams + SWFUP.getSetting);	
 	 }
 
 	var hideUploadArea = function() {
 		g('UploadArea').style.display = 'none';
-		DirAction.getDirJSON(UPLOAD.uploadPath);
+//		DirAction.getDirJSON(UPLOAD.uploadPath);
 		toggleMask();
 	};
 	
@@ -108,10 +105,11 @@ UploadAction = (function () {
 				alert(ex.toString());
 			}
 		}
-		// 显示或者隐藏
+
 		var isHide = (g('UploadArea').style.display == '' || g('UploadArea').style.display == 'none');
 		g('UploadArea').style.display = isHide ? 'block' : 'none';
 		g('UploadPathTips').innerHTML = UPLOAD.uploadPath;
+		g('divStatus').innerHTML = '';
 		toggleMask();
 	};
 	

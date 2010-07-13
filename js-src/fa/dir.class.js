@@ -57,10 +57,7 @@ Directory.prototype.getDirListHTML = function(_DIR) {
 	if (DIR) {
 		var folders = DIR.Folders;
 		var len = folders.nameList.length;
-		var i, href, name, path = '';
-
-		
-		
+		var i, href, name, path = '';		
 		
 	// dtree方案，因无法动态加载而选用dhtmlXTree方案
 		var d = new dTree('tree');
@@ -74,7 +71,7 @@ Directory.prototype.getDirListHTML = function(_DIR) {
 		html.push(d);
 		
    /**
-   // 采用dtree替代下面的方案
+	// 采用dtree替代下面的方案
 		html.push('<div class="dir-root">');
 		path = global.DIR_PATH + '?path=' + encodeURIComponent(DIR.root);
 		html.push('<a href=""' + path + '"> ' + DIR.root + ' </a>');
@@ -125,6 +122,7 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 	var _uploadPath = _DIR.path ? _DIR.path : _DIR.absolutePath;
 	UploadAction.setUploadPath(_uploadPath);
 	var html = [];
+//	if (DIR && DIR.Folders && DIR.Files) {
 	if (DIR) {
 		var filesList = DIR.FilesList;
 		var filesListLen = 0;	
@@ -157,31 +155,24 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 			var relationPath = DIR.relationPath + getSlash(DIR.relationPath);
 			var ext = getExt(name);
 			var hrefClass = getHrefClass(ext);
-			var nameLink = "", type = "&nbsp;";
-			if (file.type == 'folder') {
-
-				//href = global.DIR_PATH + '?path=' + encodeURIComponent(name);
-				//type = file.type;
-				href = '#';
-				
-				//relationPath = decodeHTML(relationPath);
-				//name         = decodeHTML(name);
-				// 文件夹链接
-				/**
-				 * 直接打开文件夹
-				 
+			var nameLink = '';
+			var type = '&nbsp;';
+			var href = '#';
+			var target = '';
+			if (file.type == 'folder') {		
+				target = '_blank';
+//				href = 'javascript:DirAction.openFolder(\'' +  encodeJS(_path) + '\');';
 				if (global.FIEL_WEB_ROOT_URL) {
+					// 文件夹链接	
 					var _path = decodeHTML(relationPath) + decodeHTML(name);
 					href = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
-				}
-				target = '_blank';
-				*/
-				
-				var _path = decodeHTML(relationPath) + decodeHTML(name);
-				_path = decodeSpecial(_path);
-				_path = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
-				target = '';
-				href = 'javascript:DirAction.openFolder(\'' +  _path + '\');';
+//					_path = decodeSpecial(_path);
+					// 增加重定向
+					if (global.OPEN_FILE_REDIRECT) {
+						href = 'redir?url=' + href;
+					}
+				} 
+				type = 'folder';
 				hrefClass = getFolderIconCss();			
 				
 			} else {
@@ -190,6 +181,10 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 				if (global.FIEL_WEB_ROOT_URL) {
 					var _path = decodeHTML(relationPath) + decodeHTML(name);
 					href = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
+				// 增加重定向	
+					if (global.OPEN_FILE_REDIRECT) {
+						href = 'redir?url=' + href;
+					}
 				} 
 				
 				// office在线阅读链接
@@ -250,7 +245,7 @@ Directory.prototype.getFileListHTML = function(_DIR) {
 Directory.prototype.getInfoPanelHTML = function(_DIR) {
 	var DIR = _DIR ? _DIR : this.DIR;
 	var html = [];
-	if (DIR) {
+	if (DIR && DIR.Folders && DIR.Files) {
 		var folderLen = DIR.Folders.nameList.length;
 		var filesLen = DIR.Files.nameList.length;
 
@@ -271,8 +266,6 @@ Directory.prototype.getInfoPanelHTML = function(_DIR) {
 Directory.prototype.setDirAndFileList = function(_DIR) {
 	if (hasError()) return false; 
 	var DIR = _DIR ? _DIR : this.DIR;
-	//this.setDirList(DIR);
-	//this.setFileList(DIR);
 	this.listDirTree();
 	this.setFileAndFolderList(DIR);
 }
@@ -282,7 +275,7 @@ Directory.prototype.setDirList = function(_DIR) {
 }
 
 Directory.prototype.setFileAndFolderList = function(_DIR) {
-	//if (hasError()) return false; 
+	if (hasError()) return false; 
 	this.FileListTitle.innerHTML = this.getFileAndFolderTheadHTML(_DIR);
 	this.FileListContent.innerHTML = this.getFileAndFolderListHTML(_DIR);
 }
