@@ -16,6 +16,7 @@ File.prototype = {
 	},
 	
 	insertRow : function(folder) {
+		if (hasError()) return false; 
 //		alert(this._getFolderTr(folder));
 // 		需要改为动态dom操作，而非动态请求数据
 //		FILE 作为传递过来的JSON数据，可以根据这个数据insertBefore到table的某行中

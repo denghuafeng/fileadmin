@@ -26,7 +26,13 @@ public class FileEditAction extends DirAction {
 	public FileEditAction() {
 		root = FilePath.getRootPath();
 	}
-
+	
+	/**
+	 * 总的文件删除、改名、移动方法
+	 * fileExecute:
+	 *      
+	 * @since
+	 */
 	public void fileExecute() {
 		if (path == null || path.length() <= 0) {
 			return;
@@ -40,14 +46,16 @@ public class FileEditAction extends DirAction {
 		// for delete the file or directory
 		if (del != null && del.equals("yes")) {
 			if (!file.exists()) {
-				setMessage("DELETE_RESULT", "not exists");
+				setMessage("DELETE_RESULT", "failed");
+				setMessage("INFO", file.getName() + " not exists.");
 				return;
 			}
 			if (fileEdit.delete()) {
 				setMessage("DELETE_RESULT", "success");
+				setMessage("INFO", file.getName() + " has been removed.");
 			} else {
-				setMessage("INFO", file.getName() + " can not be removed.");
 				setMessage("DELETE_RESULT", "failed");
+				setMessage("INFO", file.getName() + " can not be removed.");
 			}
 		}
 		// for make new directory
@@ -57,11 +65,13 @@ public class FileEditAction extends DirAction {
 			fileEdit.setFile(path + name);
 			file = fileEdit.getFile();
 			if (!file.exists()) {
-				if (fileEdit.mkdir())
+				if (fileEdit.mkdir()) {
+					setMessage("MKDIR_RESULT", "success");
 					setMessage("INFO", path + name + " the folder create successfully.");
-			} else {		
-				setMessage("INFO", path + name + " Folder is exists.");
+				}
+			} else {	
 				setMessage("MKDIR_RESULT", "failed");
+				setMessage("INFO", path + name + " Folder is exists.");
 			}
 		}
 		
@@ -69,23 +79,23 @@ public class FileEditAction extends DirAction {
 		if (rename != null && rename.equals("yes") && name != null) {
 			name = CharacterCode.iso2utf8(name);		
 			if (fileEdit.renameTo(name)) {
-				setMessage("INFO", name + " file rename successfully.");
 				setMessage("RENAME_RESULT", "success");
+				setMessage("INFO", name + " file rename successfully.");
 			} else {
-				setMessage("INFO", name + " same name file exists or others reason. the file rename failed.");
-				setMessage("RENAME_RESULT", "failed");	
+				setMessage("RENAME_RESULT", "failed");
+				setMessage("INFO", name + " same name file exists or others reason. the file rename failed.");	
 			}
 		}
 		
 		// for copy		
-		if (copy != null && copy.equals("yes")) {	
+		if (copy != null && copy.equals("yes")) {
 			String toPath = fileEdit.getCopyNewPath("");
 			if (fileEdit.copy(path, toPath)) {
-				setMessage("INFO", toPath + " copy successfully.");
 				setMessage("COPY_RESULT", "success");
+				setMessage("INFO", toPath + " copy successfully.");
 			} else {
-				setMessage("INFO", toPath + " copy failed.");
-				setMessage("COPY_RESULT", "failed");	
+				setMessage("COPY_RESULT", "failed");
+				setMessage("INFO", toPath + " copy failed.");	
 			}			
 		}
 
@@ -97,19 +107,144 @@ public class FileEditAction extends DirAction {
 			toPath = FilePath.escapePath(toPath);
 			if (isExists(toPath)) {
 				if (fileEdit.moveTo(toPath)) {
-					setMessage("INFO", toPath + " the file is moving successfully.");
 					setMessage("MOVE_RESULT", "success");
+					setMessage("INFO", toPath + " the file is moving successfully.");
 				} else {
-					setMessage("INFO", toPath + " unknow reason.");
 					setMessage("MOVE_RESULT", "failed");
+					setMessage("INFO", toPath + " unknow reason.");
 				}
 			} else {
-				setMessage("INFO", toPath + " is not exists.");
-				setMessage("MOVE_RESULT", "failed");	
+				setMessage("MOVE_RESULT", "failed");
+				setMessage("INFO", toPath + " is not exists.");	
 			}
 		}
 	
 	}
+
+	/**
+	 * 重命名文件或文件夹
+	 * rename:
+	 *
+	 * @return      
+	 * @since
+	 */
+	public String rename() {
+		if (!new LoginAction().logon()) {
+			return "not_logon";
+		}	
+		if (path == null || path.length() <= 0) {
+			return null;
+		}
+		path = FilePath.getFileRealPath(path);
+		fileEdit = new FileEditImpl(path);
+		
+		name = CharacterCode.iso2utf8(name);		
+		if (fileEdit.renameTo(name)) {
+			setMessage("RENAME_RESULT", "success");
+			setMessage("INFO", name + " file rename successfully.");
+		} else {
+			setMessage("RENAME_RESULT", "failed");
+			setMessage("INFO", name + " same name file exists or others reason. the file rename failed.");	
+		}
+		return "success";
+	}
+	
+	/**
+	 * 创建文件夹的方法
+	 * mkdir:
+	 *
+	 * @return      
+	 * @since
+	 */
+	public String mkdir() {
+		if (!new LoginAction().logon()) {
+			return "not_logon";
+		}	
+		if (path == null || path.length() <= 0) {
+			return null;
+		}
+		path = FilePath.getFileRealPath(path);
+		fileEdit = new FileEditImpl(path);
+		File file = fileEdit.getFile();	
+		//name = name.trim();
+		name = CharacterCode.iso2utf8(name);
+		fileEdit.setFile(path + name);
+		file = fileEdit.getFile();
+		if (!file.exists()) {
+			if (fileEdit.mkdir()) {
+				setMessage("MKDIR_RESULT", "success");
+				setMessage("INFO", path + name + " the folder create successfully.");
+			}
+		} else {	
+			setMessage("MKDIR_RESULT", "failed");
+			setMessage("INFO", path + name + " Folder is exists.");
+		}
+		return "success";
+	}
+	
+	/**
+	 * 复制文件或文件夹的方法
+	 * copy:
+	 *
+	 * @return      
+	 * @since
+	 */
+	public String copy() {
+		if (!new LoginAction().logon()) {
+			return "not_logon";
+		}	
+		if (path == null || path.length() <= 0) {
+			return null;
+		}	
+		path = FilePath.getFileRealPath(path);
+		fileEdit = new FileEditImpl(path);
+		String toPath = fileEdit.getCopyNewPath("");
+		if (fileEdit.copy(path, toPath)) {
+			setMessage("COPY_RESULT", "success");
+			setMessage("INFO", toPath + " copy successfully.");
+		} else {
+			setMessage("COPY_RESULT", "failed");
+			setMessage("INFO", toPath + " copy failed.");	
+		}	
+		return "success";
+	}
+	
+	/**
+	 * 创建文件夹的方法
+	 * delete:
+	 *
+	 * @return      
+	 * @since
+	 */
+	public String delete() {
+		if (!new LoginAction().logon()) {
+			return "not_logon";
+		}	
+		if (path == null || path.length() <= 0) {
+			return null;
+		}	
+		path = FilePath.getFileRealPath(path);
+		fileEdit = new FileEditImpl(path);
+		File file = fileEdit.getFile();	
+		
+		// for delete the file or directory
+	
+		if (!file.exists()) {
+			setMessage("DELETE_RESULT", "failed");
+			setMessage("INFO", file.getName() + " not exists.");
+			return null;
+		}
+		if (fileEdit.delete()) {
+			setMessage("DELETE_RESULT", "success");
+			setMessage("INFO", file.getName() + " has been removed.");
+		} else {
+			setMessage("DELETE_RESULT", "failed");
+			setMessage("INFO", file.getName() + " can not be removed.");
+		}
+		
+		return "success";
+	}
+
 	
 	public boolean isExists(String path) {
 		if (path != null) {
@@ -123,6 +258,9 @@ public class FileEditAction extends DirAction {
 	}
 	
 	public String execute() {
+		if (!new LoginAction().logon()) {
+			return "not_logon";
+		}
 		fileExecute();
 		return "success";
 	}

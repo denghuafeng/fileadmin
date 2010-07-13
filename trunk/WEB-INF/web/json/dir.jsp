@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ include file="../common/taglibs.jsp" %>
-var DIR = DIR || {};
+//var DIR = DIR || {};
 DIR.listLength = ${listLength};
 <c:set var="root" value="${char:encodeHTML(root)}"></c:set>
 <c:set var="path" value="${char:encodeHTML(path)}"></c:set>

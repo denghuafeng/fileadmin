@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.youngli.fileadmin.common.ConfigProperties;
 import com.youngli.fileadmin.common.FilePath;
+import com.youngli.fileadmin.common.StringUtils;
 
 /**
  * @author lichunping 2010-5
@@ -64,9 +65,8 @@ public class LoginAction {
 			String webInfPath = new File(FilePath.class.getResource("/").getPath()).getParent();
 			String propertiesPath = webInfPath + "/classes/fileadmin.properties";			
 			ConfigProperties configProps = new ConfigProperties(propertiesPath);
-			String user = configProps.getValue("fileadmin.admin.password");
-			
-			return passWord.toLowerCase().equals(user);
+			String pass = configProps.getValue("fileadmin.admin.password");
+			return StringUtils.md5(passWord).equals(pass);
 		}
 		return false;
 	}

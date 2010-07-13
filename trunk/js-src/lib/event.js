@@ -1,4 +1,4 @@
-﻿
+
 /**
  * 事件监听对象
  */
@@ -14,17 +14,30 @@ event._listeners = event._listeners || [];
  * @return {HTMLElement} 目标元素
  */
 
-event.on = function (element, type, listener) {
+//event.on = function (element, type, listener) {
+event.on = function (element, type, listener, args) {
     type = type.replace(/^on/i, '');
     if ('string' == typeof element) {
         element = g(element);
     }
 
-    var fn = function (ev) {
-        // 这里不支持EventArgument
-        // 原因是跨frame的时间挂载
-        listener.call(element, ev);
-    },
+//    var fn = function (ev) {
+//        // 这里不支持EventArgument
+//        // 原因是跨frame的时间挂载
+//        listener.call(element, ev);
+//    };
+	
+	// 挂载参数 modified by jarry
+	if (typeof args != 'undefined') {
+		var fn = function(ev) {
+			listener.call(args, ev);
+		};
+	} else {
+	    var fn = function (ev) {
+	      listener.call(element, ev);
+	  };
+	}
+    
     lis = event._listeners;
     
     // 将监听器存储到数组中
@@ -99,7 +112,7 @@ if (window.attachEvent) {
 function Event(event) {
    event = event || window.event;
    this.target = event.target || event.srcElement;
-   _extend(this, event);
+//   _extend(this, event);
    this.keyCode = event.which ? event.which : event.keyCode;
    this.rightClick = (event.which == 3) || (event.button == 2);
 }

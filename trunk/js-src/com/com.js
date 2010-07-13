@@ -36,7 +36,8 @@ var getFolderIconCss = function() {
 }
 
 var	getFileIconCss = function(type) {
-	if (type == 'folder') return 'folder';		
+	if (type == 'folder') return 'folder';
+	type = type.toLowerCase();		
 	switch(type) {
 		// 常用文档
 		case 'doc' : 
@@ -115,6 +116,7 @@ var	getFileIconCss = function(type) {
  * @author jarryli@gmail.com
  */
 var decodeHTML = function(html) {
+	if (!html || html.length <= 0) return html;
 	html = html.replace(/&amp;/g, "&");
 	html = html.replace(/&#039;/g, "'");
 	html = html.replace(/&quot;/g, "\"");
@@ -135,6 +137,7 @@ var encodeURLCharForFlash = function(url) {
  * @author jarryli@gmail.com
  */
 var decodeSpecial = function(str) {
+	if (!str || str.length <= 0) return str;
 	str = str.replace(/&/g, '&amp;');
 	str = str.replace(/'/g, '&#039;');
 	str = str.replace(/"/g, '&quot;');
@@ -157,6 +160,16 @@ var getSlash = function(path) {
 		return '';
 	}
 	return '/';
+}
+
+/**
+ * 给JS加上转义字符，仅包含单引号与双引号
+ */
+var encodeJS = function (str) {
+	str = str.replace(/'/g, '\'');
+	str = str.replace(/"/g, '\"');
+	alert(str);
+	return str;
 }
 
 var SPECIAL_CHAR = ['\\', '/', ':', '*', '?', '"', '<', '>', '|', '\''];
@@ -211,6 +224,16 @@ var replaceSlash = function(str) {
  */ 
 var encodeURL = function(str) {
 	if (str == null || str.length <= 0) return str;
+	var newStr = str;
+	
+	// 过滤http://
+	var httpStr = 'http://';
+	var hasHttpStr = false;
+	if (str.substr(0, 7) == httpStr) {
+		hasHttpStr = true;
+		str = (str.substr(7));
+	}
+	
 	if (str.indexOf("\\") != -1) {
 		str = replaceSlash(str);
 	}
@@ -222,10 +245,17 @@ var encodeURL = function(str) {
 		var len = tmpArr.length;
 		for (var i = 0; i < len; i++) {
 			tmpArr[i] = encodeURIComponent(tmpArr[i]);
+		}		
+		
+		newStr = tmpArr.join("/");
+		// 加上http://
+		if (hasHttpStr) {
+			newStr = httpStr + tmpArr.join("/");
 		}
-		return tmpArr.join("/");
+		return newStr;
 	}
-	return encodeURIComponent(str);	
+	
+	return encodeURIComponent(newStr);	
 }
 
 /**

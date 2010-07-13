@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -255,6 +256,13 @@ public class FilePath {
 		System.out.println(System.getProperty("user.dir")); 
 		System.out.println("物理路径分割符是： " + System.getProperty("file.separator") );
 		*/
+		
+		String local   =   Locale.getDefault().toString();
+		String sysLang   = System.getProperty("user.language");
+		String sysEncode = System.getProperty("file.encoding");
+		System.out.println(local);
+		System.out.println(sysLang);
+		System.out.println(sysEncode);
 	}
 
 }

@@ -13,11 +13,14 @@
 	<form acion="/login.action" method="post">
 	<div class="login-tit">FileAdmin 文件管理系统，<br/>请使用<strong>utftp</strong>用户名密码登录</div><br/>
 	<c:set var="validateCodeURL" value="validateCode"/>
-		用户名：<input name="userName" size="10" type="text" /><br/>
-		密&nbsp;&nbsp;&nbsp;&nbsp;码：<input name="passWord" size="10" type="password" /><br/>
-		验证码：<input type="text" name="validateCode" size="6" maxlength="4"><img src="${validateCodeURL}?d=${random}" style="cursor:pointer;vertical-align:middle" title="点击刷新图片" align="middle" onclick="this.src+='?d='+new Date();"><br/>
-		<font class="validate-tips">请输入验证码，不区分大小写。</font><br>
+	<ol>
+		<li class="login-txt">用户名：</li><li><input name="userName" size="10" type="text" /></li>
+		<li class="login-txt">密&nbsp;&nbsp;&nbsp;&nbsp;码：</li><li><input name="passWord" size="10" type="password" /></li>
+		<li class="login-txt">验证码：</li>
+		<li><input type="text" name="validateCode" size="6" maxlength="4"><img src="${validateCodeURL}?d=${random}" style="cursor:pointer;vertical-align:middle" title="点击刷新图片" align="middle" onclick="this.src+='?d='+new Date();"></li>
+		<li class="login-txt">&nbsp;</li><li><font class="validate-tips">请输入验证码，不区分大小写。</font></li>
 		<br/><button type="submit"> 登 录 </button>
+	</ol>	
 		<div class="login-tips">
 		<c:if test="${userName == '' || passWord == ''}">
 			<li>请输入用户名和密码</li>

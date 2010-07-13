@@ -638,13 +638,19 @@ dtmlXMLLoaderObject.prototype.doXPath=function(xpathExp, docObj, namespace, resu
 				docObj=this.xmlDoc.responseXML
 			else
 				docObj=this.xmlDoc;
-
-		if (!docObj)
+	
+//	if (!docObj)
+//		dhtmlxError.throwError("LoadXML", "Incorrect XML", [
+//			(docObj||this.xmlDoc),
+//			this.mainObject
+//		]);
+// not login 	added by jarry
+		if (!docObj) {
 			dhtmlxError.throwError("LoadXML", "Incorrect XML", [
 				(docObj||this.xmlDoc),
 				this.mainObject
 			]);
-
+		}
 		if (namespace != null)
 			docObj.setProperty("SelectionNamespaces", "xmlns:xsl='"+namespace+"'"); //
 

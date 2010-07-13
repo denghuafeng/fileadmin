@@ -3,6 +3,7 @@
 <%@ include file="common/taglibs.jsp" %>
 <jsp:include page="common/header.jsp" flush="true" ></jsp:include>
 <body>
+<!-- <script type="text/javascript" src="dir?path=${path}"></script>-->
 <div class="page" id="Page">
 <div class="mask" id="mask">&nbsp;</div>
 	<div class="hd">
@@ -10,8 +11,8 @@
 		<a href="./" title="FileAdmin Logo"> </a>
 	</div>
 	<div class="hd-panel">
-		 <div id="ControlPanel" class="control-panel">操作区域： <a href="#" id="UploadFileLink">上传文件</a>
-		| <a href="#" id="CreateNewFolderLink">新建文件夹</a> | 开发中……还剩 改名、删除、复制等，后台已经完成，差前端展现
+		 <div id="ControlPanel" class="control-panel"><a href="#" id="UploadFileLink">上传文件</a>
+		| <a href="#" id="CreateNewFolderLink">新建文件夹</a> 
 
 		 </div>
 	</div>

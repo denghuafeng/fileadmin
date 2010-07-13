@@ -9,13 +9,24 @@ import java.net.URLEncoder;
 
 public class CharacterCode {
 	
+	/**
+	 * encodeCovert:
+	 * 给字符转码
+	 * 
+	 * @author lichunping
+	 * @param str  要编码的字符
+	 * @param from 原来的编码。如: iso-8859-1
+	 * @param to   转码后的编码。如:utf-8
+	 * @return 转码后的字符串 
+	 * @since 1.0
+	 */
 	public static String encodeCovert(String str, String from, String to) {
 		try {
 			String formStr = str;
 			byte[] toStr   = formStr.getBytes(from);
 			return  new String(toStr, to);
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		return "null";
 	}
