@@ -2,7 +2,7 @@ package com.youngli.fileadmin;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.youngli.fileadmin.act.LoginAction;
-import com.youngli.fileadmin.common.CharacterCode;;
+import com.youngli.fileadmin.common.CharacterCode;
 /**
  * @author lichunping
  * 

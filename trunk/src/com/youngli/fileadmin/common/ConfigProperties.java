@@ -135,7 +135,7 @@ public class ConfigProperties {
 	public FileInputStream getInputFile() {
 		return inputFile;
 	}
-
+	
 	public void setInputFile(FileInputStream inputFile) {
 		this.inputFile = inputFile;
 	}
@@ -146,8 +146,6 @@ public class ConfigProperties {
 
 	public void setOutputFile(FileOutputStream outputFile) {
 		this.outputFile = outputFile;
-	}
-	
-	
+	}	
 	
 }
