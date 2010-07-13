@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tomcatProjectProperties>
+    <rootDir>/</rootDir>
+    <exportSource>false</exportSource>
+    <reloadable>true</reloadable>
+    <redirectLogger>false</redirectLogger>
+    <updateXml>false</updateXml>
+    <warLocation></warLocation>
+    <extraInfo></extraInfo>
+    <webPath>/fileadmin</webPath>
+    <webClassPathEntries>
+        <webClassPathEntry>/fileadmin/WEB-INF/classes</webClassPathEntry>
+        <webClassPathEntry>/fileadmin/WEB-INF/lib/commons-fileupload-1.2.1.jar</webClassPathEntry>
+        <webClassPathEntry>/fileadmin/WEB-INF/lib/commons-io-1.3.2.jar</webClassPathEntry>
+        <webClassPathEntry>/fileadmin/WEB-INF/lib/freemarker-2.3.15.jar</webClassPathEntry>
+        <webClassPathEntry>/fileadmin/WEB-INF/lib/jstl-1.2-sources.jar</webClassPathEntry>
+        <webClassPathEntry>/fileadmin/WEB-INF/lib/jstl-1.2.jar</webClassPathEntry>
+        <webClassPathEntry>/fileadmin/WEB-INF/lib/ognl-2.7.3.jar</webClassPathEntry>
+        <webClassPathEntry>/fileadmin/WEB-INF/lib/struts2-core-2.1.8.1.jar</webClassPathEntry>
+        <webClassPathEntry>/fileadmin/WEB-INF/lib/xwork-core-2.1.6.jar</webClassPathEntry>
+        <webClassPathEntry>/fileadmin/work</webClassPathEntry>
+        <webClassPathEntry>E:/server/jdk1.6/jre/lib/charsets.jar</webClassPathEntry>
+        <webClassPathEntry>E:/server/jdk1.6/jre/lib/ext/dnsns.jar</webClassPathEntry>
+        <webClassPathEntry>E:/server/jdk1.6/jre/lib/ext/localedata.jar</webClassPathEntry>
+        <webClassPathEntry>E:/server/jdk1.6/jre/lib/ext/sunjce_provider.jar</webClassPathEntry>
+        <webClassPathEntry>E:/server/jdk1.6/jre/lib/ext/sunmscapi.jar</webClassPathEntry>
+        <webClassPathEntry>E:/server/jdk1.6/jre/lib/ext/sunpkcs11.jar</webClassPathEntry>
+        <webClassPathEntry>E:/server/jdk1.6/jre/lib/jce.jar</webClassPathEntry>
+        <webClassPathEntry>E:/server/jdk1.6/jre/lib/jsse.jar</webClassPathEntry>
+        <webClassPathEntry>E:/server/jdk1.6/jre/lib/resources.jar</webClassPathEntry>
+        <webClassPathEntry>E:/server/jdk1.6/jre/lib/rt.jar</webClassPathEntry>
+    </webClassPathEntries>
+</tomcatProjectProperties>
