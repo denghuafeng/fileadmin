@@ -12,34 +12,7 @@ response.setCharacterEncoding("utf-8");
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="char" uri="http://fileadmin.youngli.com/character" %>
 <%@ taglib prefix="file" uri="http://fileadmin.youngli.com/filePath" %>
-<!doctype html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>文件上传-FileAdmin</title>
-</head>
-<body>
-目录：${path}<br/>
-<c:set var="root" value="${root}"></c:set>
-${uploadFile}<br>
-${uploadFileContentType}
-
-<hr>
-
-<c:forEach var="item" items="${uploadsFileName}">
-${item}<br>
+MESSAGE = {<c:set var="count" value="0"/><c:forEach var="item" items="${MESSAGE}"><c:set var="count" value="${count+1}"/><c:if test="${count != 1}" >,</c:if>
+	'${count}' : '${char:encodeHTML(item)}'
 </c:forEach>
-
-<hr>
-
-<c:forEach var="item" items="${param}">
-${item.key} = ${item.value}<br>
-</c:forEach>
-
-<hr>
-
-<c:forEach var="item" items="${MESSAGE}">
-${item}<br>
-</c:forEach>
-</body>
-</html>
+}
