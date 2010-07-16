@@ -12,7 +12,19 @@
 
     <include file="file-admin.xml"/>
 
+
+
     <package name="default" namespace="/" extends="struts-default">
+     <interceptors>
+     	<interceptor-stack name="defaultStack">
+			<interceptor-ref name="params">
+				<!-- filter special character. it's serious bugs -->
+				    <param name="excludeParams">.*[\\/\(\)#@'].*</param>
+			</interceptor-ref>
+		</interceptor-stack>
+	 </interceptors>
+	 <default-interceptor-ref name="defaultStack" />
+
       <default-action-ref name="default" />
         <action name="default">
             <result type="redirectAction">
