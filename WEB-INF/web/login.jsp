@@ -11,7 +11,7 @@
 	<div class="login-form">
 	<div class="info-panel">&nbsp;</div>
 	<form acion="/login.action" method="post">
-	<div class="login-tit">FileAdmin 文件管理系统，<br/>请使用<strong>utftp</strong>用户名密码登录</div><br/>
+	<div class="login-tit">欢迎使用 <strong><span>F</span>ile<span>A</span>dmin</strong> Web文件管理系统<br/></div><br/>
 	<c:set var="validateCodeURL" value="validateCode"/>
 	<ol>
 		<li class="login-txt">用户名：</li><li><input name="userName" size="10" type="text" /></li>
@@ -19,6 +19,10 @@
 		<li class="login-txt">验证码：</li>
 		<li><input type="text" name="validateCode" size="6" maxlength="4"><img src="${validateCodeURL}?d=${random}" style="cursor:pointer;vertical-align:middle" title="点击刷新图片" align="middle" onclick="this.src+='?d='+new Date();"></li>
 		<li class="login-txt">&nbsp;</li><li><font class="validate-tips">请输入验证码，不区分大小写。</font></li>
+		<label>
+		<input type="checkbox" name="remember" style="margin:5px 0 0 0;" value="yes" id="RememberUser">
+		&nbsp;记住用户密码
+		</label>
 		<br/><button type="submit"> 登 录 </button>
 	</ol>	
 		<div class="login-tips">
@@ -38,7 +42,7 @@
 	<div class="line-bar">&nbsp;</div>
 	<div class="login-info-panel">&nbsp;</div>
 	</div> 
-<jsp:include page="common/footer.jsp" flush="true"></jsp:include>
 </div>
+<jsp:include page="common/footer.jsp" flush="true"></jsp:include>
 </body>
 </html>

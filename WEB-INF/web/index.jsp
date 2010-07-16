@@ -11,12 +11,12 @@
 		<a href="./" title="FileAdmin Logo"> </a>
 	</div>
 	<div class="hd-panel">
-		 <div id="ControlPanel" class="control-panel"><a href="#" id="UploadFileLink">上传文件</a>
-		| <a href="#" id="CreateNewFolderLink">新建文件夹</a> 
+		 <div id="ControlPanel" class="control-panel">操作区域：<a href="#" id="UploadFileLink">上传文件</a>
+		&nbsp; |&nbsp; <a href="#" id="CreateNewFolderLink">新建文件夹</a> 
 
 		 </div>
 	</div>
-		<div class="user-bar">你好，<strong>${sessionScope.userName}</strong> | <a href="logout">退出</a></div>
+		<div class="user-bar"><a href="javascript:HelpAction.show()">帮助</a> | 你好，<strong>${sessionScope.userName}</strong> | <a href="logout">退出</a></div>
 	</div>
 	<div class="main">
 		<div class="dir-list" id="DirList"></div>
@@ -28,7 +28,7 @@
 	<div class="info-panel" id="InfoPanel">The info area is loading</div>
 	</div> 
 <script type="text/javascript" src="js/fa.js"></script>
-<jsp:include page="common/footer.jsp" flush="true"></jsp:include>
 </div>
+<jsp:include page="common/footer.jsp" flush="true"></jsp:include>
 </body>
 </html>
