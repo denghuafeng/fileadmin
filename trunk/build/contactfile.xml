@@ -46,13 +46,14 @@
         	<fileset dir="${js-src-path}/fa/" includes="config.js" />
         	<fileset dir="${js-src-path}/com/" includes="com.js" />
         	<fileset dir="${js-src-path}/fa/" includes="action.js" />
-        	<fileset dir="${js-src-path}/fa/" includes="upload.act.js" />
+        	<fileset dir="${js-src-path}/fa/" includes="upload.class.js" />
+        	<fileset dir="${js-src-path}/fa/" includes="upload.act.js" />        	
         	<fileset dir="${js-src-path}/fa/" includes="dir.class.js" />        	
         	<fileset dir="${js-src-path}/fa/" includes="dir.act.js" />
         	<fileset dir="${js-src-path}/fa/" includes="file.class.js" />
         	<fileset dir="${js-src-path}/fa/" includes="file.act.js" />
-
-
+        	<fileset dir="${js-src-path}/fa/" includes="help.class.js" />
+        	<fileset dir="${js-src-path}/fa/" includes="help.act.js" />
         </concat>        
     	<echo message="Concat Code Files Finished" />		
     </target> 

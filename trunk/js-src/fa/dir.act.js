@@ -1,4 +1,18 @@
- 
+/*
+ * FileAdmin
+ * Copyright 2010 Youngli Inc. All rights reserved.
+ * 
+ * path: action.js
+ * author: lichunping/jarry
+ * version: 0.9
+ * date: 2010/06/15
+ */
+
+/**
+ * 目录Action
+ * 目录显示功能事件
+ *
+ */
 DirAction = function() {
 
 	var dirClass = new Directory();
@@ -25,8 +39,7 @@ DirAction = function() {
 	 * 初始化函数
 	 */
 	var pageInit = function() {
-//		初始化传入空路径
-		getDirJSON('');
+		getDirJSON('');			//	初始化传入空路径
 		dirClass.setDirAndFileList();		
 		setPageHeight();
 		event.on(window, "onresize", DirAction.setPageHeight);
@@ -34,26 +47,28 @@ DirAction = function() {
 	
 	var getDirJSON = function(path) {
 		var url = dirPath + '?path=' + encodeURIComponent(path);
-		xhr = ajax.get(url, parseDirJSON);
+		var xhr = ajax.get(url, parseDirJSON);
 	}
 
 	/**
 	 * Ajax的回调函数
+	 * @param {object} xhr对象
+	 * @param {String} xhr获得的结果
 	 */
 	var parseDirJSON = function(xhr, responseText) {
 		eval(responseText);
 		dirClass.setFileAndFolderList(DIR);
 		dirClass.setInfoPanel(DIR);
-//		初始化table里面的tr，增加事件
-		FileAction.initTableListRowEvent();
+		FileAction.initTableListRowEvent();		// 初始化table里面的tr，增加事件
 	}
 
 	/**
 	 * 点击文件夹，load相应目录树 
+	 * @param {String} path 路径
 	 */
 	var openFolder = function(path) {
-		alert(path + " \n\r " + encodeURL(path));
-//		可以通过找到tree里面的几点，刷新相应节点的数据，做到同步响应
+	//	alert(path + " \n\r " + encodeURL(path));
+	//	可以通过找到tree里面的几点，刷新相应节点的数据，做到同步响应
 		var url = encodeURL(path);
 		if (global.OPEN_FILE_REDIRECT) {
 			url = 'redir?url=' + url;		

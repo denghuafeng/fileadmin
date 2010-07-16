@@ -1,7 +1,5 @@
 package com.youngli.fileadmin.act;
-
 import java.io.File;
-
 import com.youngli.fileadmin.common.ConfigProperties;
 import com.youngli.fileadmin.common.FilePath;
 import com.youngli.fileadmin.common.StringUtils;
@@ -13,11 +11,18 @@ import com.youngli.fileadmin.common.StringUtils;
  */
 public class LoginAction {
 	
-	private String userName, passWord, validateCode;
-	private double random;
-	
+	private String userName;
+	private String passWord;
+	private String validateCode;
+	private String remember;
+	private double random;	
 	private String message;
-
+	
+	private CookieAction cookie;
+	
+	public LoginAction() {
+		cookie = new CookieAction();
+	}
 	
 	public String execute() {
 		
@@ -26,14 +31,34 @@ public class LoginAction {
 		
 		if (userName == null || passWord == null || validateCode == null) {
 			return "failed";
-		}				
+		}
+		
 		if (checkUserName(userName) && checkPassWord(passWord) && checkValidateCode(validateCode)) {
 			new SessionAction().setUserName(userName);
 			setMessage("loginSuccess");
+			// if selected remember user
+			if (remember != null) {
+				if (remember.equals("yes")) {
+					setRememberUser();
+				} else {
+					removeRememberUser();
+				}			
+			}
+
 			return "success";
 		}
 		setMessage("loginFailed");
 		return "failed";
+	}
+	
+	private void setRememberUser() {
+		cookie.setCookie("userName", userName);
+		cookie.setCookie("remember", remember);
+	}
+	
+	private void removeRememberUser() {
+		cookie.removeCookie("userName");
+		cookie.removeCookie("remember");
 	}
 	
 	public boolean checkUserName(String userName) {
@@ -48,12 +73,27 @@ public class LoginAction {
 		return false;
 	}
 
-	public boolean isLogon() {	
+	public boolean isLogon() {
+		// 先检查cookie
+		String userName;
+		userName = cookie.getCookie("userName");
+		String remember = cookie.getCookie("remember");
+		if (remember != null && userName != null) {
+			if (remember.equals("yes") && checkUserName(userName)) {
+				// 同时把用户信息写入到session
+				new SessionAction().setUserName(userName);
+				return true;
+			}
+		}
+		// 再检查session
 		SessionAction sessionAction = new SessionAction();
-		String userName = sessionAction.getUserName();	
-		if (userName == null || userName.length() <= 0)  	
-			return false;
-		return checkUserName(userName);
+		userName = sessionAction.getUserName();	
+		if (userName != null && userName.length() > 0) {	
+				if (checkUserName(userName)) {
+					return true;
+				}
+		}
+		return false;
 	}
 	
 	public boolean logon() {
@@ -114,6 +154,14 @@ public class LoginAction {
 
 	public String getMessage() {
 		return message;
+	}
+
+	public String getRemember() {
+		return remember;
+	}
+
+	public void setRemember(String remember) {
+		this.remember = remember;
 	}
 
 	public void setMessage(String message) {

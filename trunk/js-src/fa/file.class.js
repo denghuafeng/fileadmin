@@ -1,7 +1,17 @@
+/*
+ * FileAdmin
+ * Copyright 2010 Youngli Inc. All rights reserved.
+ * 
+ * path: action.js
+ * author: lichunping/jarry
+ * version: 0.9
+ * date: 2010/06/15
+ */
 
 /**
  * 文件夹、文件编辑操作类
- * @param 
+ * 提供文件改名、复制、删除，鼠标移动事件等功能
+ *
  */
 function File() {
 	this.path = '';
@@ -25,7 +35,9 @@ File.prototype = {
 	},
 	
 	/**
-	 * @param {Object} folder 文件夹对象
+	 * 得到文件夹对象的tr的HTML，用于插入到table中
+	 * @param {object} folder 文件夹对象
+	 * @param {string} tr html
 	 */
 	_getFolderTr : function(folder) {
 		var tr = "", target = '_blank', href = '';

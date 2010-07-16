@@ -1,6 +1,19 @@
-//alert();
-//event.on(window, "onload", setPageHeight);
+/*
+ * FileAdmin
+ * Copyright 2010 Youngli Inc. All rights reserved.
+ * 
+ * path: upload.act.js
+ * author: lichunping/jarry
+ * version: 0.9
+ * date: 2010/06/15
+ */
 
+/**
+ * 上传Action文件
+ * 设置通用的上传路径
+ * 绘制上传模板，执行上传事件
+ * 
+ */
 UploadAction = (function () {
 	var uploadPath = "";
 		
@@ -56,7 +69,7 @@ UploadAction = (function () {
 				progressTarget : "fsUploadProgress",
 				cancelButtonId : "btnCancel"
 			},
-//			debug: true,
+			// debug: true,
 			debug: false,
 			// Button settings
 			button_image_url: "img/upload-button.png",
@@ -76,18 +89,17 @@ UploadAction = (function () {
 			queue_complete_handler : queueComplete	// Queue plugin event
 		};
 		SWFUP = new SWFUpload(settings);	
-		//alert(UPLOAD.uploadPath +  ' |　' + (this.uploadPath) + SWFUP.setPostParams + SWFUP.getSetting);	
+		// alert(UPLOAD.uploadPath +  ' |　' + (this.uploadPath) + SWFUP.setPostParams + SWFUP.getSetting);	
 	 }
 
 	var hideUploadArea = function() {
 		g('UploadArea').style.display = 'none';
-//		DirAction.getDirJSON(UPLOAD.uploadPath);
+		// DirAction.getDirJSON(UPLOAD.uploadPath);
 		toggleMask();
 	};
 	
 	var setUploadHTML = function() {
 		if (!g('UploadArea')) {
-			// 如果没有上传区域则创建
 			try {
 				var html = HTMLTemplate.uploadHTML;
 				var container = getTemplateHTMLContainer();
@@ -99,7 +111,7 @@ UploadAction = (function () {
 				var left = dom.getPosition(this).left;
 				var top = dom.getPosition(this).top;
 				g('UploadArea').style.left = left + 'px';
-				g('UploadArea').style.top = top + 22 + 'px';
+				g('UploadArea').style.top = top + 20 + 'px';
 				SWFUPstart();
 			} catch (ex) {
 				alert(ex.toString());
@@ -115,7 +127,7 @@ UploadAction = (function () {
 	
 	var init = function() {
 		event.on(g('UploadFileLink'), "onclick", UploadAction.setUploadHTML);
-	  //event.on(window, "onload", SWFUPstart);
+	   // event.on(window, "onload", SWFUPstart);
 	  
 	};
 	

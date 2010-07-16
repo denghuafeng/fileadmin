@@ -84,8 +84,8 @@ public class FileUploadAction extends ActionSupport {
 				setMessage("UPLOAD_RESULT", "success");
 				setMessage("INFO", " upload file successfully.");
 			} else {
-				setMessage("INFO", " can not upload file.");
 				setMessage("UPLOAD_RESULT", "failed");
+				setMessage("INFO", " can not upload file.");
 			}
 		} 	
 	}
@@ -97,8 +97,8 @@ public class FileUploadAction extends ActionSupport {
 				setMessage("UPLOAD_RESULT", "success");
 				setMessage("INFO", " upload files successfully.");
 			} else {
-				setMessage("INFO", " can not upload files.");
 				setMessage("UPLOAD_RESULT", "failed");
+				setMessage("INFO", " can not upload files.");
 			}
 		}	
 	}

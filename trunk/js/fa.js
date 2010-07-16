@@ -30,11 +30,14 @@
 		'./js-src/fa/config.js',
 		'./js-src/com/com.js',
 		'./js-src/fa/action.js',
+		'./js-src/fa/upload.class.js',
 		'./js-src/fa/upload.act.js',
 		'./js-src/fa/dir.class.js',
 		'./js-src/fa/dir.act.js',
 		'./js-src/fa/file.class.js',
-		'./js-src/fa/file.act.js'
+		'./js-src/fa/file.act.js',
+		'./js-src/fa/help.class.js',
+		'./js-src/fa/help.act.js'
 	];
 
 	for (var i = 0; i < Contact_JS_List.length; i++) {
