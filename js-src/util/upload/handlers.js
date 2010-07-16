@@ -63,7 +63,9 @@ function fileQueueError(file, errorCode, message) {
 function fileDialogComplete(numFilesSelected, numFilesQueued) {
 	try {
 		// set upload path when path be changed. added by jarry
-		UploadAction.setSWFUploadPath();
+		if ('undefined' != typeof UploadAction) { 
+			UploadAction.setSWFUploadPath();
+		}
 
 		if (numFilesSelected > 0) {
 			document.getElementById(this.customSettings.cancelButtonId).disabled = false;
@@ -207,5 +209,7 @@ function queueComplete(numFilesUploaded) {
 //	status.innerHTML = numFilesUploaded + " file" + (numFilesUploaded === 1 ? "" : "s") + " uploaded.";
 	status.innerHTML = "上传了" + numFilesUploaded +  "个文件"  + "";
 	// 上传完成后执行文件加载
-	DirAction.getDirJSON(UPLOAD.uploadPath);
+	if ('undefined' != typeof DirAction) {
+		DirAction.getDirJSON(UPLOAD.uploadPath);
+	}
 }

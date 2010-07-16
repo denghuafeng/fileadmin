@@ -172,7 +172,10 @@ var encodeJS = function (str) {
 	return str;
 }
 
-var SPECIAL_CHAR = ['\\', '/', ':', '*', '?', '"', '<', '>', '|', '\''];
+// 特殊字符，含不允许单引号
+//var SPECIAL_CHAR = ['\\', '/', ':', '*', '?', '"', '<', '>', '|', '\''];
+var SPECIAL_CHAR = ['\\', '/', ':', '*', '?', '"', '<', '>', '|'];
+
 /**
  * 校验文件名是否合法，不能含有的字符见 SPECIAL_CHAR
  * @param {String} name
@@ -180,8 +183,8 @@ var SPECIAL_CHAR = ['\\', '/', ':', '*', '?', '"', '<', '>', '|', '\''];
  */
 var isAvailableName = function(name) {
 	if (name == null || name.length < 0) return false;
-	//var regexp = /[\\\/:*?\"<>|]+/g;
-	var regexp = /[\\\/:*?\"<>|\']+/g; // 不允许单引号
+	var regexp = /[\\\/:*?\"<>|]+/g;
+	// var regexp = /[\\\/:*?\"<>|\']+/g; // 不允许单引号
 	return !regexp.test(name);
 }
 /**

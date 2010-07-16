@@ -1,3 +1,12 @@
+/*
+ * FileAdmin
+ * Copyright 2010 Youngli Inc. All rights reserved.
+ * 
+ * path: action.js
+ * author: lichunping/jarry
+ * version: 0.9
+ * date: 2010/06/15
+ */
 
 /**
  * 生成目录列表与文件列表的类
@@ -26,7 +35,7 @@ Directory.prototype.getHTML = function() {
 
 Directory.prototype.listDirTree = function() {	
 	 function dirClick(id, text) {
-		//UploadAction.setUploadPath(id);	 
+		// UploadAction.setUploadPath(id);	 
 	    DirAction.getDirJSON(id);
 	}	
 	
@@ -122,7 +131,7 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 	var _uploadPath = _DIR.path ? _DIR.path : _DIR.absolutePath;
 	UploadAction.setUploadPath(_uploadPath);
 	var html = [];
-//	if (DIR && DIR.Folders && DIR.Files) {
+	// if (DIR && DIR.Folders && DIR.Files) {
 	if (DIR) {
 		var filesList = DIR.FilesList;
 		var filesListLen = 0;	
@@ -161,12 +170,12 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 			var target = '';
 			if (file.type == 'folder') {		
 				target = '_blank';
-//				href = 'javascript:DirAction.openFolder(\'' +  encodeJS(_path) + '\');';
+				// href = 'javascript:DirAction.openFolder(\'' +  encodeJS(_path) + '\');';
 				if (global.FIEL_WEB_ROOT_URL) {
 					// 文件夹链接	
 					var _path = decodeHTML(relationPath) + decodeHTML(name);
 					href = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
-//					_path = decodeSpecial(_path);
+					// _path = decodeSpecial(_path);
 					// 增加重定向
 					if (global.OPEN_FILE_REDIRECT) {
 						href = 'redir?url=' + href;
@@ -190,8 +199,10 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 				// office在线阅读链接
 				if (isOfficeFile(ext) != -1 && global.DOC_WEB_ROOT_URL) {
 					// is office file read online
-					href = global.DOC_WEB_ROOT_URL + '?file='+ encodeURIComponent(decodeHTML(DIR.absolutePath)) + encodeURIComponent(decodeHTML(name));
-					//href = global.DOC_WEB_ROOT_URL + '?file='+ (decodeHTML(DIR.absolutePath)) + getSlash(relationPath) + (decodeHTML(name));
+					href = global.DOC_WEB_ROOT_URL + '?file='+ encodeURIComponent(decodeHTML(DIR.absolutePath))
+						 + encodeURIComponent(decodeHTML(name));
+					// href = global.DOC_WEB_ROOT_URL + '?file='+ (decodeHTML(DIR.absolutePath))
+					// + getSlash(relationPath) + (decodeHTML(name));
 				}
 				target = '_blank';
 				type   = ext;
@@ -217,8 +228,8 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 
 /**
  * 得到文件列表，本系统中被getFileAndFolderListHTML()替代
- * @param {object} _DIR
- * @return {string}
+ * @param {object} _DIR dir JSON 对象
+ * @return {string} html 字符串
  */
 Directory.prototype.getFileListHTML = function(_DIR) {
 	var DIR = _DIR ? _DIR : this.DIR;
@@ -239,8 +250,8 @@ Directory.prototype.getFileListHTML = function(_DIR) {
 
 /**
  * 得到面板信息
- * @param {object} _DIR
- * @return {string}
+ * @param {object} _DIR JSON 对象
+ * @return {string} html 字符串
  */
 Directory.prototype.getInfoPanelHTML = function(_DIR) {
 	var DIR = _DIR ? _DIR : this.DIR;
@@ -278,6 +289,9 @@ Directory.prototype.setFileAndFolderList = function(_DIR) {
 	if (hasError()) return false; 
 	this.FileListTitle.innerHTML = this.getFileAndFolderTheadHTML(_DIR);
 	this.FileListContent.innerHTML = this.getFileAndFolderListHTML(_DIR);
+	if (browser.ie == 6) {
+		DirAction.setPageHeight();
+	}
 }
 
 Directory.prototype.setFileList = function(_DIR) {

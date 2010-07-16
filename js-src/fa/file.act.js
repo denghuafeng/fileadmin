@@ -1,4 +1,18 @@
+/*
+ * FileAdmin
+ * Copyright 2010 Youngli Inc. All rights reserved.
+ * 
+ * path: action.js
+ * author: lichunping/jarry
+ * version: 0.9
+ * date: 2010/06/15
+ */
 
+/**
+ * 文件Action
+ * 提供文件改名、复制、删除，鼠标移动事件等功能
+ *
+ */
 FileAction = (function() {	
 	
 	var fileClass = new File();
@@ -7,16 +21,54 @@ FileAction = (function() {
 	
 	var tableListTr = null;
 	var tableListTrIndex = null;
+	
+	var isEditing = false;
 
 	var init = function () {
 		event.on(g('CreateNewFolderLink'), "onclick", FileAction.setCreateFolderHTML);
+		event.on(g('FileListContent'), "onscroll", function() {
+			hideFileEditBar();
+			hideRenameArea();
+		});		
+		event.on(g('FileListContent'), "onmouseout", FileAction.outFileListContent);	
 	}
+	
+	var outFileListContent = function(event) {
+		var x, y;
+		if(!document.all) {
+      		x = event.clientX; y = event.clientY;
+     	} else {
+        	x = event.x; y = event.y;
+	  	}
+	  	if (!isInFileTableList(x, y)) {
+	  		hideFileEditBar();
+	  		hideRenameArea();
+	  	}
+	}
+	
+	var isInFileTableList = function(x, y) {
+		if (!x || !y || x <= 0 || y <= 0) return false;
+		var top = dom.getPosition(g('FileTableList')).top;
+		var left = dom.getPosition(g('FileTableList')).left;
+		var width = g('FileTableList').offsetWidth;
+		// var height = g('FileTableList').offsetHeight;
+		var bottom = dom.getPosition(g('InfoPanel')).top;
+		var right = left + width;	
+		if ( (x < left || x > right) || 
+			 (y < top || y > bottom) 	
+			) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	var hideCreateFolder = function() {
 		g('CreateNewFolder').style.display = 'none';
 		toggleMask();
 	}
 	var setCreateFolderHTML = function () {
-		//var createDiv = g('CreateNewFolder') || new Object();
+
 		if (!g('CreateNewFolder')) {	
 			try {
 				var html = HTMLTemplate.createNewFolderHTML;
@@ -25,11 +77,11 @@ FileAction = (function() {
 				div.innerHTML = html;
 				container.appendChild(div);
 				// can not add the below event for chrome
-				//event.on(g('CreateNewFolderCancelButton'), 'onclick', FileAction.hideCreateFolder);
+				// event.on(g('CreateNewFolderCancelButton'), 'onclick', FileAction.hideCreateFolder);
 				var left = dom.getPosition(this).left;
 				var top = dom.getPosition(this).top;
 				g('CreateNewFolder').style.left = left + 'px';
-				g('CreateNewFolder').style.top = top + 22 + 'px';
+				g('CreateNewFolder').style.top = top + 20 + 'px';
 			} catch (ex) {
 				alert(ex.toString());
 			}
@@ -52,7 +104,6 @@ FileAction = (function() {
 	 */
 	var initTableListRowEvent = function() {
 		var tableList = g('FileTableList');
-		//var len = tableList.getElementsByTagName("tr").length;
 		var len = tableList.rows.length;
 		
 		// 采用DHTML，而不用DOM操作方式
@@ -60,21 +111,37 @@ FileAction = (function() {
 			var obj = {};
 			obj.tr = tableList.rows[i];
 			obj.trIndex = i;
-			event.on(tableList.rows[i], 'onmouseover', FileAction.setTrOver, obj);
-			event.on(tableList.rows[i], 'onmouseout', FileAction.setTrOut);	
-//			Event.add(tableList.rows[i], 'mouseover', function() {
-//				alert(this)
-//				alert(tableList.rows[i].innerHTML);
-//			});
-//			alert(tableList.rows[i].innerHTML);	
+			// event.on后挂载事件在ie和ff下有效，但在chrome下无效
+//			if (browser.firefox || browser.ie) {
+//				event.on(tableList.rows[i], 'onmouseover', FileAction.setTrOver, obj);
+//				event.on(tableList.rows[i], 'onmouseout', FileAction.setTrOut);
+// 			} else {
+//				tableList.rows[i].onmouseover = function() {
+//					FileAction.setTrOver(this);
+//				};
+//				tableList.rows[i].onmouseout = function() {
+//					FileAction.setTrOut(this);
+//				};
+// 			}
+ 			// 兼容全部浏览器的挂载方式
+			tableList.rows[i].onmouseover = function() {
+				FileAction.setTrOver(this);
+			};//			
+			tableList.rows[i].onmouseout = function() {
+				FileAction.setTrOut(this);
+			};
 		}
 	}
 	
-	var setTrOver = function() {
-		if (g('FileEditBar') && g('FileEditBar').style.display != 'none') {
-			return;
-		}
-		var trObj = this.tr;
+	/**
+	 * 表格tr对象鼠标移上的事件，显示编辑bar
+	 * @param {object} obj DOM Element || MouseEvent
+	 * 			适用两种不同传值方式，ie、ff或者chrome可以传值不一样
+	 */
+	var setTrOver = function(obj) {
+		if (isEditing) return;
+		// this.tr 当event.on方式挂载事件，加载参数对象时可用
+		var trObj = (typeof (obj.tagName) == 'string') ? obj : this.tr;
 		dom.addClass(trObj, 'tr-over');
 		var trIndex = this.trIndex;
 		setFileEditHTML(trObj, trIndex);
@@ -86,156 +153,124 @@ FileAction = (function() {
 	var setFileEditHTML = function(trObj, trIndex) {
 		FileAction.tableListTr = trObj;
 		FileAction.tableListTrIndex = trIndex;
-		if (!g('FileEditBar')) {
-			try {
+		try {
+			if (!g('FileEditBar')) {
 				var html = HTMLTemplate.editHTML;
 				var div = document.createElement('div');
 				div.id = 'FileEditBar';
 				div.innerHTML = html;
-				document.body.appendChild(div);	
+				document.body.appendChild(div);
 				div.className = 'file-edit-bar';
-			} catch (ex) {
-				alert(ex.toString());
 			}
-		}
-		// 设置编辑区的事件, 用事件挂载方式有问题
+			
+		// 设置编辑区的事件
 		g('FileEditBar').onmouseover = function() {
 			dom.addClass(trObj, 'tr-over');
-//			g('FileEditBar').className = 'tr-over';
-			dom.setStyle(g('FileEditBar'), 'display', '');
+			showFileEditBar();
 		}
 		g('FileEditBar').onmouseout = function() {
 			dom.removeClass(trObj, 'tr-over');
-			dom.setStyle(g('FileEditBar'), 'display', 'none');
-//			g('FileEditBar').style.display = 'none';
+			hideFileEditBar();
 		}
 		var left = dom.getPosition(trObj).left;
 		var top = dom.getPosition(trObj).top;
 		g('FileEditBar').style.left = left + 200 + 'px';  // 留出显示文件名的宽度
 		g('FileEditBar').style.top = top + 3 + 'px';      
-		dom.setStyle(g('FileEditBar'), 'display', '');
+		showFileEditBar();
+		} catch (ex) {
+				alert(ex.toString());
+		}
 	}
-	
-	var setTrOut = function(event) {
-//		if (!document.all) { 
-//			x = event.clientX; y = event.clientY; 
-//		} else { 
-//			x = event.x; y = event.y;
-//		}
-//
-//		var width = this.offsetWidth;
-//		var height = this.offsetHeight;
-//		var left = dom.getPosition(this).left;
-//		var top  = dom.getPosition(this).top;
-//		g('InfoPanel').innerHTML = (
-//			' | width = ' + width + 
-//			' | height = ' + height + 
-//			' | left = ' + left +
-//			' | top = ' + top +
-//			' | even.x = ' + x +
-//			' | event.y = ' + y
-//		)
-//		if ( (x < left || x > (left + width))
-//			|| (y < top || y > (top + height)) ) {
-////		判断是否还在编辑区域内，执行移出事件，直接添加事件时
-//// 		当鼠标移到编辑区域就会执行了
-//			dom.removeClass(this, 'tr-over');
-//			//g('FileEditBar').style.display = 'none';
-//			g('InfoPanel').innerHTML = 'on edit bar';
-//		}
-		dom.removeClass(this, 'tr-over');
-		dom.setStyle(g('FileEditBar'), 'display', 'none');
-		hideFileRenameArea();
+
+	/**
+	 * 表格tr对象鼠标移上的事件，显示编辑bar
+	 * @param {object} obj DOM Element || MouseEvent
+	 * 			适用两种不同传值方式，ie、ff或者chrome可以传值不一样
+	 */	
+	var setTrOut = function(obj) {
+		if (isEditing) return;
+		// 根据传入的DOM则直接等于该DOM，否则可能是事件挂载传入
+		var trObj = (typeof (obj.tagName) == 'string') ? obj : this;
+		dom.removeClass(trObj, 'tr-over');
+		// hideFileEditBar();
 	}
 	
 	var setRenameArea = function(trObj) {
-		if (!g('FileRenameArea') || null == g('FileRenameArea')) {
-			try {
+		try {
+			if (!g('FileRenameArea') || null == g('FileRenameArea')) {
+
 				var html = HTMLTemplate.renameHTML;
 				var div = document.createElement('div');
 				div.id = 'FileRenameArea';
 				div.innerHTML = html;
-				g('FileEditBar').appendChild(div);	
 				div.className = 'file-rename-area';
-			} catch (ex) {
+				document.body.appendChild(div);
+			}		
+
+			if (g('FileRenameArea') && trObj.cells[0]) {
+				g('FileRenameArea').style.left = dom.getPosition(g('FileEditBar')).left - 175 + 'px';
+				g('FileRenameArea').style.top = dom.getPosition(g('FileEditBar')).top - 4 + 'px';
+				g('FileRenameArea').style.width = trObj.offsetWidth - 35 + 'px';
+//				event.on(g('FileRenameArea'), 'onmouseout', function() {
+//						hideRenameArea();
+//				}); 
+				if (g('Rename') != null) {
+					g('Rename').value = decodeHTML(trObj.cells[0].firstChild.innerHTML); 
+					// 增加回车事件，效果不好
+//					event.on(g('Rename'), 'onkeyup', 
+//						function(e) {
+//							if (browser.ie) {
+//								var code = e.charCode || e.keyCode;
+//							} else {
+//								 var code = e.keyCode;
+//							}
+//							if (code == 13) {
+//								renameFile(trObj, this.value);
+//							}
+//						});
+				}
+			showRenameArea();
+			}
+		} catch (ex) {
 				alert(ex.toString());
-			}
-		}
-		
-//		var left = dom.getPosition(trObj).left;
-//		var top = dom.getPosition(trObj).top;
-		if (g('FileRenameArea') && trObj.cells[0]) {
-			g('FileRenameArea').style.left = -175 + 'px';
-			g('FileRenameArea').style.top = -2 + 'px';
-			g('FileRenameArea').style.width = (trObj.cells[0].offsetWidth - 15) + 'px';
-			if (g('Rename') != null) {
-				g('Rename').value = decodeHTML(trObj.cells[0].firstChild.innerHTML); 
-//				g('Rename').onkeydown = function(e) {
-//					if (browser.ie) {
-//						var code = event.charCode || event.keyCode;
-//					} else {
-//						 var code = e.keyCode;
-//					}
-//					alert(code);
-//				}
-				//g('Rename').focus();g('Rename').select();
-				
-				event.on(g('Rename'), 'onkeyup', function(e) {
-					if (browser.ie) {
-						var code = e.charCode || e.keyCode;
-					} else {
-						 var code = e.keyCode;
-					}// 如果是回车执行更名事件
-					if (code == 13) {
-						renameFile(trObj, this.value);
-					}
-				});
-			}
-			
-			dom.setStyle(g('FileRenameArea'), 'display', '');
 		}
 	}
-	
+
+	/**
+	 * 重命名文件(夹)
+	 * @param {object} trObj 一个tr DOM对象
+	 * @param {string} newName 新名称
+	 * 
+	 */
 	var renameFile = function(trObj, newName) {
 		if (typeof trObj != 'object' || newName == null){ 
-			return;
+			return ;
 		}
 		if(trim(newName).length == '') {
 			alert('请输入名称');
-			return;
+			return ;
 		}
 		if(!isAvailableName(newName)) {
 			alert('名字不能含有:' + SPECIAL_CHAR.join(', ') + ' 字符');
-			return;
-		}
-		
+			return ;
+		}		
 		var nameTd = trObj.cells[0];
-//		var newName = newName || '改名测试';
 		var name = '';		
 		if (!nameTd || !nameTd.firstChild) {
-			return;
+			return ;
 		}
 		name = nameTd.firstChild.innerHTML;
-		if (name == newName) {
-//			没改变
-			return;
-		}
-		
-		try {			
-			var type   = trObj.cells[3].innerHTML;
-	//		if (type != '' && type != 'folder') {
-	//			newName = newName + '.'+ type;
-	//		}
-			var path = (UPLOAD.uploadPath + decodeHTML(name));
-	//		var path = (UPLOAD.uploadPath + (name));
-			var url = global.FILE_PATH + '!rename.action?path=' + encodeURIComponent(path) + '&name=' + encodeURIComponent(newName);
-			xhr = ajax.get(url, parseRenameJSON);
-			hideRenameArea();
-			hideFileRenameArea();
-	//		g('FileEditBar').removeChild(g('FileRenameArea'));
-		} catch (ex) {
-			alert(ex.toString());
-		}
+		if (name != newName) {
+			try {
+				var type   = trObj.cells[3].innerHTML;
+				var path = (UPLOAD.uploadPath + decodeHTML(name));
+				var url = global.FILE_PATH + '!rename.action?path=' + encodeURIComponent(path) + '&name=' + encodeURIComponent(newName);
+				var xhr = ajax.get(url, parseRenameJSON);
+			} catch (ex) {
+				alert(ex.toString());
+			}
+	 	}
+		hideRenameArea();
 	}
 	
 	var parseRenameJSON = function(xhr, responseText) {
@@ -247,30 +282,55 @@ FileAction = (function() {
 		}
 	}
 	
-	var hideFileRenameArea = function() {
-		if (g('FileRenameArea')) {
-			dom.setStyle(g('FileRenameArea'), 'display', 'none');
+	var showFileEditBar = function() {
+		if (g('FileEditBar')) {
+			g('FileEditBar').style.display = '';
 		}
+	}
+	
+	var showRenameArea = function() {
+		if (g('FileRenameArea')) 
+			g('FileRenameArea').style.display = '';
+
+		isEditing = true;
+	}
+	
+	var hideFileEditBar = function() {
+		if (g('FileEditBar')) 
+			g('FileEditBar').style.display = 'none';
 	}
 	
 	var hideRenameArea = function() {
 		if (g('FileRenameArea')) 
 			g('FileRenameArea').style.display = 'none';
+			
+		isEditing = false;
 	}
-	
-	var copyFile = function(trObj, trIndex, newName) {
-		if (typeof trObj != 'object'){ 
+
+	/**
+	 * 复制文件(夹)
+	 * @param {object} trObj 一个tr DOM对象
+	 * @param {number} trIndex tr所属位置
+	 * 
+	 */
+	var copyFile = function(trObj, trIndex) {
+		if (typeof trObj != 'object') { 
 			return;
 		}
-		var nameTd = trObj.cells[0];
-		var name = '';		
-		if (!nameTd || !nameTd.firstChild) {
-			return;
+		try {
+			var nameTd = trObj.cells[0];
+			var name = '';		
+			if (!nameTd || !nameTd.firstChild) {
+				return;
+			}
+			name = nameTd.firstChild.innerHTML;
+			var path = (UPLOAD.uploadPath + decodeHTML(name));
+			var url = global.FILE_PATH + '!copy.action?path=' + encodeURIComponent(path);
+			var xhr = ajax.get(url, parseCopyJSON);
+		} catch (ex) {
+				alert(ex.toString());
 		}
-		name = nameTd.firstChild.innerHTML;
-		var path = (UPLOAD.uploadPath + decodeHTML(name));
-		var url = global.FILE_PATH + '!copy.action?path=' + encodeURIComponent(path);
-		xhr = ajax.get(url, parseCopyJSON);
+		hideFileEditBar();
 	}
 	
 	var parseCopyJSON = function(xhr, responseText) {
@@ -282,25 +342,36 @@ FileAction = (function() {
 		}
 
 	}
-	
-	var deleteFile = function(trObj, trIndex, newName) {
+
+	/**
+	 * 删除文件(夹)
+	 * @param {object} trObj 一个tr DOM对象
+	 * @param {number} trIndex tr所属位置
+	 * 
+	 */
+	var deleteFile = function(trObj, trIndex) {
 		if (typeof trObj != 'object'){ 
 			return;
 		}
-		var nameTd = trObj.cells[0];
-		var name = '';		
-		if (!nameTd || !nameTd.firstChild) {
-			return;
+		try {
+			var nameTd = trObj.cells[0];
+			var name = '';		
+			if (!nameTd || !nameTd.firstChild) {
+				return;
+			}
+			name = nameTd.firstChild.innerHTML;
+			var type   = trObj.cells[3].innerHTML;
+			var path = (UPLOAD.uploadPath + decodeHTML(name));
+			var info = type == 'folder' ? '您确定要删除 ' + name + ' 文件夹吗？\r\n其全部子文件夹和文件将一同被删除。': 
+							'您确定要删除 ' + name + ' 文件吗？';		
+			if(confirm(info)) {
+				var url = global.FILE_PATH + '!delete.action?path=' + encodeURIComponent(path);
+				var xhr = ajax.get(url, parseDeleteJSON);	
+			}
+		} catch (ex) {
+				alert(ex.toString());
 		}
-		name = nameTd.firstChild.innerHTML;
-		var type   = trObj.cells[3].innerHTML;
-		var path = (UPLOAD.uploadPath + decodeHTML(name));
-		var info = type == 'folder' ? '您确定要删除 ' + name + ' 文件夹吗？\r\n其全部子文件夹和文件将一同被删除。': 
-						'您确定要删除 ' + name + ' 文件吗？';		
-		if(confirm(info)) {
-			var url = global.FILE_PATH + '!delete.action?path=' + encodeURIComponent(path);
-			xhr = ajax.get(url, parseDeleteJSON);	
-		}
+		hideFileEditBar();
 	} 
 	
 	var parseDeleteJSON = function(xhr, responseText) {
@@ -326,17 +397,20 @@ FileAction = (function() {
 			setTips(null, '名字不能含有:' + SPECIAL_CHAR.join(', ') + ' 字符');
 			return false;
 		}
-		//fileClass.createFolder();
-		//alert(path + getSlash(path) + name);
+
 		getFolderJSON(path, name);
 		return false;
 	}
 	
 	var getFolderJSON = function(path, name) {
-		var path = path + getSlash(path);
-			path = decodeHTML(path); 
-		var url = filePath + '?mkdir=yes&path=' + encodeURIComponent(path) + '&name=' + encodeURIComponent(name);
-		xhr = ajax.get(url, parseFolderJSON);
+		try {
+			var path = path + getSlash(path);
+				path = decodeHTML(path); 
+			var url = filePath + '?mkdir=yes&path=' + encodeURIComponent(path) + '&name=' + encodeURIComponent(name);
+			var xhr = ajax.get(url, parseFolderJSON);
+		} catch(ex) {
+			alert(ex.toString());	
+		}
 	}
 	
 	var parseFolderJSON = function(xhr, responseText) {
@@ -382,6 +456,7 @@ FileAction = (function() {
 	
 	return {
 		init : init,
+		outFileListContent : outFileListContent,
 		createFolder : createFolder,
 		setCreateFolderHTML : setCreateFolderHTML,
 		hideCreateFolder : hideCreateFolder,
@@ -398,7 +473,8 @@ FileAction = (function() {
 		tableListTr : tableListTr,
 		tableListTrIndex : tableListTrIndex,
 		setRenameArea : setRenameArea,
-		hideRenameArea  : hideRenameArea
+		hideRenameArea  : hideRenameArea,
+		isEditing       : isEditing
 	}
 })();
 

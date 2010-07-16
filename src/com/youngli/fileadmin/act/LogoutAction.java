@@ -2,6 +2,7 @@ package com.youngli.fileadmin.act;
 
 import com.youngli.fileadmin.common.ConstantSession;
 
+
 /**
  * @author lichunping 2010-5
  *         jarryli@gmail.com 
@@ -10,11 +11,14 @@ import com.youngli.fileadmin.common.ConstantSession;
 public class LogoutAction {
 	
 	String userName;
-
+	private CookieAction cookie;
+	private SessionAction sessionAction;
+	
 	public String execute() {
-		SessionAction sessionAction = new SessionAction();
-		sessionAction.removeUserName();
-		sessionAction.remove(ConstantSession.RANDOM_NUMBER);
+		cookie = new CookieAction();
+		sessionAction = new SessionAction();
+		removeSessionUser();
+		removeRememberUser();
 		return "success";
 	}
 
@@ -25,5 +29,14 @@ public class LogoutAction {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
+	
+	public void removeSessionUser() {
+		sessionAction.removeUserName();
+		sessionAction.remove(ConstantSession.RANDOM_NUMBER);
+	}
+	
+	private void removeRememberUser() {
+		cookie.removeCookie("userName");
+		cookie.removeCookie("remember");
+	}
 }

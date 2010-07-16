@@ -1,7 +1,17 @@
+/*
+ * FileAdmin
+ * Copyright 2010 Youngli Inc. All rights reserved.
+ * 
+ * path: action.js
+ * author: lichunping/jarry
+ * version: 0.9
+ * date: 2010/06/15
+ */
 
 /**
  * 文件管理配置文件
  * 合并js时config.js放置最前面
+ * 
  */
 var global = {
 	// 根目录

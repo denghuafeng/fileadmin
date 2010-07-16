@@ -1,5 +1,5 @@
-body{font:14px "arial";color:#333;margin:0 10px;padding:0;overflow:hidden}
-html,body{height:100%;}
+body{font:14px "arial";color:#333;margin:0 10px;padding:0;}
+html,body{height:100%;overflow:hidden}
 /*
  * auto resize in window height;
 .hd{background:#e3e;height:50px;top:0;position:absolute;width:100%;}
@@ -8,15 +8,16 @@ html,body{height:100%;}
 .ft{text-align:center;background:gray;border-top:1px solid #999;margin-top:30px;padding:10px 0px;bottom:0px;position:absolute;width:100%;position:fixed;}
 */
 
-.page{background:#fdfeff;top:0;left:0;/*min-height:100%;height:auto;min-width:600px*/}
+.page{background:#fdfeff;top:0;left:0;overflow:hidden;/*min-height:100%;height:auto;min-width:600px*/}
 /*.hd{height:44px;background:#fcfdff;border-bottom:1px solid #b7c5e3;}*/
 .hd{height:44px;background:#fcfdff;border-bottom:1px solid #b7c5e3;}
-.main{background:}
+.main{background:;}
 .ft{text-align:center;margin-top:20px;bottom:0px;line-height:24px;clear:both;font-size:12px;color:#333;}
 .logo{width:200px;height:40px;background:url(../img/bg.png) no-repeat 10px 8px;background-position:left 0 bottom -26px;}
 .hd div.logo a{display:block;width:200px;height:40px;}
-.hd-panel{display:inline;top:40px;position:absolute;background:transparent;z-index:99}
-.hd-panel div.control-panel{font-size:14px;margin-top:-17px;margin-right:10px;margin-left:220px;background:transparent;text-align:;}
+.hd-panel{display:;left:220px;top:25px;position:absolute;background:;z-index:99;}
+/*.hd-panel div.control-panel{font-size:14px;margin-top:-17px;margin-right:10px;margin-left:220px;background:transparent;text-align:;}*/
+.hd-panel div.control-panel{position:;font-size:14px;}
 .create-newfolder{width:220px;padding:5px;background:#fff;border:2px solid #b7c5e3;position:absolute;z-index:102}
 .upload-area{background:#fff;display:;position:absolute;border:2px solid #b7c5e3;z-index:102;padding:0 5px;padding-top:5px;color:#999}
 #UploadPathTips,#divStatus{font-size:12px;color:#999}
@@ -31,12 +32,19 @@ html,body{height:100%;}
 .dir-list div{display:block;width:100%;}
 
 .file-list{background:;margin-left:220px;border-left:2px outset #b7c5e3}
-.file-list-content{overflow:auto;background:;width:100%}
+.file-list-title{width:auto;left:0;right:0}
+.file-list-content{overflow:auto;background:;width:auto;left:0;right:0}
 .file-table-list a {color:#333;padding-left:20px;}
+table.file-table-list{font-size:14px;border-collapse:separate;border-spacing: 0;border:0;margin:4px 0 4px 0}
 
-table.file-table-list{font-size:14px;border-collapse:separate;border-spacing: 0;border:0;width:100%;margin:4px 0 4px 0}
+table.file-table-list,  table.file-table-head{width:100%}
+*html table.file-table-list{width:96%;}
+*html table.file-table-head{width:99%;}
+*+html table.file-table-list{width:97%}
+/* *html .file-list-content{overflow-x:hidden;}*/
+
 table.file-table-list tr{height:22px;}
-table.file-table-list td{padding-left:5px;}
+table.file-table-list td{padding-left:5px;word-break:break-all;word-wrap:break-word;}
 table.file-table-list td a{text-overflow:ellipsis;text-overflow:clip;line-height:18px;height:18px;/*background:red;padding:3px;*/}
 table.file-table-list .table-name{width:35%;min-width:200px;background:#fdfeff;}
 table.file-table-list .table-size{width:15%;width:100px;background:#fdfeff}
@@ -44,7 +52,7 @@ table.file-table-list .table-modified-date{width:25%;width:200px;background:#fdf
 table.file-table-list .table-type{width:10%;width:100px;background:#fdfeff}
 table.file-table-list .table-blank{width:;background:#fdfeff}
 
-table.file-table-head{font-size:14px;border-collapse:separate;border-spacing: 0;border:0;width:100%;}
+table.file-table-head{font-size:14px;border-collapse:separate;border-spacing: 0;border:0;}
 table.file-table-head .table-name{width:35%;min-width:200px;background:#fdfeff;text-overflow:ellipsis;}
 table.file-table-head .table-size{width:15%;width:100px;background:#fdfeff}
 table.file-table-head .table-modified-date{width:25%;width:200px;background:#fdfeff}
@@ -56,17 +64,27 @@ border-left:1px solid #e3e4e6;border-right:1px solid #fcfcfd;border-top:0px soli
 text-align:left;vertical-align:middle;padding-left:5px;
 height:24px;white-space:nowrap;}
 
-.tr-over {background:#edf7fd}
+.tr-over {background:#edf7fd;}
 .file-edit-bar{border:;position:absolute;background:#edf7fd;padding:0 5px 0 5px}
 .file-edit-bar span{margin:0 5px 0 5px;}
-.file-rename-area{background:#edf7fd;position:absolute;}
+.file-rename-area{background:#edf7fd;position:absolute;padding:0 5px 0 5px;height:22px}
+.file-rename-area span{margin:0 5px 0 5px;}
 .file-rename-area input{font-size:12px;margin:0;padding:}
-
+.help-area {background:#fff;width:600px;height:400px;z-index:102;position:absolute;font-size:14px;border:2px solid #b7c5e3;}
+.help-area h2{font-weight:700;text-align:center;margin:0;font-size:16px}
+.help-area h3{font-weight:700;text-align:center}
+.help-content{overflow:auto;height:90%;margin:10px;}
+.help-content dl {width:98%;margin-top:16px;padding:0 0 8px 0;background:#f8f8f8;}
+*html .help-content dl{width:96%;;}/*ie6*/
+*+html .help-content dl{width:96%;}/*ie7*/ 
+.help-content dd {padding:2px 10px;}
+.help-content dt {background:#e5ecf9;padding:3px 0 3px 5px;margin-bottom:3px}
 
 .line-bar{background:#b7c5e3;margin-left:;clear:both;height:1px;}
 .info-panel{background:url(../img/info_panel_bg.gif) repeat-x top ;margin-left:;display:block;height:40px;padding-left:200px;padding-top:8px}
 .info-panel dl{width:30%;min-width:40px;float:left;}
 .info-panel dl.hard-size{float:left;min-width:200px;}
+.help-close{text-align:center}
 
 /**
  各种icon
@@ -129,6 +147,7 @@ height:24px;white-space:nowrap;}
 .login-form{text-align:center;}
 .login-form form{text-align:left;background:;width:350px;margin: 0 auto;border-left:2px solid #b7c5e3;padding-left:30px}
 .login-form form input{font-size:14px;}
+.login-tit span{color:red}
 .login-form ol li.login-txt{width:60px;float:left}
 .login-form ol button{font-size:16px;font-family:'微软雅黑';border:2px outset #b7c5e3;background:#fdfeff}
 .login-info-panel{height:10px;background:url(../img/info_panel_bg.gif) repeat-x top ;margin-left:;display:block;height:40px;padding-left:200px;padding-top:8px}
