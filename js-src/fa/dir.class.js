@@ -181,16 +181,16 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 				var _path = "";				
 				
 				// 重定向文件夹与直接打开文件夹
-				if (global.FIEL_WEB_ROOT_URL) {
-                    target = '_blank';
-					_path = decodeHTML(relationPath) + decodeHTML(name);
-					href = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
-					// _path = decodeSpecial(_path);
-					// 若是重定向
-					if (global.OPEN_FILE_REDIRECT) {
-						href = 'redir?url=' + href;
-					}
-				}
+//				if (global.FIEL_WEB_ROOT_URL) {
+//                    target = '_blank';
+//					_path = decodeHTML(relationPath) + decodeHTML(name);
+//					href = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
+//					// _path = decodeSpecial(_path);
+//					// 若是重定向
+//					if (global.OPEN_FILE_REDIRECT) {
+//						href = 'redir?url=' + href;
+//					}
+//				}
 				
 				// 在窗口内打开文件夹
 				if (!global.OPEN_FOLDER_NEW_WINDOW) {
