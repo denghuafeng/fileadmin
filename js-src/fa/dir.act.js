@@ -83,7 +83,7 @@ DirAction = function() {
 //				Tree.loadXML(dirUrl, Tree.selectItem(id));
 //				Tree.focusItem(id);
 				// 打开item后要超时再选择子item
-				window.setTimeout(function(){Tree.selectItem(id)}, 50);
+				window.setTimeout(function(){Tree.selectItem(id)}, 100);
 			} else {
 				Tree.selectItem(id);
 			}
