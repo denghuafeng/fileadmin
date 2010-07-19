@@ -34,5 +34,12 @@
     <function-class>com.youngli.fileadmin.common.FilePath</function-class>
     <function-signature>java.lang.String getSubDirLength(java.lang.String, java.util.List)</function-signature>
  </function> 
+ 
+    <function>  
+    <description>根据路径名是否需要增加斜杠</description>    
+    <name>getSlash</name>
+    <function-class>com.youngli.fileadmin.common.FilePath</function-class>
+    <function-signature>java.lang.String getSlash(java.lang.String)</function-signature>
+ </function> 
 
 </taglib>

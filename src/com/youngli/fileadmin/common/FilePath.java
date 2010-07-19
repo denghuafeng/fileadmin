@@ -198,6 +198,22 @@ public class FilePath {
 		}*/
 		return len;
 	}
+
+	/**
+	 * 根据路径名是否需要增加斜杠
+	 * 若路径最后字符不是斜杠(/或者\),就返回一个斜杠
+	 * @param path 路径
+	 * @return 返回斜杠或空字符 
+	 */
+	public static String getSlash(String path) {
+		if (path == null || path.trim().equals("")) return "";
+		int len = path.length();
+		String last = path.substring(len - 1, len);
+		if (last.equals("/") || last.equals("\\")) {
+			return "";
+		}
+		return "/"; 
+	}
 	
 	/**
 	 * path Test Program

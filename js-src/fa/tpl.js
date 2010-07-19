@@ -1,8 +1,8 @@
-/*
+/**
  * FileAdmin
  * Copyright 2010 Youngli Inc. All rights reserved.
  * 
- * path: tpl.js
+ * path: js-src/fa/tpl.js
  * author: lichunping/jarry
  * version: 0.9
  * date: 2010/06/15
@@ -11,7 +11,7 @@
 /**
  * 模板文件
  * 用来临时创建页面
- * 
+ * @author lichunping/jarry
  */
 
 var HTMLTemplate = {
@@ -42,9 +42,9 @@ var HTMLTemplate = {
 
 	editHTML : 
 	''
-	+ '<span><a href="javascript:FileAction.deleteFile(FileAction.tableListTr, FileAction.tableListTrIndex)">删除</a></span>'
+	+ '<span><a href="javascript:FileAction.deleteFile(FileAction.tableListTr)">删除</a></span>'
 	+ '<span><a href="javascript:FileAction.setRenameArea(FileAction.tableListTr)">更名</a></span>'
-	+ '<span><a href="javascript:FileAction.copyFile(FileAction.tableListTr, FileAction.tableListTrIndex)">复制</a></span>',
+	+ '<span><a href="javascript:FileAction.copyFile(FileAction.tableListTr)">复制</a></span>',
 
 	renameHTML : 
 	 '<input id="Rename" value="" size="30" />'

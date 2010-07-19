@@ -1,4 +1,4 @@
-﻿//v.2.5 build 91111
+//v.2.5 build 91111
 
 /*
 Copyright DHTMLX LTD. http://www.dhtmlx.com
@@ -723,8 +723,8 @@ _dhtmlxError.prototype.throwError=function(type, name, params){
 
 	if (this.catches["ALL"])
 		return this.catches["ALL"](type, name, params);
-
-	alert("Error type: "+arguments[0]+"\nDescription: "+arguments[1]);
+	// disabled error by jarryli@gmail.com
+	//alert("Error type: "+arguments[0]+"\nDescription: "+arguments[1]);
 	return null;
 }
 

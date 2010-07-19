@@ -1,6 +1,17 @@
 
-/*
+/**
+ * FileAdmin
+ * Copyright 2010 Youngli Inc. All rights reserved.
+ * 
+ * path: js-src/com/com.js
+ * author: lichunping/jarry
+ * version: 0.9
+ * date: 2010/06/15
+ */
+ 
+/**
  * FA使用的公共函数库
+ * author: lichunping/jarry
  */
  
  /**
@@ -153,7 +164,7 @@ var decodeSpecial = function(str) {
  * @author jarryli@gmail.com
  */
 var getSlash = function(path) {
-	if (path == null ||path.length <= 0) return path;
+	if (path == null || path.length <= 0) return path;
 	var last = path.substring(path.length - 1);
 	//alert(path + " | " + last);
 	if (last == '/' || last == '\\') {
@@ -163,13 +174,57 @@ var getSlash = function(path) {
 }
 
 /**
+ * 若最后一个字符是斜杠或反斜杠，就删除斜杠
+ * @param {String} path 路径, 长度不小于1
+ * @param {String} path 新路径
+ */
+var removeLastSlash = function(path) {
+	if (path == null || path.length <= 1) return path;
+	var last = path.substring(path.length - 1);
+	if (last == '/' || last == '\\') {
+		return path.substr(0, path.length - 1);
+	}
+	return path;
+}
+
+/**
+ * 根据路径名返回上一级目录
+ * @param {String} path 路径
+ * @return {String} slash 新路径
+ * @author jarryli@gmail.com
+ */
+var	getParentPath = function(path) {
+	if (path == null || path.length <= 0) return path;
+	var parentPath = path;
+	parentPath = removeLastSlash(parentPath);
+	parentPath = replaceSlash(parentPath);
+	// 若最后一位是斜杠，则先移除最后一个字符
+	// 把反斜杠(\)替换成斜杠(/)
+	var lastSlash = parentPath.lastIndexOf("/");
+	if (lastSlash != -1 ) {
+		return parentPath.substr(0, lastSlash + 1);
+	}
+	return path;
+}
+
+/**
  * 给JS加上转义字符，仅包含单引号与双引号
  */
 var encodeJS = function (str) {
 	str = str.replace(/'/g, '\'');
 	str = str.replace(/"/g, '\"');
-	alert(str);
 	return str;
+}
+
+/**
+ * 给JS加上转义字符，仅包含单引号与双引号
+ * 因为用作js传递参数，需要给\再转义
+ * 在dir.class.js在窗口内打开文件夹用到
+ */
+var encodeforJS = function(str) {
+	str = str.replace(/'/g, '\\\'');
+	str = str.replace(/"/g, '\\\"');
+	return str;	
 }
 
 // 特殊字符，含不允许单引号
@@ -186,25 +241,6 @@ var isAvailableName = function(name) {
 	var regexp = /[\\\/:*?\"<>|]+/g;
 	// var regexp = /[\\\/:*?\"<>|\']+/g; // 不允许单引号
 	return !regexp.test(name);
-}
-/**
- * 删除最后一个斜杠或反斜杠
- * @param str {String} 
- * @return str {String}
- */
-var removeLastSlash = function(str) {
-	if (str == null || str.length <= 0) return str;
-	var lastStr = str.substr(str.length -1);
-	if (lastStr == "/") {
-		str = str.substr(0, str.length -1);
-	}
-	
-	if (lastStr == "\\") {
-		str = str.substr(0, str.length -1);
-	}
-	 
-	return str;
-	
 }
 
 /**

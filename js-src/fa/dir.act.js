@@ -1,8 +1,8 @@
-/*
+/**
  * FileAdmin
  * Copyright 2010 Youngli Inc. All rights reserved.
  * 
- * path: action.js
+ * path: js-src/fa/dir.act.js
  * author: lichunping/jarry
  * version: 0.9
  * date: 2010/06/15
@@ -11,7 +11,7 @@
 /**
  * 目录Action
  * 目录显示功能事件
- *
+ * @author lichunping/jarry
  */
 DirAction = function() {
 
@@ -47,7 +47,7 @@ DirAction = function() {
 	
 	var getDirJSON = function(path) {
 		var url = dirPath + '?path=' + encodeURIComponent(path);
-		var xhr = ajax.get(url, parseDirJSON);
+		var xhr = ajax.get(url, _parseDirJSON);
 	}
 
 	/**
@@ -55,7 +55,7 @@ DirAction = function() {
 	 * @param {object} xhr对象
 	 * @param {String} xhr获得的结果
 	 */
-	var parseDirJSON = function(xhr, responseText) {
+	var _parseDirJSON = function(xhr, responseText) {
 		eval(responseText);
 		dirClass.setFileAndFolderList(DIR);
 		dirClass.setInfoPanel(DIR);
@@ -67,13 +67,28 @@ DirAction = function() {
 	 * @param {String} path 路径
 	 */
 	var openFolder = function(path) {
-	//	alert(path + " \n\r " + encodeURL(path));
-	//	可以通过找到tree里面的几点，刷新相应节点的数据，做到同步响应
-		var url = encodeURL(path);
-		if (global.OPEN_FILE_REDIRECT) {
-			url = 'redir?url=' + url;		
+		// 找到tree里面的节点，刷新相应节点的数据，做到同步响应		
+		if (global.OPEN_FOLDER_UPDATE_TREE) {
+			// loadXML and refresh dir tree;
+//			var id = encodeURL(path);		
+			var id = decodeHTML(path) + getSlash(path);
+			var sn = (new Date()).valueOf();	
+			var parentPath = getParentPath(id);
+			var dirUrl = "dir!getTree.action?id=" + id;
+			dirUrl = dirUrl + "&uid=" + sn;
+			if (Tree.getOpenState(parentPath) != 1 && Tree.getOpenState(id) != 1) {
+				// 如果不是打开状态则加载内容并打开
+				Tree.openItem(parentPath);
+				// 有openItem可以不再重新load Tree
+//				Tree.loadXML(dirUrl, Tree.selectItem(id));
+//				Tree.focusItem(id);
+				// 打开item后要超时再选择子item
+				window.setTimeout(function(){Tree.selectItem(id)}, 50);
+			} else {
+				Tree.selectItem(id);
+			}
 		}
-		window.open(url);
+		getDirJSON(path);
 	}
 	
 	return {
