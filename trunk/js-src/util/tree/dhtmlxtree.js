@@ -1,4 +1,4 @@
-﻿//v.2.5 build 91111
+//v.2.5 build 91111
 
 /*
  Copyright DHTMLX LTD. http://www.dhtmlx.com

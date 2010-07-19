@@ -35,7 +35,7 @@ public class DirAction {
 		previousPath = FilePath.getPreviousPath(absolutePath);
 		//DirectoryImpl dir = new DirectoryImpl(absolutePath);
 		dir = new DirectoryImpl(absolutePath);
-		dir.setPath(absolutePath);
+//		dir.setPath(absolutePath);
 		filesName = dir.getFilesName();
 		foldersName = dir.getFoldersName();
 		

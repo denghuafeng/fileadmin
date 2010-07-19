@@ -1,8 +1,8 @@
-/*
+/**
  * FileAdmin
  * Copyright 2010 Youngli Inc. All rights reserved.
  * 
- * path: action.js
+ * path: js-src/fa/dir.class.js
  * author: lichunping/jarry
  * version: 0.9
  * date: 2010/06/15
@@ -11,6 +11,8 @@
 /**
  * 生成目录列表与文件列表的类
  * @param {object} 生成目录对象的类
+ * @author lichunping/jarry
+ * 
  */
 function Directory(DIR) {
 	this.DIR = DIR ? DIR : window.DIR;
@@ -23,13 +25,19 @@ function Directory(DIR) {
 }
 
 /**
- * @author chunping
+ * @private
+ * @author jarryli@gmail.com
  * @param {array} html html数组
  */
-Directory.prototype.setHTML = function(html) {
+Directory.prototype._setHTML = function(html) {
 	this.html = html;
 }
-Directory.prototype.getHTML = function() {
+/**
+ * @private
+ * @author jarryli@gmail.com
+ * @return {string} html串
+ */
+Directory.prototype._getHTML = function() {
 	return this.html;
 }
 
@@ -101,7 +109,7 @@ Directory.prototype.getDirListHTML = function(_DIR) {
 	*/
 	}
 	
-	this.setHTML(html);
+	this._setHTML(html);
 	return html.join('');
 }
 
@@ -168,24 +176,35 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 			var type = '&nbsp;';
 			var href = '#';
 			var target = '';
-			if (file.type == 'folder') {		
-				target = '_blank';
-				// href = 'javascript:DirAction.openFolder(\'' +  encodeJS(_path) + '\');';
+			// 文件夹链接
+			if (file.type == 'folder') {			
+				var _path = "";				
+				
+				// 重定向文件夹与直接打开文件夹
 				if (global.FIEL_WEB_ROOT_URL) {
-					// 文件夹链接	
-					var _path = decodeHTML(relationPath) + decodeHTML(name);
+                    target = '_blank';
+					_path = decodeHTML(relationPath) + decodeHTML(name);
 					href = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
 					// _path = decodeSpecial(_path);
-					// 增加重定向
+					// 若是重定向
 					if (global.OPEN_FILE_REDIRECT) {
 						href = 'redir?url=' + href;
 					}
-				} 
-				type = 'folder';
-				hrefClass = getFolderIconCss();			
+				}
 				
-			} else {
-				// 文件链接
+				// 在窗口内打开文件夹
+				if (!global.OPEN_FOLDER_NEW_WINDOW) {
+					target = '';
+					_path = decodeHTML(_uploadPath)  + getSlash(_uploadPath) + decodeHTML(name);
+					href = 'javascript:DirAction.openFolder(\'' +  encodeforJS(_path) + '\');';
+				}
+				
+				type = 'folder';
+				hrefClass = getFolderIconCss();				
+			} 
+			
+			// 文件链接
+			if (file.type != 'folder') {			
 				href = '#';
 				if (global.FIEL_WEB_ROOT_URL) {
 					var _path = decodeHTML(relationPath) + decodeHTML(name);
@@ -222,7 +241,7 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 		html.push("</table>");
 		
 	}
-	this.setHTML(html);
+	this._setHTML(html);
 	return html.join('');
 }
 
@@ -244,7 +263,7 @@ Directory.prototype.getFileListHTML = function(_DIR) {
 			html.push('<a href="' + href + '">' + name + '</a><br/>');
 		}
 	}
-	this.setHTML(html);
+	this._setHTML(html);
 	return html.join('');
 }
 
@@ -270,7 +289,7 @@ Directory.prototype.getInfoPanelHTML = function(_DIR) {
 		html.push(' , 还剩: ' + DIR.hardPartition.freeSpace +  ' </dd></dl>');
 		
 	}
-	this.setHTML(html);
+	this._setHTML(html);
 	return html.join('');
 }
 

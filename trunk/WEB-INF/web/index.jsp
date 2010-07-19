@@ -22,10 +22,10 @@
 		<div class="dir-list" id="DirList"></div>
 		<div class="file-list" id="FileList">
 			<div class="file-list-title" id="FileListTitle">&nbsp;</div>
-			<div class="file-list-content" id="FileListContent">The file list table is loading</div>
+			<div class="file-list-content" id="FileListContent"><h2>&nbsp;&nbsp;Loading...&nbsp;&nbsp;<br/><br/><br/></h2></div>
 		</div>
 	<div class="line-bar">&nbsp;</div>
-	<div class="info-panel" id="InfoPanel">The info area is loading</div>
+	<div class="info-panel" id="InfoPanel">&nbsp;</div>
 	</div> 
 <script type="text/javascript" src="js/fa.js"></script>
 </div>

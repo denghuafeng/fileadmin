@@ -8,7 +8,7 @@
 		<c:forEach var="name" items="${foldersName}">
 			<c:set var="subDirLenth" value="${file:getSubDirLength(name, foldersHasSubDir)}"></c:set>				
 			<c:set var="name" value="${char:encodeHTML(name)}"></c:set>	
-			<c:set var="itemPath" value="${root}${name}"></c:set>
+			<c:set var="itemPath" value="${root}${file:getSlash(root)}${name}/"></c:set>
 			<item child='${subDirLenth}' id='${itemPath}' text='${name}'></item>
 		</c:forEach>
 </item>
@@ -22,7 +22,7 @@
 		<c:forEach var="name" items="${foldersName}">	
 			<c:set var="subDirLenth" value="${file:getSubDirLength(name, foldersHasSubDir)}"></c:set>
 			<c:set var="name" value="${char:encodeHTML(name)}"></c:set>	
-			<c:set var="itemPath" value="${id}/${name}"></c:set>
+			<c:set var="itemPath" value="${id}${file:getSlash(id)}${name}/"></c:set>
 			<item child='${subDirLenth}' id='${itemPath}' text='${name}'>
 			</item>
 		</c:forEach>
