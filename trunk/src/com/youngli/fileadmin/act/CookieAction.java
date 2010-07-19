@@ -53,14 +53,16 @@ public class CookieAction {
 		if (cookieName == null) return null;
 		Cookie[] cookies = request.getCookies();
 		String cookieValue = "";
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie c = cookies[i];
-            String name = c.getName();
-            String value = c.getValue();
-            if (name.equals(cookieName)) {
-            	return value;
-            }
-        }
+		if (cookies != null) {
+	        for (int i = 0; i < cookies.length; i++) {
+	            Cookie c = cookies[i];
+	            String name = c.getName();
+	            String value = c.getValue();
+	            if (name.equals(cookieName)) {
+	            	return value;
+	            }
+	        }
+		}
         return cookieValue;
 	}
 	
@@ -112,15 +114,17 @@ public class CookieAction {
 	public void removeCookiesByValue(String cookieValue) {
 		if (cookieValue == null) return;
 		Cookie[] cookies = request.getCookies();
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie c = cookies[i];
-            String value = c.getValue();
-            if (value.equals(cookieValue)) {
-            	cookies[i].setValue(null);
-            	cookies[i].setMaxAge(0);
-            	response.addCookie(cookies[i]);
-            }
-        }
+		if (cookies != null) {
+	        for (int i = 0; i < cookies.length; i++) {
+	            Cookie c = cookies[i];
+	            String value = c.getValue();
+	            if (value.equals(cookieValue)) {
+	            	cookies[i].setValue(null);
+	            	cookies[i].setMaxAge(0);
+	            	response.addCookie(cookies[i]);
+	            }
+	        }
+		}
 	}
 	
 	/**
@@ -132,15 +136,17 @@ public class CookieAction {
 	public void removeCookieByName(String cookieName) {
 		if (cookieName == null) return;
 		Cookie[] cookies = request.getCookies();
-        for (int i = 0; i < cookies.length; i++) {
-            Cookie c = cookies[i];
-            String name = c.getName();
-            if (name.equals(cookieName)) {
-            	cookies[i].setValue(null);
-            	cookies[i].setMaxAge(0);
-            	response.addCookie(cookies[i]);
-            }
-        }
+		if (cookies != null) {
+	        for (int i = 0; i < cookies.length; i++) {
+	            Cookie c = cookies[i];
+	            String name = c.getName();
+	            if (name.equals(cookieName)) {
+	            	cookies[i].setValue(null);
+	            	cookies[i].setMaxAge(0);
+	            	response.addCookie(cookies[i]);
+	            }
+	        }
+		}
 	}
 	
 }
