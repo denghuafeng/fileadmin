@@ -42,9 +42,13 @@ var HTMLTemplate = {
 
 	editHTML : 
 	''
-	+ '<span><a href="javascript:FileAction.deleteFile(FileAction.tableListTr)">删除</a></span>'
+/*	+ '<span><a href="javascript:FileAction.deleteFile(FileAction.tableListTr)">删除</a></span>'
 	+ '<span><a href="javascript:FileAction.setRenameArea(FileAction.tableListTr)">更名</a></span>'
 	+ '<span><a href="javascript:FileAction.copyFile(FileAction.tableListTr)">复制</a></span>',
+*/
+	+ '<span><a href="javascript:FileAction.deleteFile(FileAction.tableListTr)" class="edit-delete" title="删除">&nbsp;</a></span>'
+	+ '<span><a href="javascript:FileAction.setRenameArea(FileAction.tableListTr)" class="edit-rename" title="重命名">&nbsp;</a></span>'
+	+ '<span><a href="javascript:FileAction.copyFile(FileAction.tableListTr)" class="edit-copy" title="复制">&nbsp;</a></span>',
 
 	renameHTML : 
 	 '<input id="Rename" value="" size="30" />'

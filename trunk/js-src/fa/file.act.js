@@ -180,7 +180,6 @@ FileAction = (function() {
 			var left = dom.getPosition(trObj).left;
 			var top = dom.getPosition(trObj).top;
 			left += 200; // add 200px for file name display
-			top += 3;
 			fileClass.setPosition(g('FileEditBar'), left, top);      
 			_showFileEditBar();
 		} catch (ex) {
