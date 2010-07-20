@@ -129,7 +129,8 @@ public class DirectoryImpl implements Directory {
 		
 		//size  = (double)file.getFreeSpace() / 1024 / 1024 / 1024;
 		//String freeSpace  = numFormat.format(size);	
-		double useableSpace = Double.valueOf(totalSpace) - Double.valueOf(freeSpace);
+		double useableSize = Double.valueOf(totalSpace) - Double.valueOf(freeSpace);
+		String useableSpace    = numFormat.format(useableSize);
 		
 		addProperty(propertiesName[7], String.valueOf(totalSpace));
 		addProperty(propertiesName[8], String.valueOf(freeSpace));
