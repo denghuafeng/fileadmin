@@ -93,13 +93,15 @@ public class DirectoryImpl implements Directory {
 	}
 	
 	private int hasSubDir(File folder) {
-		int count = 0;
+		int count = 0;		
 		try {
-			File fileArray[] = folder.listFiles();
-			for (int i = 0; i < fileArray.length; i++) {
-				File file = fileArray[i];
-				if (file.isDirectory()) {
-					count ++;
+			if (folder != null && folder.isDirectory()) {
+				File fileArray[] = folder.listFiles();
+				for (int i = 0; i < fileArray.length; i++) {
+					File file = fileArray[i];
+					if (file.isDirectory()) {
+						count ++;
+					}
 				}
 			}
 		} catch (Exception e) {
