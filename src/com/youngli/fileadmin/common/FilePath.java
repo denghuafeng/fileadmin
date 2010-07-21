@@ -1,12 +1,13 @@
 package com.youngli.fileadmin.common;
-
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.youngli.fileadmin.act.SessionAction;
 
 /**
  * @author lichunping 2010-5 jarryli@gmail.com 
@@ -14,23 +15,47 @@ import java.util.Map;
  */
 public class FilePath {
 	
-	public static String ROOT_PATH = getRootPath();
+	public static String ROOT_PATH;
 	
 	public FilePath() {
 		ROOT_PATH = getRootPath();
 	}
 	
+	/**
+	 * 根据用户名来获取用户名对应的根目录信息
+	 * getRootPath:
+	 *
+	 * @return      
+	 * @since
+	 */
 	public static String getRootPath() {
+		String path = "";
 		try {
 			String webInfPath = new File(FilePath.class.getResource("/").getPath()).getParent();
 			String propertiesPath = webInfPath + "/classes/fileadmin.properties";			
-			ConfigProperties configProps = new ConfigProperties(propertiesPath);
-			return configProps.getValue("fileadmin.root.path");				
+			ConfigProperties configProps = new ConfigProperties(propertiesPath);		
+			String userName = new SessionAction().getUserName();
+			if (userName != null) {
+				path = configProps.getValue("fileadmin." + userName + ".root.path");
+			}
+			return path;				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "";
-	}
+	return path;
+}
+	
+//	public static String getRootPath() {
+//		try {
+//			String webInfPath = new File(FilePath.class.getResource("/").getPath()).getParent();
+//			String propertiesPath = webInfPath + "/classes/fileadmin.properties";			
+//			ConfigProperties configProps = new ConfigProperties(propertiesPath);
+//			return configProps.getValue("fileadmin.root.path");				
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return "";
+//	}
 	
 	/**
 	 * set default root path, if it has not root path, add root path for the path;
@@ -272,6 +297,24 @@ public class FilePath {
 		System.out.println(System.getProperty("user.dir")); 
 		System.out.println("物理路径分割符是： " + System.getProperty("file.separator") );
 		*/
+		
+		System.out.println("====:");
+		String webInfPath = new File(FilePath.class.getResource("/").getPath()).getParent();
+		String propertiesPath = webInfPath + "/classes/fileadmin.properties";			
+		ConfigProperties configProps = new ConfigProperties(propertiesPath);
+		System.out.println(configProps.getPropertie().elements());
+		
+		
+		Enumeration<Object> e =  configProps.getPropertie().elements();	
+		while (e.hasMoreElements()) {
+		    String key = (String)e.nextElement();
+		    System.out.println(key);
+		}
+		
+//		configProps.getPropertie().list(System.out);		
+//		String s = configProps.getValue("ileadmin.admin.username", "ileadmin.admin.username");
+//		System.out.print(s);
+		
 		
 		String local   =   Locale.getDefault().toString();
 		String sysLang   = System.getProperty("user.language");
