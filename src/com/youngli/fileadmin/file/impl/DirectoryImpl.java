@@ -54,7 +54,7 @@ public class DirectoryImpl implements Directory {
 	public void setFileList() {
 		if (path == null) return;
 		file = new File(path);
-		if (!file.exists()) {
+		if (file == null || !file.exists()) {
 		        System.out.println(this.path +" the folder not exists");
 		        return;
 		}

@@ -208,6 +208,16 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 				href = '#';
 				if (global.FIEL_WEB_ROOT_URL) {
 					var _path = decodeHTML(relationPath) + decodeHTML(name);
+					
+//					// 针对ut服务器单独设置web目录浏览，其他服务器没有这个目录可以不用
+//					if (_DIR.root != "/home/work/www/") {
+//						var _absolutePath = DIR.absolutePath;
+//						if (_absolutePath.substr(0, 1) == '/') { 
+//							_absolutePath = _absolutePath.substr(1);
+//						}
+//						_path = decodeHTML(_absolutePath) + decodeHTML(name);
+//					}
+					
 					href = global.FIEL_WEB_ROOT_URL + encodeURL(_path);
 				// 增加重定向	
 					if (global.OPEN_FILE_REDIRECT) {
