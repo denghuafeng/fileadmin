@@ -1,5 +1,11 @@
 package com.youngli.fileadmin.act;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+
 import com.youngli.fileadmin.common.ConfigProperties;
 import com.youngli.fileadmin.common.FilePath;
 import com.youngli.fileadmin.common.StringUtils;
@@ -16,12 +22,15 @@ public class LoginAction {
 	private String validateCode;
 	private String remember;
 	private double random;	
-	private String message;
-	
+	private String message;	
 	private CookieAction cookie;
+	
+	// 存储在properties里面的用户信息列表
+	private List<Hashtable<String, String>> userList;
 	
 	public LoginAction() {
 		cookie = new CookieAction();
+		userList = getUserList();
 	}
 	
 	public String execute() {
@@ -33,7 +42,7 @@ public class LoginAction {
 			return "failed";
 		}
 		
-		if (checkUserName(userName) && checkPassWord(passWord) && checkValidateCode(validateCode)) {
+		if (checkUserNameAndPassWord(userName, passWord) && checkValidateCode(validateCode)) {
 			new SessionAction().setUserName(userName);
 			setMessage("loginSuccess");
 			// if selected remember user
@@ -62,17 +71,87 @@ public class LoginAction {
 	}
 	
 	public boolean checkUserName(String userName) {
-		if (userName != null) {	
-			String webInfPath = new File(FilePath.class.getResource("/").getPath()).getParent();
-			String propertiesPath = webInfPath + "/classes/fileadmin.properties";			
-			ConfigProperties configProps = new ConfigProperties(propertiesPath);
-			String user = configProps.getValue("fileadmin.admin.username");
+//		for single user
+//		if (userName != null) {	
+//			String webInfPath = new File(FilePath.class.getResource("/").getPath()).getParent();
+//			String propertiesPath = webInfPath + "/classes/fileadmin.properties";			
+//			ConfigProperties configProps = new ConfigProperties(propertiesPath);
+//			String user = configProps.getValue("fileadmin.admin.username");			
+//			return userName.toLowerCase().equals(user);
+//		}	
 			
-			return userName.toLowerCase().equals(user);
+		if (userName != null && userList != null) {
+			Map<String, String> userMap = new HashMap<String, String>();			
+			for (int i = 0; i < userList.size(); i++) {
+				userMap = (Map<String, String>) userList.get(i);
+				if (userMap.get("userName").equals(userName)) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
-
+	
+	/**
+	 * 
+	 * checkUserNameAndPassWord:
+	 *	根据用户名、密码查找uesrList里面的对应信息，如果确认一致则返回true
+	 *
+	 * @param userName
+	 * @param passWord
+	 * @return  密码是否正确    
+	 * @since
+	 */
+	public boolean checkUserNameAndPassWord(String userName, String passWord) {
+		if (userName != null && passWord != null && userList != null) {
+			Map<String, String> userMap = new HashMap<String, String>();
+			for (int i = 0; i < userList.size(); i++) {
+				userMap = (Map<String, String>) userList.get(i);
+				if (userMap.get("userName").equals(userName)
+						&& userMap.get("passWord").equals( StringUtils.md5(passWord))
+					) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * getUserList:
+	 *			根据fileadmin.properties文件里面的对应信息获取用户名、密码，用户的根目录等信息
+	 *			这里没有使用数据库，使用临时的properties来存储用户与根目录信息，支持10个用户
+	 * @return  userList 用户列表 List<Map<userName, passWord, String>>
+	 * @since 1.0
+	 */
+	public List<Hashtable<String, String>> getUserList() {		
+		String webInfPath = new File(FilePath.class.getResource("/").getPath()).getParent();
+		String propertiesPath = webInfPath + "/classes/fileadmin.properties";			
+		ConfigProperties configProps = new ConfigProperties(propertiesPath);
+		
+		String userName;		// fileadmin.adminX.username
+		String passWord;		// fileadmin.adminX.password
+		String rootPath;
+		Hashtable<String, String> userMap = new Hashtable<String, String>();
+		List<Hashtable<String, String>> userList
+										  = new ArrayList<Hashtable<String, String>>();
+		for (int i = 1; i <= 10; i++) {
+			userName = configProps.getValue("fileadmin.admin" + i + ".username");
+			passWord = configProps.getValue("fileadmin.admin" + i + ".password");
+			if (userName != null && !userName.isEmpty()
+					&& passWord != null && !userName.isEmpty()
+					) {
+				rootPath = configProps.getValue("fileadmin." + userName + ".root.path");
+				userMap.put("userName", userName);
+				userMap.put("passWord", passWord);
+				userMap.put("rootPath", rootPath);
+				userList.add(userMap);
+				userMap = new Hashtable<String, String>();
+			}
+		}
+		return userList;
+	}
+	
 	public boolean isLogon() {
 		// 先检查cookie
 		String userName;
@@ -88,10 +167,10 @@ public class LoginAction {
 		// 再检查session
 		SessionAction sessionAction = new SessionAction();
 		userName = sessionAction.getUserName();	
-		if (userName != null && userName.length() > 0) {	
-				if (checkUserName(userName)) {
-					return true;
-				}
+		if (userName != null && userName.length() > 0) {
+			if (checkUserName(userName)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -118,7 +197,7 @@ public class LoginAction {
 			return validateCode.toLowerCase().equals(randomNumber.toLowerCase());
 		
 		return false;
-	}
+	}	
 	
 	public double getRandom() {
 		return random;
@@ -166,6 +245,10 @@ public class LoginAction {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public void setUserList(List<Hashtable<String, String>> userList) {
+		this.userList = userList;
 	}	
 	
 }
