@@ -31,6 +31,9 @@ DirAction = function() {
 		var h = document.body.offsetHeight ;
 		h = h > 200 ? h : 200;
 		var height = h - 180;
+		if(browser.ie <= 6){
+			height = h - 200;
+		}
 		dom.setStyle(FileListContent, "height", height);
 		dom.setStyle(DirList, "height", height + 41);
 	}
