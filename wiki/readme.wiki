@@ -30,6 +30,7 @@
 	 - copyfile.xml     copy 目录与文件
 	 - compress.xml     压缩js与css
 
+
 	+ css      css文件夹，统一压缩后
 	  - module1.css
 	  - default.css
@@ -46,6 +47,7 @@
 	+ tools   一些辅助工具文件夹
 
 
+
 	+ WEB-INF 编译后程序文件夹
 	  + classes  Java运行程序
 	  + lib      用户的Jar包
@@ -56,11 +58,14 @@
 	  *.properties Java配置文件
 
 
+
 	+ work    Web Server 工作路径，一般在Tomcat里配置，本处work无用
+
 
 	.classpath Java编译路径文件，供eclipse使用
 	.#webclasspath Java用户项目编译包，供eclipse使用
 	.tomcatplugin  Tomcat补丁文件，供eclipse使用
+
 
 	upload.jsp 上传测试文件
 
@@ -68,23 +73,38 @@
 == 要上线的文件夹列表 ==
 ----------------------------------
 	+ css
+
 	+ error
+
 	+ help
+
 	+ img
+
 	+ js
+
 	+ swf
+
 	+ WEB-INF 
+
 	(WEB-INF/src不上线)
 
 
 == 不需要上线的文件夹列表 ==
 ----------------------------------
 	- build
+
 	- css-src
+
 	- js-src
+
 	- readme
+
 	- src
+
 	- tools
-	- work
+
 	- WEB-INF/src/
+
 	以及相关编译路径文件
+
+== 使用前请详细阅读readme ==
