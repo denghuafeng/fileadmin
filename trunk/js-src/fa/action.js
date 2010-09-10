@@ -29,36 +29,3 @@ var UPLOAD = UPLOAD || {};
 	UPLOAD.uploadPath = UPLOAD.uploadPath || '';
 var Tree = Tree || {};
 var SWFUP = SWFUP || {};
-
-/**
- * action文件的出错信息处理
- * 主要用在无权限访问页面时
- */
-function hasError() {
- 	
- 	this.showTips = function(ErrorMessage) {
- 		var str = [];
- 		var len = 0;
- 		for (var item in ErrorMessage) {
- 			str.push(ErrorMessage[item] + '\r\n');
- 			len ++;
- 		}
- 		
- 		if (len > 0) {
-			alert(str.join(''));
-			//delete ErrorMessage;
-			ErrorMessage = {};
-			gotoUrl();
-			return true;
- 		}
- 		// 错误提示小于0，表示空，可返回true
- 		return false;
- 	}
- 	
- 	this.gotoUrl = function() {
- 		window.location.replace(global.FA_LOGIN_URL);
- 	}
- 
- 	return showTips(ErrorMessage);
-
- }

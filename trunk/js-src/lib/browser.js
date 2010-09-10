@@ -13,7 +13,8 @@
 /**
  * 声明browser包
  */
-var browser = browser || {};
+Youngli.browser = Youngli.browser || {};
+
 /*
  * 
  * Copyright 2009 Young li Inc. All rights reserved.
@@ -24,13 +25,13 @@ var browser = browser || {};
  * date: 2009/11/24
  */
 
-///import browser;
+///import Youngli.browser;
 
 /**
  * 判断是否为safari浏览器
  */
 if (/chrome\/(\d+\.\d)/i.test(navigator.userAgent)) {
-    browser.chrome = parseFloat(RegExp['\x241']);
+    Youngli.browser.chrome = parseFloat(RegExp['\x241']);
 }
 /*
  * 
@@ -42,13 +43,13 @@ if (/chrome\/(\d+\.\d)/i.test(navigator.userAgent)) {
  * date: 2009/11/23
  */
 
-///import browser;
+///import Youngli.browser;
 
 /**
  * 判断是否为firefox浏览器
  */
 if (/firefox\/(\d+\.\d)/i.test(navigator.userAgent)) {
-    browser.firefox = parseFloat(RegExp['\x241']);
+    Youngli.browser.firefox = parseFloat(RegExp['\x241']);
 }
 /*
  * 
@@ -60,13 +61,13 @@ if (/firefox\/(\d+\.\d)/i.test(navigator.userAgent)) {
  * date: 2009/11/23
  */
 
-///import browser;
+///import Youngli.browser;
 
 /**
  * 判断是否为ie浏览器
  */
 if (/msie (\d+\.\d)/i.test(navigator.userAgent)) {
-    ie = browser.ie = parseFloat(RegExp['\x241']);
+    ie = Youngli.browser.ie = parseFloat(RegExp['\x241']);
 }
 
 /*
@@ -79,12 +80,12 @@ if (/msie (\d+\.\d)/i.test(navigator.userAgent)) {
  * date: 2009/11/23
  */
 
-///import browser;
+///import Youngli.browser;
 
 /**
  * 判断是否为isGecko
  */
-browser.isGecko = /gecko/i.test(navigator.userAgent) && !/like gecko/i.test(navigator.userAgent);
+Youngli.browser.isGecko = /gecko/i.test(navigator.userAgent) && !/like gecko/i.test(navigator.userAgent);
 /*
  * 
  * Copyright 2009 Young li Inc. All rights reserved.
@@ -95,12 +96,12 @@ browser.isGecko = /gecko/i.test(navigator.userAgent) && !/like gecko/i.test(navi
  * date: 2009/11/23
  */
 
-///import browser;
+///import Youngli.browser;
 
 /**
  * 判断是否为标准模式
  */
-browser.isStrict = document.compatMode == "CSS1Compat";
+Youngli.browser.isStrict = document.compatMode == "CSS1Compat";
 /*
  * 
  * Copyright 2009 Young li Inc. All rights reserved.
@@ -111,12 +112,12 @@ browser.isStrict = document.compatMode == "CSS1Compat";
  * date: 2009/11/23
  */
 
-///import browser;
+///import Youngli.browser;
 
 /**
  * 判断是否为isWebkit
  */
-browser.isWebkit = /webkit/i.test(navigator.userAgent);
+Youngli.browser.isWebkit = /webkit/i.test(navigator.userAgent);
 /*
  * 
  * Copyright 2009 Young li Inc. All rights reserved.
@@ -127,14 +128,14 @@ browser.isWebkit = /webkit/i.test(navigator.userAgent);
  * date: 2009/11/23
  */
 
-///import browser;
+///import Youngli.browser;
 
 /**
  * 判断是否为maxthon浏览器
  */
 try {
     if (/(\d+\.\d)/.test(external.max_version)) {
-        browser.maxthon = parseFloat(RegExp['\x241']);
+        Youngli.browser.maxthon = parseFloat(RegExp['\x241']);
     }
 } catch (e) {}
 /*
@@ -147,13 +148,13 @@ try {
  * date: 2009/11/23
  */
 
-///import browser;
+///import Youngli.browser;
 
 /**
  * 判断是否为opera浏览器
  */
 if (/opera\/(\d+\.\d)/i.test(navigator.userAgent)) {
-    browser.opera = parseFloat(RegExp['\x241']);
+    Youngli.browser.opera = parseFloat(RegExp['\x241']);
 }
 /*
  * 
@@ -165,12 +166,13 @@ if (/opera\/(\d+\.\d)/i.test(navigator.userAgent)) {
  * date: 2009/11/23
  */
 
-///import browser;
+///import Youngli.browser;
 
 /**
  * 判断是否为safari浏览器
  */
 if ((/(\d+\.\d)(\.\d)?\s+safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent))) {
-    browser.safari = parseFloat(RegExp['\x241']);
+    Youngli.browser.safari = parseFloat(RegExp['\x241']);
 }
  
+var browser = Youngli.browser || {};

@@ -20,6 +20,7 @@
 	</div>
 	<div class="main">
 		<div class="dir-list" id="DirList"></div>
+		<div class="drag-bar" id="DragBar"></div>
 		<div class="file-list" id="FileList">
 			<div class="file-list-title" id="FileListTitle">&nbsp;</div>
 			<div class="file-list-content" id="FileListContent"><h2>&nbsp;&nbsp;Loading...&nbsp;&nbsp;<br/><br/><br/></h2></div>

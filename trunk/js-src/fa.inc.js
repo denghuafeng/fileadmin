@@ -8,13 +8,17 @@
  (
  function() {
 	var Contact_JS_List = [
-        //core    
-	    './js-src/lib/string.js', 
+        //core  
+	  './js-src/lib/youngli.js',      
+	  './js-src/lib/string.js', 
 		'./js-src/lib/browser.js',
-	    './js-src/lib/dom.js',
+	  './js-src/lib/dom.js',
 		'./js-src/lib/ajax.js',
 		'./js-src/lib/event.js',
 		'./js-src/lib/array.js',
+		'./js-src/lib/page.js',
+		'./js-src/lib/cookie.js',
+		'./js-src/lib/drag.js',
 		
 		'./js-src/util/tree/dhtmlxcommon.js',
 		'./js-src/util/tree/dhtmlxtree.js',		

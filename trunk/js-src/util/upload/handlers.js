@@ -92,7 +92,7 @@ function showHideQueueBox(status) {
 	var queueBox = this.customSettings.queueBox ? this.customSettings.queueBox : null;
 	if (queueBox && document.getElementById(queueBox)) {
 		var queue = document.getElementById("QueueBox");
-		queue.style.display = status;
+		queue.style.display = status;		
 	}
 }
 
@@ -130,7 +130,6 @@ function uploadSuccess(file, serverData) {
 		progress.setComplete();
 		progress.setStatus("Complete.");
 		progress.toggleCancel(false);
-
 		// hide the queue dialog
 		// added by JarryLi
 		var self = this;
@@ -209,6 +208,7 @@ function queueComplete(numFilesUploaded) {
 //	status.innerHTML = numFilesUploaded + " file" + (numFilesUploaded === 1 ? "" : "s") + " uploaded.";
 	status.innerHTML = "上传了" + numFilesUploaded +  "个文件"  + "";
 	// 上传完成后执行文件加载
+
 	if ('undefined' != typeof DirAction) {
 		DirAction.getDirJSON(UPLOAD.uploadPath);
 	}

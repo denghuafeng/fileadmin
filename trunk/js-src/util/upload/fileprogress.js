@@ -14,7 +14,8 @@ function FileProgress(file, targetID) {
 
 	this.opacity = 100;
 	this.height = 0;
-	
+	// added by jarryli
+	this.uploadBoxId = targetID || this.uploadBoxId;
 
 	this.fileProgressWrapper = document.getElementById(this.fileProgressID);
 	if (!this.fileProgressWrapper) {
@@ -50,6 +51,8 @@ function FileProgress(file, targetID) {
 		this.fileProgressWrapper.appendChild(this.fileProgressElement);
 
 		document.getElementById(targetID).appendChild(this.fileProgressWrapper);
+		// reset QueueBox height by jarryli
+		this.setUploadBoxHeight(document.getElementById(targetID));
 	} else {
 		this.fileProgressElement = this.fileProgressWrapper.firstChild;
 		this.reset();
@@ -57,8 +60,43 @@ function FileProgress(file, targetID) {
 
 	this.height = this.fileProgressWrapper.offsetHeight;
 	this.setTimer(null);
+}
 
+var SWF_UPLOAD_BOX_HEIGHT = SWF_UPLOAD_BOX_HEIGHT || null;
 
+/**
+ * set max height for the upload box
+ * when most files be uploading
+ * @param {DOM object} obj
+ * @author jarryli@gmail.com
+ *¡¡
+ */
+FileProgress.prototype.setUploadBoxHeight = function(obj) {
+	if ('object' != typeof obj) return;
+	var sh = document.body.scrollHeight;
+	var h  = obj.offsetHeight;
+	var threshold = 250;
+	sh = sh - threshold;
+	if (h > sh && obj.style.height == '') {
+		obj.style.height = sh + 'px';
+		obj.style.overflow = 'auto';
+		SWF_UPLOAD_BOX_HEIGHT = sh;
+	}
+}
+
+/**
+ * reset the upload box height
+ * @param {DOM object} obj
+ * @author jarryli@gmail.com
+ *¡¡
+ */
+FileProgress.prototype.resetUploadBoxHeight = function(obj) {
+	if ('object' != typeof obj) return;
+	if (obj.style.height && obj.style.height != ''
+			&& obj.scrollHeight <= SWF_UPLOAD_BOX_HEIGHT + 50) {
+			obj.style.height = '';
+			obj.style.overflow = '';
+	}
 }
 
 FileProgress.prototype.setTimer = function (timer) {
@@ -198,10 +236,13 @@ FileProgress.prototype.disappear = function () {
 	if (this.height > 0 || this.opacity > 0) {
 		var oSelf = this;
 		this.setTimer(setTimeout(function () {
-			oSelf.disappear();
+			oSelf.disappear();			
 		}, rate));
 	} else {
 		this.fileProgressWrapper.style.display = "none";
 		this.setTimer(null);
+
+		// reset the height. added by jarryli
+		this.resetUploadBoxHeight(document.getElementById(this.uploadBoxId));
 	}
 };

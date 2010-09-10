@@ -8,8 +8,8 @@
  * date: 2009/12/02
  */
 
-///import ajax;
-///import ajax.request;
+///import Youngli.ajax;
+///import Youngli.ajax.request;
 
 /**
  * 将一个表单用ajax方式提交
@@ -27,8 +27,10 @@
  * @config {Function} on状态码    如事件是on404时，如果返回码是404，调用这个函数
  * @return {XMLHttpRequest} 发送请求的xhr对象
  */
-var ajax = ajax || {};
-ajax.form = function (form, options) {
+
+Youngli.ajax = Youngli.ajax || {};
+
+Youngli.ajax.form = function (form, options) {
     options = options || {};
     var elements    = form.elements,
         len         = elements.length,
@@ -103,7 +105,7 @@ ajax.form = function (form, options) {
     sendOptions.method = form.getAttribute('method') || 'POST';
     
     // 发送请求
-    return ajax.request(url, sendOptions);
+    return Youngli.ajax.request(url, sendOptions);
 };
 /*
  * 
@@ -114,8 +116,8 @@ ajax.form = function (form, options) {
  * date: 2009/12/02
  */
 
-///import ajax;
-///import ajax.request;
+///import Youngli.ajax;
+///import Youngli.ajax.request;
 
 /**
  * 发送get请求的简单外观接口
@@ -124,8 +126,8 @@ ajax.form = function (form, options) {
  * @param {Function} onsuccess optional 请求成功之后调用的函数
  * @return {XMLHttpRequest} 发送请求的xhr对象
  */
-ajax.get = function (url, onsuccess) {
-    return ajax.request(url, {'onsuccess': onsuccess});
+Youngli.ajax.get = function (url, onsuccess) {
+    return Youngli.ajax.request(url, {'onsuccess': onsuccess});
 };
 /*
  * 
@@ -136,8 +138,8 @@ ajax.get = function (url, onsuccess) {
  * date: 2009/12/02
  */
 
-///import ajax;
-///import ajax.request;
+///import Youngli.ajax;
+///import Youngli.ajax.request;
 
 /**
  * 发送post请求的简单外观接口
@@ -147,8 +149,8 @@ ajax.get = function (url, onsuccess) {
  * @param {Function} onsuccess optional 请求成功之后调用的函数。传递的参数是xhr对象
  * @return {XMLHttpRequest} 发送请求的xhr对象
  */
-ajax.post = function (url, data, onsuccess) {
-    return ajax.request(
+Youngli.ajax.post = function (url, data, onsuccess) {
+    return Youngli.ajax.request(
         url, 
         {
             'onsuccess': onsuccess,
@@ -166,7 +168,7 @@ ajax.post = function (url, data, onsuccess) {
  * date: 2009/12/02
  */
 
-///import ajax;
+///import Youngli.ajax;
 
 /**
  * 使用XMLHttpRequest对象发送请求
@@ -185,7 +187,7 @@ ajax.post = function (url, data, onsuccess) {
  * @config {Function} on状态码    如事件是on404时，如果返回码是404，调用这个函数
  * @return {XMLHttpRequest} 发送请求的xhr对象
  */
-ajax.request = function (url, options) {
+Youngli.ajax.request = function (url, options) {
     /**
      * readyState发生变更时调用
      * 
@@ -279,7 +281,7 @@ ajax.request = function (url, options) {
     function fire(type) {
         type = 'on' + type;
         var handler = eventHandlers[type],
-            globelHandler = ajax[type];
+            globelHandler = Youngli.ajax[type];
         
         // 不对事件类型进行验证
         if (handler) {
@@ -363,3 +365,5 @@ ajax.request = function (url, options) {
     
     return xhr;
 };
+
+var ajax = Youngli.ajax;

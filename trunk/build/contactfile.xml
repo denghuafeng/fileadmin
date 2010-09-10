@@ -27,12 +27,16 @@
     	<echo message="Concat Code Files Begin" />		
         <concat destfile="${js-path}/fa.js" encoding="utf-8">
           
+    		<fileset dir="${js-src-path}/lib/" includes="youngli.js" />
     		<fileset dir="${js-src-path}/lib/" includes="string.js" />
             <fileset dir="${js-src-path}/lib/" includes="browser.js" />
             <fileset dir="${js-src-path}/lib/" includes="dom.js" />
             <fileset dir="${js-src-path}/lib/" includes="ajax.js" />
             <fileset dir="${js-src-path}/lib/" includes="event.js" />
             <fileset dir="${js-src-path}/lib/" includes="array.js" /> 
+    		<fileset dir="${js-src-path}/lib/" includes="page.js" />
+    		<fileset dir="${js-src-path}/lib/" includes="cookie.js" />
+    		<fileset dir="${js-src-path}/lib/" includes="drag.js" />
         	
 			<fileset dir="${js-src-path}/util/tree/" includes="dhtmlxcommon.js" />
 			<fileset dir="${js-src-path}/util/tree/" includes="dhtmlxtree.js" />

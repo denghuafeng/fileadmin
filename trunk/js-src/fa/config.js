@@ -25,8 +25,10 @@ var global = {
 	
 	// 如果有web访问地址，可以提供在线打开地址的功能
 	FIEL_WEB_ROOT_URL : "http://127.0.0.1/ut/tmp/",
-	// office文件可以在线阅读的地址
+	// office文件可以在线阅读的地址，如果没有的就注释DOC_WEB_ROOT_URL，表示直接指向该文件
+	// UT服务器上使用poi读取word文档，可以读取本地或网络文件
 	DOC_WEB_ROOT_URL :  "http://127.0.0.1/ut/servlet/ReadWordLocal",
+	
 	// 登录指向的URL
 	FA_LOGIN_URL : "login",
 	
