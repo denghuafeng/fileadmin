@@ -11,9 +11,9 @@
 
 
 /**
- * 声明array包
+ * 声明Youngli.array包
  */
-var array = array || {};
+Youngli.array = Youngli.array || {};
 /*
  * Tangram
  * Copyright 2009 Youngli Inc. All rights reserved.
@@ -24,7 +24,7 @@ var array = array || {};
  * date: 2009/12/02
  */
 
-///import array;
+///import Youngli.array;
 
 /**
  * 遍历数组中所有元素
@@ -33,7 +33,7 @@ var array = array || {};
  * @param {Function} iterator 对每个数组元素进行调用的函数
  * @return {Array} 遍历的数组
  */
-array.each = function (source, iterator) {
+Youngli.array.each = function (source, iterator) {
     var returnValue, item, i, len = source.length;
     
     if ('function' == typeof iterator) {
@@ -50,7 +50,7 @@ array.each = function (source, iterator) {
 };
 
 // 声明快捷方法
-//var each = array.each;
+var each = Youngli.array.each;
 /*
  * Tangram
  * Copyright 2009 Youngli Inc. All rights reserved.
@@ -61,7 +61,7 @@ array.each = function (source, iterator) {
  * date: 2009/12/02
  */
 
-///import array;
+///import Youngli.array;
 
 /**
  * 从数组中筛选符合条件的元素
@@ -70,7 +70,7 @@ array.each = function (source, iterator) {
  * @param {Function} iterator 对每个数组元素进行筛选的函数
  * @return {Array} 符合条件的数组项集合
  */
-array.filter = function (source, iterator) {
+Youngli.array.filter = function (source, iterator) {
     var result = [],
         resultIndex = 0,
         len = source.length,
@@ -99,7 +99,7 @@ array.filter = function (source, iterator) {
  * date: 2009/12/02
  */
 
-///import array;
+///import Youngli.array;
 
 /**
  * 从数组中寻找符合条件的第一个数组元素
@@ -108,7 +108,7 @@ array.filter = function (source, iterator) {
  * @param {Function} iterator 对每个数组元素进行查找的函数
  * @return {Any|null} 符合条件的第一个数组元素，找不到时返回null
  */
-array.find = function (source, iterator) {
+Youngli.array.find = function (source, iterator) {
     var item, i, len = source.length;
     
     if ('function' == typeof iterator) {
@@ -132,7 +132,7 @@ array.find = function (source, iterator) {
  * date: 2009/12/02
  */
 
-///import array;
+///import Youngli.array;
 
 /**
  * 查询数组中指定元素的索引位置
@@ -142,7 +142,7 @@ array.find = function (source, iterator) {
  * @param {number}       position optional  查询的起始位索引位置
  * @return {number} 指定元素的索引位置
  */
-array.indexOf = function (source, condition, position) {
+Youngli.array.indexOf = function (source, condition, position) {
     var len = source.length,
         iterator = condition;
         
@@ -176,7 +176,7 @@ array.indexOf = function (source, condition, position) {
  * date: 2009/11/14
  */
 
-///import array;
+///import Youngli.array;
 
 /**
  * 从后往前，查询数组中指定元素的索引位置
@@ -185,7 +185,7 @@ array.indexOf = function (source, condition, position) {
  * @param {Any|Function} condition 查询项或查询函数
  * @return {number} 指定元素的索引位置
  */
-array.lastIndexOf = function (source, condition) {
+Youngli.array.lastIndexOf = function (source, condition) {
     var len = source.length,
         iterator = condition;
     
@@ -213,7 +213,7 @@ array.lastIndexOf = function (source, condition) {
  * date: 2009/11/30
  */
 
-///import array;
+///import Youngli.array;
 
 /**
  * 移除数组中的项
@@ -221,7 +221,7 @@ array.lastIndexOf = function (source, condition) {
  * @param {Array}        source    需要移除项的数组
  * @param {Any|Function} condition 要移除的项或移除匹配函数
  */
-array.remove = function (source, condition) {
+Youngli.array.remove = function (source, condition) {
     var len = source.length,
         iterator = condition;
     
@@ -247,7 +247,7 @@ array.remove = function (source, condition) {
  * date: 2009/11/30
  */
 
-///import array;
+///import Youngli.array;
 
 /**
  * 移除数组中的项
@@ -256,7 +256,7 @@ array.remove = function (source, condition) {
  * @param {number} index  要移除项的索引位置
  * @return {Any} 被移除的数组项
  */
-array.removeAt = function (source, index) {
+Youngli.array.removeAt = function (source, index) {
     return source.splice(index, 1)[0];
 };
 /*
@@ -269,7 +269,7 @@ array.removeAt = function (source, index) {
  * date: 2009/12/02
  */
 
-///import array;
+///import Youngli.array;
 
 /**
  * 过滤数组中的相同项
@@ -278,7 +278,7 @@ array.removeAt = function (source, index) {
  * @param {Function} compareFn optional 比较2个数组项是否相同的函数
  * @return {Array} 过滤后的新数组
  */
-array.unique = function (source, compareFn) {
+Youngli.array.unique = function (source, compareFn) {
     var len = source.length,
         result = source.slice(0),
         i, datum;
@@ -304,3 +304,5 @@ array.unique = function (source, compareFn) {
 
     return result;
 };
+
+var array = Youngli.array;

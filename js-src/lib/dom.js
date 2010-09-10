@@ -3,9 +3,9 @@
  * 声明dom包
  */
 
-var dom = dom || {};
+Youngli.dom = Youngli.dom || {};
 
-dom.g = function (id) {
+Youngli.dom.g = function (id) {
     if ('string' == typeof id || id instanceof String) {
         return document.getElementById(id);
     } else if (id && id.nodeName && (id.nodeType == 1 || id.nodeType == 9)) {
@@ -14,7 +14,7 @@ dom.g = function (id) {
     return null;
 };
 
-var g = dom.g;
+var g = Youngli.dom.g;
 
 /**
  * 添加目标元素的className
@@ -25,7 +25,7 @@ var g = dom.g;
  * @param {string}             className 要添加的class。允许同时添加多个class，中间使用空白符分隔
  * @return {string} 被操作的DOM元素
  */
-dom.addClass = function (element, className) {
+Youngli.dom.addClass = function (element, className) {
     element = g(element);
 
     var classes = trim(className).split(/\s+/), 
@@ -47,7 +47,7 @@ dom.addClass = function (element, className) {
  * @param {HTMLElement|String} element 目标元素或目标元素的id
  * @return {Array} DOM元素列表
  */
-dom.children = function (element) {
+Youngli.dom.children = function (element) {
     element = g(element);
 
     for (var children = [], tmpEl = element.firstChild; tmpEl; tmpEl = tmpEl.nextSibling) {
@@ -65,8 +65,8 @@ dom.children = function (element) {
  * @param {HTMLElement|string} element 目标元素或目标元素的id
  * @return {HTMLDocument} element所属的document对象
  */
-dom.getDocument = function (element) {
-    element = dom.g(element);
+Youngli.dom.getDocument = function (element) {
+    element = Youngli.dom.g(element);
     return element.nodeType == 9 ? element : element.ownerDocument || element.document;
 };
 
@@ -80,11 +80,11 @@ dom.getDocument = function (element) {
  *       top:xx //{integer} 页面距离页面坐上角的垂直偏移量
  *   }
  */
-dom.getPosition = function (element) {
-    var doc = dom.getDocument(element);
+Youngli.dom.getPosition = function (element) {
+    var doc = Youngli.dom.getDocument(element);
        // browser = browser;
 
-    element = dom.g(element);
+    element = Youngli.dom.g(element);
 
     // Gecko browsers normally use getBoxObjectFor to calculate the position.
     // When invoked for an element with an implicit absolute position though it
@@ -92,7 +92,7 @@ dom.getPosition = function (element) {
     // (relatively rare) cases.
     var BUGGY_GECKO_BOX_OBJECT = browser.isGecko > 0 && 
                                  doc.getBoxObjectFor &&
-                                 dom.getStyle(element, 'position') == 'absolute' &&
+                                 Youngli.dom.getStyle(element, 'position') == 'absolute' &&
                                  (element.style.top === '' || element.style.left === '');
 
     // NOTE(arv): If element is hidden (display none or disconnected or any the
@@ -149,7 +149,7 @@ dom.getPosition = function (element) {
       
             // In Safari when hit a position fixed element the rest of the offsets
             // are not correct.
-            if (browser.isWebkit > 0 && dom.getStyle(parent, 'position') == 'fixed') {
+            if (browser.isWebkit > 0 && Youngli.dom.getStyle(parent, 'position') == 'fixed') {
                 pos.left += doc.body.scrollLeft;
                 pos.top  += doc.body.scrollTop;
                 break;
@@ -159,7 +159,7 @@ dom.getPosition = function (element) {
         } while (parent && parent != element);
 
         // opera & (safari absolute) incorrectly account for body offsetTop
-        if(browser.opera > 0 || (browser.isWebkit > 0 && dom.getStyle(element, 'position') == 'absolute')){
+        if(browser.opera > 0 || (browser.isWebkit > 0 && Youngli.dom.getStyle(element, 'position') == 'absolute')){
             pos.top  -= doc.body.offsetTop;
         }
 
@@ -181,12 +181,12 @@ dom.getPosition = function (element) {
 /**
  * 提供给setStyle与getStyle使用
  */
-dom._styleFilter = dom._styleFilter || [];
+Youngli.dom._styleFilter = Youngli.dom._styleFilter || [];
 
 /**
  * 提供给setStyle与getStyle使用
  */
-dom._styleFilter[dom._styleFilter.length] = {
+Youngli.dom._styleFilter[Youngli.dom._styleFilter.length] = {
     set: function (key, value) {
         if (value.constructor == Number 
             && !/zIndex|fontWeight|opacity|zoom|lineHeight/i.test(key)){
@@ -200,12 +200,12 @@ dom._styleFilter[dom._styleFilter.length] = {
 /**
  * 提供给setStyle与getStyle使用
  */
-dom._styleFixer = dom._styleFixer || {};
+Youngli.dom._styleFixer = Youngli.dom._styleFixer || {};
 
 /**
  * 提供给setStyle与getStyle使用
  */
-dom._styleFixer.display = browser.ie && browser.ie < 7 ? {
+Youngli.dom._styleFixer.display = browser.ie && browser.ie < 7 ? {
     set: function (element, value) {
         element = element.style;
         if (value == 'inline-block') {
@@ -225,12 +225,12 @@ dom._styleFixer.display = browser.ie && browser.ie < 7 ? {
 /**
  * 提供给setStyle与getStyle使用
  */
-dom._styleFixer["float"] = browser.ie ? "styleFloat" : "cssFloat";
+Youngli.dom._styleFixer["float"] = browser.ie ? "styleFloat" : "cssFloat";
 
 /**
  * 提供给setStyle与getStyle使用
  */
-dom._styleFixer.opacity = browser.ie ? {
+Youngli.dom._styleFixer.opacity = browser.ie ? {
     get: function (element) {
         var filter = element.style.filter;
         filter && filter.indexOf("opacity=") >= 0 ? (parseFloat(filter.match(/opacity=([^)]*)/)[1]) / 100) + "" : "1";
@@ -249,7 +249,7 @@ dom._styleFixer.opacity = browser.ie ? {
 /**
  * 提供给setStyle与getStyle使用，在做textOverflow时会向element对象中添加,_Overflow, _HTML两个属性保存原始的innerHTML信息
  */
-dom._styleFixer.textOverflow = (function () {
+Youngli.dom._styleFixer.textOverflow = (function () {
     var fontSizeCache = {};
 
     function pop(list) {
@@ -391,14 +391,14 @@ dom._styleFixer.textOverflow = (function () {
     };
 })();
 
-///import dom._styleFilter;
+///import Youngli.dom._styleFilter;
 
 /**
  * 为获取和设置样式的过滤器
  * @private
  */
-dom._styleFilter.filter = function (key, value, method) {
-    for (var i = 0, filters = dom._styleFilter, filter; filter = filters[i]; i++) {
+Youngli.dom._styleFilter.filter = function (key, value, method) {
+    for (var i = 0, filters = Youngli.dom._styleFilter, filter; filter = filters[i]; i++) {
         if (filter = filter[method]) {
             value = filter(key, value);
         }
@@ -417,10 +417,10 @@ dom._styleFilter.filter = function (key, value, method) {
  * date: 2009/11/18
  */
 
-///import dom.g;
-///import dom._styleFixer;
-///import dom._styleFilter.filter;
-///import string.toCamelCase;
+///import Youngli.dom.g;
+///import Youngli.dom._styleFixer;
+///import Youngli.dom._styleFilter.filter;
+///import Youngli.string.toCamelCase;
 
 /**
  * 获取DOM元素的样式值
@@ -429,11 +429,11 @@ dom._styleFilter.filter = function (key, value, method) {
  * @param {string}             key     要获取的样式名
  * @return {string} 要获取的样式值
  */
-dom.getStyle = function (element, key) {
-   // var dom = dom;
+Youngli.dom.getStyle = function (element, key) {
+   var dom = Youngli.dom;
 
     element = dom.g(element);
-    key = string.toCamelCase(key);
+    key = Youngli.string.toCamelCase(key);
 
     var value = element.style[key];
     
@@ -466,8 +466,8 @@ dom.getStyle = function (element, key) {
  * @param {Element|String} element 必需，目标元素或目标元素的id
  * @return {Element} 被操作的DOM元素
  */
-dom.remove = function (element) {
-    element = dom.g(element);
+Youngli.dom.remove = function (element) {
+    element = Youngli.dom.g(element);
 
     if ("HTML BODY HEAD".indexOf(element.nodeName) == -1) {
         if (browser.ie) {
@@ -489,8 +489,8 @@ dom.remove = function (element) {
  * @param {string}             className 要移除的class，允许同时移除多个class，中间使用空白符分隔
  * @return {HTMLElement} 被操作的DOM元素
  */
-dom.removeClass = function (element, className) {
-    element = dom.g(element);
+Youngli.dom.removeClass = function (element, className) {
+    element = Youngli.dom.g(element);
     var trim = string.trim;
 
     element.className =
@@ -513,8 +513,8 @@ dom.removeClass = function (element, className) {
  * @param {string}              value   要设置的样式值
  * @return {HTMLElement} 被操作的DOM元素
  */
-dom.setStyle = function (element, key, value) {
-    //var dom = dom;
+Youngli.dom.setStyle = function (element, key, value) {
+    var dom = Youngli.dom;
     var fixer;
     
     // 放弃了对firefox 0.9的opacity的支持
@@ -538,12 +538,14 @@ dom.setStyle = function (element, key, value) {
  * @param {Object}             styles  要设置的样式集合
  * @return {HTMLElement} 被操作的DOM元素
  */
-dom.setStyles = function (element, styles) {
-    element = dom.g(element);
+Youngli.dom.setStyles = function (element, styles) {
+    element = Youngli.dom.g(element);
 
     for (var key in styles) {
-        dom.setStyle(element, key, styles[key]);
+        Youngli.dom.setStyle(element, key, styles[key]);
     }
 
     return element;
 };
+
+var dom = Youngli.dom || {};

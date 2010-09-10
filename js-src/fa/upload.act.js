@@ -46,7 +46,7 @@ UploadAction = (function () {
 		}
 		
 		// can not add the event for chrome blow.
-		// event.on(g('CreateNewFolderCancelButton'), 'onclick', FileAction.hideCreateFolder);
+		// Youngli.on(g('CreateNewFolderCancelButton'), 'onclick', FileAction.hideCreateFolder);
 		// so added the event in tag A for g('CreateNewFolderCancelButton');
 		_showOrHide(obj);
 		g('UploadPathTips').innerHTML = UPLOAD.uploadPath;
@@ -62,7 +62,7 @@ UploadAction = (function () {
 	}
 	
 	var init = function() {
-		event.on(g('UploadFileLink'), "onclick", UploadAction.setUploadHTML);	  
+		Youngli.on(g('UploadFileLink'), "onclick", UploadAction.setUploadHTML);	  
 	};
 	
 	return {

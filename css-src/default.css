@@ -26,12 +26,14 @@ html,body{height:100%;overflow:hidden}
 /*.dir-list-container{overflow:auto;white-space:nowrap;background:;float:left;width:200px;}*/
 /*.dir-root{float:left;width:200px;background:green}*/
 /* the width of directory tree define in .dir-list and .file-list. the width default value is 220px*/
-.dir-list{background:;clear:left;min-height:100%;height:auto;top:0;bottom:0;overflow:auto;white-space:nowrap;float:left;width:220px;}
+.dir-list{background:;clear:left;min-height:100%;height:auto;top:0;bottom:0;overflow:auto;white-space:nowrap;float:left;
+width:218px;border-right:2px solid #b7c5e3
+}
 .dir-list a{color:#333;}
 .dir-list {white-space:nowrap;}
 .dir-list div{display:block;width:100%;}
 
-.file-list{background:;margin-left:220px;border-left:2px outset #b7c5e3}
+.file-list{background:;padding-left:220px;}
 .file-list-title{width:auto;left:0;right:0}
 .file-list-content{overflow:auto;background:;width:auto;left:0;right:0}
 .file-table-list a {color:#333;padding-left:20px;}
@@ -147,7 +149,7 @@ height:24px;white-space:nowrap;}
 .rm{background:url(../img/icon/ico_rm.gif) no-repeat scroll left center;}
 */
 
-
+.drag-bar{width:10px;cursor:w-resize;position:absolute;left:213px;display:block}
 
 .login{background:#fcfdff}
 .login-form{text-align:center;}

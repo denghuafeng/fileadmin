@@ -1,9 +1,19 @@
+/* 
+ * Copyright 2009 Young li Inc. All rights reserved.
+ * 
+ * path: event.js
+ * author: erik
+ * version: 1.1.0
+ * date: 2009/12/16
+ */
+
+///import Youngli.event;
 
 /**
  * 事件监听对象
  */
-var event = event || {};
-event._listeners = event._listeners || [];
+Youngli.event = Youngli.event || {};
+Youngli.event._listeners = Youngli.event._listeners || [];
 
 /**
  * 为目标元素添加事件监听器
@@ -14,8 +24,8 @@ event._listeners = event._listeners || [];
  * @return {HTMLElement} 目标元素
  */
 
-//event.on = function (element, type, listener) {
-event.on = function (element, type, listener, args) {
+//Youngli.event.on = function (element, type, listener) {
+Youngli.event.on = function (element, type, listener, args) {
     type = type.replace(/^on/i, '');
     if ('string' == typeof element) {
         element = g(element);
@@ -38,7 +48,7 @@ event.on = function (element, type, listener, args) {
 	  };
 	}
     
-    lis = event._listeners;
+    lis = Youngli.event._listeners;
     
     // 将监听器存储到数组中
     lis[lis.length] = [element, type, listener, fn];
@@ -53,10 +63,8 @@ event.on = function (element, type, listener, args) {
     return element;
 };
 
-event.on = event.on || {};
 
 /*
- * Tangram
  * Copyright 2009 Young li Inc. All rights reserved.
  * 
  * path: event/_unload.js
@@ -65,14 +73,14 @@ event.on = event.on || {};
  * date: 2009/12/16
  */
 
-///import event;
+///import Youngli.event;
 
 /**
  * 卸载所有事件监听器
  * @private
  */
-event._unload = function () {
-    var lis = event._listeners,
+Youngli.event._unload = function () {
+    var lis = Youngli.event._listeners,
         len = lis.length,
         standard = !!window.removeEventListener,
         item, el;
@@ -88,20 +96,127 @@ event._unload = function () {
     }
     
     if (standard) {
-        window.removeEventListener('unload', event._unload, false);
+        window.removeEventListener('unload', Youngli.event._unload, false);
     } else {
-        window.detachEvent('onunload', event._unload);
+        window.detachEvent('onunload', Youngli.event._unload);
     }
 };
+
+/*
+ * Copyright 2009 Youngli Inc. All rights reserved.
+ * 
+ * path: event/un.js
+ * author: erik
+ * version: 1.1.0
+ * date: 2009/12/16
+ */
+
+
+/**
+ * 为目标元素移除事件监听器
+ * 
+ * @param {HTMLElement|string|window} element  目标元素或目标元素id
+ * @param {string}                    type     事件类型
+ * @param {Function}                  listener 事件监听器
+ * @return {HTMLElement} 目标元素
+ */
+Youngli.event.un = function (element, type, listener) {
+    if ('string' == typeof element) {
+        element = dom.g(element);
+    }
+    type = type.replace(/^on/i, '');
+    
+    var lis = Youngli.event._listeners, 
+        len = lis.length,
+        isRemoveAll = !listener,
+        item;
+    
+    while (len--) {
+        item = lis[len];
+        
+        // listener存在时，移除element的所有以listener监听的type类型事件
+        // listener不存在时，移除element的所有type类型事件
+        if (item[1] === type
+            && item[0] === element
+            && (isRemoveAll || item[2] === listener)) {
+            if (element.removeEventListener) {
+                element.removeEventListener(type, item[3], false);
+            } else if (element.detachEvent) {
+                element.detachEvent('on' + type, item[3]);
+            }
+            lis.splice(len, 1);
+        }
+    }
+    
+    return element;
+};
+
 
 
 // 在页面卸载的时候，将所有事件监听器移除
 if (window.attachEvent) {
-    window.attachEvent('onunload', event._unload);
+    window.attachEvent('onunload', Youngli.event._unload);
 } else {
-    window.addEventListener('unload', event._unload, false);
+    window.addEventListener('unload', Youngli.event._unload, false);
 }
 
+
+/**
+ * 停止事件的传播
+ * 
+ * @param {Event} event 事件对象
+ */
+Youngli.event.stopPropagation = function (event) {
+   if (event.stopPropagation) {
+       event.stopPropagation();
+   } else {
+       event.cancelBubble = true;
+   }
+};
+
+
+
+/**
+ * 阻止事件的默认行为
+ * 
+ * @param {Event} event 事件对象
+ */
+Youngli.event.preventDefault = function (event) {
+   if (event.preventDefault) {
+       event.preventDefault();
+   } else {
+       event.returnValue = false;
+   }
+};
+
+/**
+ * 停止事件
+ * 
+ * @param {Event} event 事件对象
+ */
+Youngli.event.stop = function (event) {
+    var e = Youngli.event;
+    e.stopPropagation(event);
+    e.preventDefault(event);
+};
+
+
+/**
+ * 获取事件的触发元素
+ * 
+ * @param {Event} event 事件对象
+ * @return {HTMLElement} 事件的触发元素
+ */
+Youngli.event.getTarget = function (event) {
+    return event.target || event.srcElement;
+};
+
+
+/**
+ * 声明快捷方式
+ */
+Youngli.on = Youngli.event.on;
+Youngli.un = Youngli.event.un;
 
 /**
  * 

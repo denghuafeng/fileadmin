@@ -24,24 +24,25 @@ FileAction = (function() {
 	var isEditing = false;
 
 	var init = function () {
-		event.on(g('CreateNewFolderLink'), "onclick", FileAction.setCreateFolderHTML);
-		event.on(g('FileListContent'), "onscroll", function() {
+		Youngli.on(g('CreateNewFolderLink'), "onclick", FileAction.setCreateFolderHTML);
+		Youngli.on(g('FileListContent'), "onscroll", function() {
 			_hideFileEditBar();
 			_hideRenameArea();
 		});		
-		event.on(g('FileListContent'), "onmouseout", FileAction.outFileListContent);	
+		Youngli.on(g('FileListContent'), "onmouseout", FileAction.outFileListContent);	
 	}
 	
 	/**
 	 * 鼠标移出了FileTableList区域时
 	 * @param {object} event事件
 	 */
-	var outFileListContent = function(event) {
+	var outFileListContent = function(e) {
+		e = window.event || e;
 		var x, y;
 		if(!document.all) {
-      		x = event.clientX; y = event.clientY;
+      		x = e.clientX; y = e.clientY;
      	} else {
-        	x = event.x; y = event.y;
+        	x = e.x; y = e.y;
 	  	}
 	  	if (!_isInFileTableList(x, y)) {
 	  		_hideFileEditBar();
@@ -86,7 +87,7 @@ FileAction = (function() {
 		if (g('CreateNewFolder')) {
 			try {
 				// can not add the below event for chrome
-				// event.on(g('CreateNewFolderCancelButton'), 'onclick', FileAction.hideCreateFolder);
+				// Youngli.on(g('CreateNewFolderCancelButton'), 'onclick', FileAction.hideCreateFolder);
 				var left = dom.getPosition(this).left;
 				var top = dom.getPosition(this).top + 20;
 				fileClass.setPosition(g('CreateNewFolder'), left, top);
@@ -123,10 +124,10 @@ FileAction = (function() {
 		for (var i = 0; i < len; i++) {
 			var obj = {};
 //			obj.tr = tableList.rows[i];
-			// the event.on event can not support chrome
+			// the Youngli.on event can not support chrome
 //			if (browser.firefox || browser.ie) {
-//				event.on(tableList.rows[i], 'onmouseover', FileAction.setTrOver, obj);
-//				event.on(tableList.rows[i], 'onmouseout', FileAction.setTrOut);
+//				Youngli.on(tableList.rows[i], 'onmouseover', FileAction.setTrOver, obj);
+//				Youngli.on(tableList.rows[i], 'onmouseout', FileAction.setTrOut);
 // 			} else {
 //				tableList.rows[i].onmouseover = function() {
 //					FileAction.setTrOver(this);
@@ -152,7 +153,7 @@ FileAction = (function() {
 	 */
 	var setTrOver = function(obj) {
 		if (isEditing) return;
-		// when use event.on() type to add event
+		// when use Youngli.on() type to add event
 		// this.tr is obj.tr
 		var trObj = (typeof (obj.tagName) == 'string') ? obj : this.tr;
 		dom.addClass(trObj, 'tr-over');
@@ -194,7 +195,7 @@ FileAction = (function() {
 	var setTrOut = function(obj) {
 		if (isEditing) return;
 		// it's DOM or event
-		// `this` for event.on() method
+		// 'this' for Youngli.on() method
 		var trObj = (typeof (obj.tagName) == 'string') ? obj : this;
 		dom.removeClass(trObj, 'tr-over');
 		// _hideFileEditBar();
@@ -213,7 +214,7 @@ FileAction = (function() {
 				fileClass.setPosition(g('FileRenameArea'), left, top);				
 				g('FileRenameArea').style.width = trObj.offsetWidth - 35 + 'px';
 				// added event on mouse out
-//				event.on(g('FileRenameArea'), 'onmouseout', function() {
+//				Youngli.on(g('FileRenameArea'), 'onmouseout', function() {
 //						_hideRenameArea();
 //				}); 
 				if (g('Rename') != null) {
@@ -222,7 +223,7 @@ FileAction = (function() {
 					var code = 0;
 					if (browser.ie) {
 						// repeat events in firefox and chrome
-						event.on(g('Rename'), 'onkeyup', 
+						Youngli.on(g('Rename'), 'onkeyup', 
 						function(e) {
 //							code = browser.ie ? e.charCode || e.keyCode : e.keyCode;
 							code = e.keyCode;
