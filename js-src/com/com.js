@@ -39,7 +39,10 @@ var OFFICE_FILE_EXT = [
 ];
 
 var isOfficeFile = function(ext) {
-	return array.indexOf(OFFICE_FILE_EXT, ext);
+	if (ext != null && ext.length > 0) {
+		return array.indexOf(OFFICE_FILE_EXT, ext.toLowerCase());
+	}
+	return null;
 }
 
 var getFolderIconCss = function() {
