@@ -362,9 +362,9 @@ FileAction = (function() {
 				}
 //				use DHTML to deleteRow or removeChild(DOM);
 //				g('FileTableList').deleteRow(FileAction.tableListTrIndex);
-				g('FileTableList').childNodes[1].removeChild(FileAction.tableListTr);
+//				g('FileTableList').childNodes[1].removeChild(FileAction.tableListTr);
 // 				// or reload data
-//				DirAction.getDirJSON(decodeHTML(UPLOAD.uploadPath));			
+				DirAction.getDirJSON(decodeHTML(UPLOAD.uploadPath));			
 			} else {
 				getDeleteFileError(MESSAGE);
 			}			
