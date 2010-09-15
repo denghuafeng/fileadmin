@@ -92,7 +92,7 @@ Drag.prototype = {
 		};
 	},
 
-	_unselect : function(e) {
+	preventEvent : function(e) {
 		Youngli.event.preventDefault(e);
 	},
 
@@ -123,8 +123,7 @@ Drag.prototype = {
 		document.onmouseup = function() {			
 			drag.end();
 		};
-
-
+		this.preventEvent(e);
 	},
 	/**
 	 * 当鼠标在文档内移动时，重设对象的left与top
