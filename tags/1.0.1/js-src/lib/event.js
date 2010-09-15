@@ -182,11 +182,13 @@ Youngli.event.stopPropagation = function (event) {
  * @param {Event} event 事件对象
  */
 Youngli.event.preventDefault = function (event) {
-   if (event.preventDefault) {
-       event.preventDefault();
-   } else {
-       event.returnValue = false;
-   }
+	 if (event) { 
+	 	 if (event.preventDefault) {
+	       event.preventDefault();
+	   } else {
+	       event.returnValue = false;
+	   }
+  }
 };
 
 /**
