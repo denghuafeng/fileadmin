@@ -55,7 +55,6 @@ File.prototype = {
 	
 	insertRow : function(folder) {
 		if (hasError()) return false; 
-//		alert(this._getFolderTr(folder));
 // 		需要改为动态dom操作，而非动态请求数据
 //		FILE 作为传递过来的JSON数据，可以根据这个数据insertBefore到table的某行中
 //		这样可以减少一次请求，有时间再升级
@@ -181,6 +180,9 @@ File.prototype = {
 			if(confirm(info)) {
 				var url = global.FILE_PATH + '!delete.action?path=' + encodeURIComponent(path);
 				var xhr = ajax.get(url, FileAction.parseDeleteJSON);	
+				g('FileEditBar').style.display = 'none';
+				// 点击确认是同时关闭编辑框
+				setTimeout('FileAction.hideFileEditBar()', 1);
 			}
 		} catch (ex) {
 				alert(ex.toString());

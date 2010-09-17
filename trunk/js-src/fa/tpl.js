@@ -35,7 +35,7 @@ var HTMLTemplate = {
 	+ '		<span id="divStatus">&nbsp;</span>'
 	+ '	<div>'
 	+ '		<span id="spanButtonPlaceHolder"></span>'
-	+ '		<input id="btnCancel" type="button" value="停止上传" onClick="swfu.cancelQueue();" disabled="disabled"  />'
+	+ '		<input id="btnCancel" type="button" value="停止上传" onClick="SWFUP.cancelQueue();" disabled="disabled"  />'
 	+ '		&nbsp;<a href="javascript:UploadAction.hideUploadArea();">关闭</a>'
 	+ '	</div>'
 	+ '</div>',

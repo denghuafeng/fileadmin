@@ -63,12 +63,11 @@ DirAction = function() {
 				var ex = dragSide.mousePosition.x;
 				var ey = dragSide.mousePosition.y;
 				process = this.position.left - this.range.minX;
-//      var percent  = process / (this.range.maxX - this.obj.offsetWidth - this.range.minX) * 100;				
+//              var percent  = process / (this.range.maxX - this.obj.offsetWidth - this.range.minX) * 100;				
 				var DirListWidth = DirList.offsetWidth;
 				var marginLeft = parseInt(FileList.style.paddingLeft);
 				DirList.style.width = process + 55 + 'px';					
-				FileList.style.marginLeft = process - 162 + 'px';
-//      document.title = process + " | " + FileList.style.marginLeft + ' | ' + dragBar.style.left;			
+				FileList.style.marginLeft = process - 162 + 'px';			
 			}
 			// 写入进度到Cookie中
 			dragSide.onmousestop = function() {
@@ -130,8 +129,8 @@ DirAction = function() {
 	var openFolder = function(path) {
 		// 找到tree里面的节点，刷新相应节点的数据，做到同步响应		
 		if (global.OPEN_FOLDER_UPDATE_TREE) {
-//    loadXML and refresh dir tree;
-//		var id = encodeURL(path);		
+//          loadXML and refresh dir tree;
+//		    var id = encodeURL(path);		
 			var id = decodeHTML(path) + getSlash(path);
 			var sn = (new Date()).valueOf();	
 			var parentPath = getParentPath(id);

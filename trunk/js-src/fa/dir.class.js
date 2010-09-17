@@ -64,56 +64,6 @@ Directory.prototype.listDirTree = function() {
 }
 
 /**
- * 得到文件夹列表的html，采用listDirTree替代本方法
- * @param {object} _DIR 
- * @return {string}
- */
-Directory.prototype.getDirListHTML = function(_DIR) {
-	var DIR = _DIR ? _DIR : this.DIR;
-	var html = [];
-	if (DIR) {
-		var folders = DIR.Folders;
-		var len = folders.nameList.length;
-		var i, href, name, path = '';		
-		
-	// dtree方案，因无法动态加载而选用dhtmlXTree方案
-		var d = new dTree('tree');
-		d.add(0, -1, DIR.root);
-		for (i = 0; i < len; i++) {
-			path = DIR.absolutePath + folders.nameList[i];
-			name = folders.nameList[i];			
-			html.push('<a href="#" onclick="DirAction.getDirJSON(\''+ (path) +'\');">' + name + '</a>');
-			d.add(i + 1, 0, name,'path?');
-		}
-		html.push(d);
-		
-   /**
-	// 采用dtree替代下面的方案
-		html.push('<div class="dir-root">');
-		path = global.DIR_PATH + '?path=' + encodeURIComponent(DIR.root);
-		html.push('<a href=""' + path + '"> ' + DIR.root + ' </a>');
-		html.push('</div>');
-
-		
-		// 添加文件夹链接	
-		html.push('<div class="dir-tree">');
-		for (i = 0; i < len; i++) {
-			html.push('<li>');
-			path = DIR.absolutePath + folders.nameList[i];
-			name = folders.nameList[i];
-			
-			html.push('<a href="#" onclick="DirAction.getDirJSON(\''+ (path) +'\');">' + name + '</a>');
-			html.push("</li>");
-		}
-		html.push('</div>');
-	*/
-	}
-	
-	this._setHTML(html);
-	return html.join('');
-}
-
-/**
  * 表格头与表格内容区分开，以将来滚动内容时使用
  * @return {string} 表格头信息
  */
