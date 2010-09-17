@@ -7,7 +7,7 @@
  * version: 0.9
  * date: 2010/06/15
  */
-
+var isDeleting = isDeleting || 'null';
 /**
  * 文件Action
  * 提供文件改名、复制、删除，鼠标移动事件等功能
@@ -28,8 +28,9 @@ FileAction = (function() {
 		Youngli.on(g('FileListContent'), "onscroll", function() {
 			_hideFileEditBar();
 			_hideRenameArea();
-		});		
-		Youngli.on(g('FileListContent'), "onmouseout", FileAction.outFileListContent);	
+		});
+		// 鼠标移出FileListContent指定范围执行事件，不使用
+//		Youngli.on(g('FileListContent'), "onmouseout", FileAction.outFileListContent);	
 	}
 	
 	/**
@@ -86,8 +87,6 @@ FileAction = (function() {
 		fileClass.setCreateFolderHTML();
 		if (g('CreateNewFolder')) {
 			try {
-				// can not add the below event for chrome
-				// Youngli.on(g('CreateNewFolderCancelButton'), 'onclick', FileAction.hideCreateFolder);
 				var left = dom.getPosition(this).left;
 				var top = dom.getPosition(this).top + 20;
 				fileClass.setPosition(g('CreateNewFolder'), left, top);
@@ -123,26 +122,9 @@ FileAction = (function() {
 		
 		for (var i = 0; i < len; i++) {
 			var obj = {};
-//			obj.tr = tableList.rows[i];
-			// the Youngli.on event can not support chrome
-//			if (browser.firefox || browser.ie) {
-//				Youngli.on(tableList.rows[i], 'onmouseover', FileAction.setTrOver, obj);
-//				Youngli.on(tableList.rows[i], 'onmouseout', FileAction.setTrOut);
-// 			} else {
-//				tableList.rows[i].onmouseover = function() {
-//					FileAction.setTrOver(this);
-//				};
-//				tableList.rows[i].onmouseout = function() {
-//					FileAction.setTrOut(this);
-//				};
-// 			}
-//			can use ing all browsers
-			tableList.rows[i].onmouseover = function() {
-				FileAction.setTrOver(this);
-			};	
-			tableList.rows[i].onmouseout = function() {
-				FileAction.setTrOut(this);
-			};
+			obj.tr = tableList.rows[i];
+			Youngli.on(tableList.rows[i], 'onmouseover', FileAction.setTrOver, obj);
+			Youngli.on(tableList.rows[i], 'onmouseout', FileAction.setTrOut);
 		}
 	}
 	
@@ -153,20 +135,20 @@ FileAction = (function() {
 	 */
 	var setTrOver = function(obj) {
 		if (isEditing) return;
-		// when use Youngli.on() type to add event
-		// this.tr is obj.tr
+		// it's DOM or mouse event
+		// when use Youngli.on() type to add event this.tr is obj.tr
 		var trObj = (typeof (obj.tagName) == 'string') ? obj : this.tr;
 		dom.addClass(trObj, 'tr-over');
 		setFileEditHTML(trObj);
 	}
 	
 	/**
-	 * 创建编辑文件的链接HTML
+	 * 创建编辑文件的HTML区域
 	 * @param {object} trObj tr对象
 	 */
 	var setFileEditHTML = function(trObj) {
-		FileAction.tableListTr = trObj;
 		FileAction.tableListTrIndex = (_getTableListTrIndex(trObj));
+		FileAction.tableListTr = trObj;
 		fileClass.setFileEditHTML();
 		try {
 			// set events for edit area 
@@ -194,11 +176,12 @@ FileAction = (function() {
 	 */	
 	var setTrOut = function(obj) {
 		if (isEditing) return;
-		// it's DOM or event
+		// it's DOM or mouse event
+		// when use Youngli.on() type to add event
 		// 'this' for Youngli.on() method
 		var trObj = (typeof (obj.tagName) == 'string') ? obj : this;
 		dom.removeClass(trObj, 'tr-over');
-		// _hideFileEditBar();
+		_hideFileEditBar();
 	}
 	
 	/**
@@ -213,30 +196,27 @@ FileAction = (function() {
 				var top = dom.getPosition(g('FileEditBar')).top - 4;
 				fileClass.setPosition(g('FileRenameArea'), left, top);				
 				g('FileRenameArea').style.width = trObj.offsetWidth - 35 + 'px';
-				// added event on mouse out
-//				Youngli.on(g('FileRenameArea'), 'onmouseout', function() {
-//						_hideRenameArea();
-//				}); 
+				// 鼠标在重命名区域。0不在，1在
+				var mouseoverFileRenameArea = 0;
+				Youngli.on(g('FileRenameArea'), 'onmouseout', function() {
+						mouseoverFileRenameArea = 0;
+				});
+				Youngli.on(g('FileRenameArea'), 'onmouseover', function() {
+					mouseoverFileRenameArea = 1;
+					_showRenameArea();
+				});
+				// 如果鼠标不在重名名区域点击则关闭编辑区域
+				Youngli.on(document, 'onclick', function() {
+					if (mouseoverFileRenameArea != 1)
+						_hideRenameArea();
+				});
+				// add `return` keyboard event
 				if (g('Rename') != null) {
-					g('Rename').value = decodeHTML(trObj.cells[0].firstChild.innerHTML); 
-					// add return event
-					var code = 0;
-					if (browser.ie) {
-						// repeat events in firefox and chrome
-						Youngli.on(g('Rename'), 'onkeyup', 
-						function(e) {
-//							code = browser.ie ? e.charCode || e.keyCode : e.keyCode;
-							code = e.keyCode;
-							if (code == 13)
-								renameFile(trObj, this.value);
-						});
-					} else {
-						// ie can not get the keyup event
-						g('Rename').onkeyup = function(e) {
-							code = e.keyCode;
-							if (code == 13)
-								renameFile(trObj, this.value);
-						}
+					g('Rename').value = decodeHTML(trObj.cells[0].firstChild.innerHTML);					
+                    g('Rename').onkeyup = function(e) {
+						e = window.event || e;
+						if (e.keyCode == 13)
+							renameFile(trObj, this.value);
 					}					
 				}
 				_showRenameArea();
@@ -262,6 +242,21 @@ FileAction = (function() {
 			}
 		}
 		return -1;
+	}
+
+	/**
+	 * 根据当前位置，获得当前tr
+	 * @param {object} index 位置number
+	 * @param {object} table table对象,无参数时默认为g('FileTableList')
+	 * @return {HTMLElement} tr对象
+	 * 
+	 */
+	var _getTableTrByIndex = function(index, table) {
+		var table = table || g('FileTableList');
+		if (table.rows[index]) {
+			return table.rows[index];
+		}
+		return null;
 	}
 
 	/**
@@ -345,26 +340,29 @@ FileAction = (function() {
 	 * 
 	 */
 	var deleteFile = function(trObj) {
-		FileAction.tableListTr = trObj;
-		FileAction.tableListTrIndex = (_getTableListTrIndex(trObj));		
-		// get the trObj's index number
-		fileClass.deleteFile(trObj);
 		_hideFileEditBar();
+		// 根据位置重新来得到对象
+		trObj = _getTableTrByIndex(FileAction.tableListTrIndex);
+		if(!trObj || 'object' != typeof trObj)
+			return;
+		FileAction.tableListTr = trObj;
+		fileClass.deleteFile(trObj);
 	} 
 	
 	var parseDeleteJSON = function(xhr, responseText) {
 		eval(responseText);
 		if (MESSAGE) {
 			if (MESSAGE['1'] == 'DELETE_RESULT=success') {
-				// refreshItem when delete file
-				if (FileAction.tableListTr.cells[3].innerHTML == 'folder') {
+				// refreshItem when delete the folder
+				if (FileAction.tableListTr.cells[3]
+					&& FileAction.tableListTr.cells[3].innerHTML == 'folder') {
 					_refreshDirTree();
 				}
-//				use DHTML to deleteRow or removeChild(DOM);
+				// 可以使用DOM删除与再次加载数据的方式生成表格
 //				g('FileTableList').deleteRow(FileAction.tableListTrIndex);
 //				g('FileTableList').childNodes[1].removeChild(FileAction.tableListTr);
-// 				// or reload data
-				DirAction.getDirJSON(decodeHTML(UPLOAD.uploadPath));			
+// 				// 重新加载数据
+				DirAction.getDirJSON(decodeHTML(UPLOAD.uploadPath));		
 			} else {
 				getDeleteFileError(MESSAGE);
 			}			
@@ -404,8 +402,7 @@ FileAction = (function() {
 				return;
 			}			
 		}
-
-//		重新加载一边table list，或者根据返回的json插入一行
+		// 重新加载一边table list，或者根据返回的json插入一行
 		fileClass.insertRow(FILE.newFolder);
 		hideCreateFolder();
 		// 新建文件夹后刷新目录树
@@ -450,12 +447,17 @@ FileAction = (function() {
 			_hideRenameArea();	
 		}
 	}
+
 	var _hideRenameArea = function() {
 		if (g('FileRenameArea')) {
 			_hide(g('FileRenameArea'));
 		}		
 		isEditing = false;
 	}	
+
+	var hideFileEditBar = function() {
+		_hideFileEditBar();	
+	}
 	
 	var getReNameError = function(message) {
 			alert('重命名失败。可能没有权限或者已存在同名文件(夹)。谢谢！');
@@ -491,6 +493,7 @@ FileAction = (function() {
 		deleteFile : deleteFile,
 		tableListTr : tableListTr,
 		tableListTrIndex : tableListTrIndex,
+		hideFileEditBar : hideFileEditBar,
 		setRenameArea : setRenameArea,
 		hideRenameArea  : hideRenameArea,
 		isEditing       : isEditing

@@ -1,4 +1,4 @@
-	
+﻿	
 	一个基于Web的文件管理系统
 
 ## 介绍：
@@ -131,6 +131,6 @@
 
 ## 联系：
 ----------------------------------
-	Author: Jarry Li
-	Contact: jarryli@gmail.com
+	Author: Jarry Li (lichunping)
+	Contact: jarryli@gmail.com || lichunping@baidu.com
 	date : 2010-5-15
