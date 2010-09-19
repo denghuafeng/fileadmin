@@ -75,7 +75,7 @@ height:24px;white-space:nowrap;}
 .file-edit-bar a.edit-copy{background:url(../img/edit.png) no-repeat center center;background-position:0px -26px;}
 .file-edit-bar a.edit-rename{background:url(../img/edit.png) no-repeat center center;background-position:0px -48px;}
 
-.file-rename-area{background:#edf7fd;position:absolute;padding:0 5px 0 5px;height:22px}
+.file-rename-area{background:#edf7fd;position:absolute;height:22px}
 .file-rename-area span{margin:0 5px 0 5px;}
 .file-rename-area input{font-size:12px;margin:0;padding:}
 .help-area {background:#fff;width:600px;height:400px;z-index:102;position:absolute;font-size:14px;border:2px solid #b7c5e3;}

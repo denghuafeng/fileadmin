@@ -1,4 +1,5 @@
-﻿/*
+
+/*
  * Copyright 2009 Young li Inc. All rights reserved.
  * 
  * path: string.js
@@ -27,6 +28,31 @@ Youngli.string.toCamelCase = function (source) {
                 return match.charAt(1).toUpperCase();
             });
 };
+
+/**
+ * 判断单双字节，返回字符长度
+ * 1个汉字等于2个英文字母
+ * @param {string} str 
+ * @param {number} 长度
+ */
+Youngli.string.getCharLength = function(str) {
+	if (!str || str.length <= 0)
+		return str;
+	var sin = 0;
+	var dou = 0;
+	var len = str.length;
+	var c;
+	while(len > 0) {
+		var c = str.charCodeAt(len); 
+		if (c > 0 && c < 128) {
+			sin++;
+		} else {
+			dou += 2;
+		}
+		len--;
+	}
+	return sin + dou;
+}
 
 /**
  * 声明快捷方式
