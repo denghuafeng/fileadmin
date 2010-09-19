@@ -108,6 +108,10 @@ DirAction = function() {
 	var getDirJSON = function(path) {
 		var url = dirPath + '?path=' + encodeURIComponent(path);
 		var xhr = ajax.get(url, _parseDirJSON);
+		// 每次重新加载文件夹列表时关闭编辑区域'FileEditBar'
+		if(FileAction && FileAction.hideFileEditBar) {
+			FileAction.hideFileEditBar();
+		}
 	}
 
 	/**
