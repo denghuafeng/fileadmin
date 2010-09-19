@@ -163,6 +163,7 @@ FileAction = (function() {
 			var left = dom.getPosition(trObj).left;
 			var top = dom.getPosition(trObj).top;
 			left += 200; // add 200px for file name display
+//			left += trObj.cells[0].offsetWidth - 10;
 			fileClass.setPosition(g('FileEditBar'), left, top);      
 			_showFileEditBar();
 		} catch (ex) {
@@ -192,8 +193,9 @@ FileAction = (function() {
 		fileClass.setRenameArea();
 		try {
 			if (g('FileRenameArea') && trObj.cells[0]) {
-				var left = dom.getPosition(g('FileEditBar')).left - 175;
-				var top = dom.getPosition(g('FileEditBar')).top - 4;
+				var left = dom.getPosition(g('FileEditBar')).left - 180;
+				// left = dom.getPosition(g('FileEditBar')).left - trObj.cells[0].offsetWidth + 30;
+				var top = dom.getPosition(g('FileEditBar')).top - 2;
 				fileClass.setPosition(g('FileRenameArea'), left, top);				
 				g('FileRenameArea').style.width = trObj.offsetWidth - 35 + 'px';
 				// 鼠标在重命名区域。0不在，1在
@@ -212,7 +214,8 @@ FileAction = (function() {
 				});
 				// add `return` keyboard event
 				if (g('Rename') != null) {
-					g('Rename').value = decodeHTML(trObj.cells[0].firstChild.innerHTML);					
+					g('Rename').value = decodeHTML(trObj.cells[0].firstChild.innerHTML);
+					//g('Rename').style.width = trObj.cells[0].offsetWidth - 30 + 'px';
                     g('Rename').onkeyup = function(e) {
 						e = window.event || e;
 						if (e.keyCode == 13)
@@ -373,13 +376,14 @@ FileAction = (function() {
 		if(name == null || trim(name).length == '') {
 			_setTips(null, '请输入文件夹名称');
 			return false;
-		}		
+		}
 		if(!isAvailableName(name)) {
 			_setTips(null, '名字不能含有:' + SPECIAL_CHAR.join(', ') + ' 字符');
 			return false;
 		}
-
-		fileClass.getFolderJSON(path, name);
+		if (isAvailableName(name)) {
+			fileClass.getFolderJSON(path, name);
+		}
 		return false;
 	}
 	

@@ -181,7 +181,7 @@ File.prototype = {
 				var url = global.FILE_PATH + '!delete.action?path=' + encodeURIComponent(path);
 				var xhr = ajax.get(url, FileAction.parseDeleteJSON);	
 				g('FileEditBar').style.display = 'none';
-				// 点击确认是同时关闭编辑框
+				// 点击确认是同时关闭编辑框 for ie
 				setTimeout('FileAction.hideFileEditBar()', 1);
 			}
 		} catch (ex) {
