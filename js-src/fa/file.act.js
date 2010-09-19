@@ -28,6 +28,7 @@ FileAction = (function() {
 		Youngli.on(g('FileListContent'), "onscroll", function() {
 			_hideFileEditBar();
 			_hideRenameArea();
+			dom.removeClass(FileAction.tableListTr, 'tr-over');
 		});
 		// 鼠标移出FileListContent指定范围执行事件，不使用
 //		Youngli.on(g('FileListContent'), "onmouseout", FileAction.outFileListContent);	
@@ -157,13 +158,16 @@ FileAction = (function() {
 				_showFileEditBar();
 			}
 			g('FileEditBar').onmouseout = function() {
-				dom.removeClass(trObj, 'tr-over');
+				// 鼠标移开去掉tr的背景色
+				if(!isEditing) 
+   				   dom.removeClass(trObj, 'tr-over');
+				// 隐藏编辑区域
 				_hideFileEditBar();
 			}
 			var left = dom.getPosition(trObj).left;
 			var top = dom.getPosition(trObj).top;
-			var tdStrLength = string.getCharLength(trObj.cells[0].firstChild.innerHTML);
-			left += trObj.cells[0].offsetWidth - 10;
+			var fileNameWidth = trObj.cells[0].firstChild.offsetWidth;
+			left += browser.ie ? fileNameWidth + 8 : fileNameWidth + 5;
 			fileClass.setPosition(g('FileEditBar'), left, top);      
 			_showFileEditBar();
 		} catch (ex) {
@@ -193,14 +197,16 @@ FileAction = (function() {
 		fileClass.setRenameArea();
 		try {
 			if (g('FileRenameArea') && trObj.cells[0]) {
-				var left = dom.getPosition(g('FileEditBar')).left - trObj.cells[0].offsetWidth + 30;
-				var top = dom.getPosition(g('FileEditBar')).top - 2;
+				//var left = dom.getPosition(g('FileEditBar')).left - trObj.cells[0].offsetWidth + 30;
+			    var fileNameWidth = trObj.cells[0].firstChild.offsetWidth;
+			    var left = dom.getPosition(g('FileEditBar')).left - fileNameWidth + 18;
+				var top = dom.getPosition(g('FileEditBar')).top;
 				fileClass.setPosition(g('FileRenameArea'), left, top);				
 				g('FileRenameArea').style.width = trObj.offsetWidth - 35 + 'px';
 				// 鼠标在重命名区域。0不在，1在
 				var mouseoverFileRenameArea = 0;
 				Youngli.on(g('FileRenameArea'), 'onmouseout', function() {
-						mouseoverFileRenameArea = 0;
+					mouseoverFileRenameArea = 0;
 				});
 				Youngli.on(g('FileRenameArea'), 'onmouseover', function() {
 					mouseoverFileRenameArea = 1;
@@ -208,19 +214,22 @@ FileAction = (function() {
 				});
 				// 如果鼠标不在重名名区域点击则关闭编辑区域
 				Youngli.on(document, 'onclick', function() {
-					if (mouseoverFileRenameArea != 1)
+					if (mouseoverFileRenameArea != 1) {
 						_hideRenameArea();
+						dom.removeClass(trObj, 'tr-over');
+					}
 				});
 				// add `return` keyboard event
 				if (g('Rename') != null) {
 					g('Rename').value = decodeHTML(trObj.cells[0].firstChild.innerHTML);
-					g('Rename').style.width = trObj.cells[0].offsetWidth - 30 + 'px';
+					g('Rename').style.width = fileNameWidth + 'px';
                     g('Rename').onkeyup = function(e) {
 						e = window.event || e;
 						if (e.keyCode == 13)
 							renameFile(trObj, this.value);
 					}					
 				}
+				dom.addClass(trObj, 'tr-over');
 				_showRenameArea();
 			}
 		} catch (ex) {
