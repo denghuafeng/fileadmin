@@ -28,10 +28,9 @@ FileAction = (function() {
 		Youngli.on(g('FileListContent'), "onscroll", function() {
 			_hideFileEditBar();
 			_hideRenameArea();
-			dom.removeClass(FileAction.tableListTr, 'tr-over');
-		});
-		// 鼠标移出FileListContent指定范围执行事件，不使用
-//		Youngli.on(g('FileListContent'), "onmouseout", FileAction.outFileListContent);	
+//			dom.removeClass(FileAction.tableListTr, 'tr-over');
+            removeBgColor(FileAction.tableListTr);
+		});	
 	}
 	
 	/**
@@ -130,6 +129,27 @@ FileAction = (function() {
 	}
 	
 	/**
+	 * 给tr增加背景色或去掉背景色
+	 * 原来用addClass的className的方式在IE6下存在鼠标移上td后宽度增加而略微跳动的情况(应是IE6的问题)
+	 * 因此增加改变背景的专门改变背景色的函数
+	 */
+	var addBgColor = function(trObj, color) {
+		if (!trObj || 'object' != typeof trObj)
+		    return;
+		color = color || '#edf7fd';
+		trObj.style.backgroundColor = color;
+	}
+	
+	/**
+	 * 移除背景色也改为直接赋值，而不采用removeClass里className的方式
+	 */
+	var removeBgColor = function(trObj) {
+		if (!trObj || 'object' != typeof trObj)
+		    return;
+		trObj.style.backgroundColor = '';
+	}
+	
+	/**
 	 * 表格tr对象鼠标移上的事件，显示编辑bar
 	 * @param {object} obj DOM Element || MouseEvent
 	 * 			适用两种不同传值方式，ie、ff或者chrome可以传值不一样
@@ -139,7 +159,8 @@ FileAction = (function() {
 		// it's DOM or mouse event
 		// when use Youngli.on() type to add event this.tr is obj.tr
 		var trObj = (typeof (obj.tagName) == 'string') ? obj : this.tr;
-		dom.addClass(trObj, 'tr-over');
+//		dom.addClass(trObj, 'tr-over');
+        addBgColor(trObj);
 		setFileEditHTML(trObj);
 	}
 	
@@ -154,13 +175,15 @@ FileAction = (function() {
 		try {
 			// set events for edit area 
 			g('FileEditBar').onmouseover = function() {
-				dom.addClass(trObj, 'tr-over');
+//				dom.addClass(trObj, 'tr-over');
+                addBgColor(trObj);
 				_showFileEditBar();
 			}
 			g('FileEditBar').onmouseout = function() {
 				// 鼠标移开去掉tr的背景色
 				if(!isEditing) 
-   				   dom.removeClass(trObj, 'tr-over');
+				   removeBgColor(trObj);
+//   		       dom.removeClass(trObj, 'tr-over');
 				// 隐藏编辑区域
 				_hideFileEditBar();
 			}
@@ -185,7 +208,8 @@ FileAction = (function() {
 		// when use Youngli.on() type to add event
 		// 'this' for Youngli.on() method
 		var trObj = (typeof (obj.tagName) == 'string') ? obj : this;
-		dom.removeClass(trObj, 'tr-over');
+//		dom.removeClass(trObj, 'tr-over');
+        removeBgColor(trObj);
 		_hideFileEditBar();
 	}
 	
@@ -202,7 +226,7 @@ FileAction = (function() {
 			    var left = dom.getPosition(g('FileEditBar')).left - fileNameWidth + 18;
 				var top = dom.getPosition(g('FileEditBar')).top;
 				fileClass.setPosition(g('FileRenameArea'), left, top);				
-				g('FileRenameArea').style.width = trObj.offsetWidth - 35 + 'px';
+				g('FileRenameArea').style.width = trObj.offsetWidth - 45 + 'px';
 				// 鼠标在重命名区域。0不在，1在
 				var mouseoverFileRenameArea = 0;
 				Youngli.on(g('FileRenameArea'), 'onmouseout', function() {
@@ -216,7 +240,8 @@ FileAction = (function() {
 				Youngli.on(document, 'onclick', function() {
 					if (mouseoverFileRenameArea != 1) {
 						_hideRenameArea();
-						dom.removeClass(trObj, 'tr-over');
+//						dom.removeClass(trObj, 'tr-over');
+                        removeBgColor(trObj);
 					}
 				});
 				// add `return` keyboard event
@@ -229,7 +254,8 @@ FileAction = (function() {
 							renameFile(trObj, this.value);
 					}					
 				}
-				dom.addClass(trObj, 'tr-over');
+//				dom.addClass(trObj, 'tr-over');
+                addBgColor(trObj);
 				_showRenameArea();
 			}
 		} catch (ex) {
