@@ -40,9 +40,12 @@ var OFFICE_FILE_EXT = [
 
 var isOfficeFile = function(ext) {
 	if (ext != null && ext.length > 0) {
-		return array.indexOf(OFFICE_FILE_EXT, ext.toLowerCase());
+		var  index = array.indexOf(OFFICE_FILE_EXT, ext.toLowerCase());
+		if (index != -1) {
+			return true;
+		}
 	}
-	return null;
+	return false;
 }
 
 var getFolderIconCss = function() {
