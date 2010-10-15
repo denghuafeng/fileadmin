@@ -176,7 +176,7 @@ Directory.prototype.getFileAndFolderListHTML = function(_DIR) {
 				} 
 				
 				// office在线阅读链接
-				if (isOfficeFile(ext) != -1 && global.DOC_WEB_ROOT_URL) {
+				if (isOfficeFile(ext) && global.DOC_WEB_ROOT_URL) {
 					// is office file read online
 					href = global.DOC_WEB_ROOT_URL + '?file='+ encodeURIComponent(decodeHTML(DIR.absolutePath))
 						 + encodeURIComponent(decodeHTML(name));
