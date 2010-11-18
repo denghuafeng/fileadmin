@@ -48,7 +48,7 @@ Youngli.event.on = function (element, type, listener, args) {
 	  };
 	}
     
-    lis = Youngli.event._listeners;
+    var lis = Youngli.event._listeners;
     
     // 将监听器存储到数组中
     lis[lis.length] = [element, type, listener, fn];
