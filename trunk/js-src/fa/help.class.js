@@ -14,7 +14,7 @@
  * 
  */
 function Help() {
-	
+	this.helpElement = this.helpElement || null;
 }
 
 Help.prototype = {
@@ -25,7 +25,7 @@ Help.prototype = {
 		setHelpHTML : function(content) {
 			try {
 				// 创建帮助区域内容
-				if (!g('HelpArea')) {
+				if (!this.helpElement) {
 					var html = HTMLTemplate.helpHTML;
 					var container = getTemplateHTMLContainer();
 					var div = document.createElement('div');
@@ -33,6 +33,7 @@ Help.prototype = {
 					div.id = 'HelpArea';
 					div.className = 'help-area';
 					document.body.appendChild(div);
+					this.helpElement = div;
 					// 填充帮助信息内容
 					if (g('HelpContent')) 
 						g('HelpContent').innerHTML = content;
@@ -42,7 +43,7 @@ Help.prototype = {
 						g('HelpContent').innerHTML = content;
 				}
 				// 设置居中显示
-				this.setPosition(g('HelpArea'), null, null);				
+				this.setPosition(this.helpElement, null, null);				
 			} catch (ex) {
 				alert(ex.toString());
 			}
@@ -70,6 +71,19 @@ Help.prototype = {
 			
 			dom.style.left = x + 'px';
 			dom.style.top  = y + 'px';
-		}
+		},
+		
+	  showHelpElement : function() {
+		   if (this.helpElement) {
+			   this.helpElement.style.display = '';
+		   }
+	  },
+	  
+	  hideHelpElement : function() {
+		if (this.helpElement) {
+			this.helpElement.style.display = 'none';
+		}		
+		
+	}
 	
 }

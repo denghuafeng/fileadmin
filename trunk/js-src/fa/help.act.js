@@ -15,14 +15,14 @@
  * 
  */
 HelpAction = (function() {
-	
-	var helpClass = new Help();
-
+	var helpClass;
 	var HELP_PAGE = {
 		index  : ''
 	};
 
 	var pageInit = function() {
+	    helpClass = new Help();
+//    helpClass.helpElement = g('HelpArea');
 	}
 
 	var show  = function() {
@@ -32,24 +32,12 @@ HelpAction = (function() {
 		} else {
 			helpClass.setHelpHTML(HELP_PAGE.index);
 			toggleMask();
-			_showHelpArea();
-		}
-	}
-
-	var _showHelpArea = function() {
-		if (g('HelpArea')) {
-			g('HelpArea').style.display = '';
-		}
-	}
-
-	var _hideHelpArea = function() {
-		if (g('HelpArea')) {
-			g('HelpArea').style.display = 'none';
+			helpClass.showHelpElement();
 		}
 	}
 
 	var close = function() {
-		_hideHelpArea();
+		helpClass.hideHelpElement();
 		toggleMask();
 	}
 
@@ -57,7 +45,7 @@ HelpAction = (function() {
 		HELP_PAGE.index = responseText;
 		helpClass.setHelpHTML(responseText);
 		toggleMask();
-		_showHelpArea();
+		helpClass.showHelpElement();
 	}
 
 	return {
