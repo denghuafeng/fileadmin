@@ -40,7 +40,7 @@ Youngli.event.on = function (element, type, listener, args) {
 	// 挂载参数 modified by jarry
 	if (typeof args != 'undefined') {
 		var fn = function(ev) {
-			listener.call(args, ev);
+			listener.call(args, ev, element);
 		};
 	} else {
 	    var fn = function (ev) {
