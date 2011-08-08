@@ -1,4 +1,15 @@
-安装配置FileAdmin
+﻿安装配置FileAdmin
+===============================================
+    Author: Jarry Li (lichunping)
+    Contact: 
+        mail: jarryli@gmail.com or lichunping@baidu.com 
+        QQ:12263539 
+        sina weibo:http://weibo.com/jarryli
+    Date : 2010-5-15
+
+只要把项目放到tomcat项目即可运行，如果遇到问题请给我发邮件或QQ联系。
+===============================================
+
 
 先安装好JDK, TOMCAT，Struts
 
@@ -15,7 +26,8 @@
 ## 2. 配置目录与用户
 --------------------------------------
 * fileadmin.properties 
-  路径: fileadmin/src/fileadmin.properties
+  路径: fileadmin/src/fileadmin.properties (开发路径)
+  实际生效的文件路径: fileadmin/WEB-INF/classes/fileadmin.properties
  
   参数修改： 
   fileadmin.root.path = 你的文件目录   # linux 下设置该目录属性权限为 777
@@ -23,7 +35,7 @@
   fileadmin.admin.password = 密码 (md5加密)
 
 
-## 2. 配置系统参数，详见具体的配置文件
+## 3. 配置系统参数，详见具体的配置文件
 --------------------------------------
 * config.js
   路径: fileadmin/js-src/fa/config.js
@@ -35,12 +47,12 @@
   DOC_WEB_ROOT_URL :  "http://127.0.0.1/ut/servlet/ReadWordLocal"
 
   
-##  3. 系统编码
+##  4. 系统编码
 --------------------------------------
   * Web Server统一采用UTF-8编码
   * 服务器系统需要采用zh_CN才能支持中文文件名
 
-## 4. 环境安装请参考
+## 5. 环境安装请参考
 --------------------------------------
  * install apache tomcat.txt
  * install struts2.txt
