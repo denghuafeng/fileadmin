@@ -2,12 +2,16 @@ package com.youngli.fileadmin.upload.impl;
 
 import java.io.*;
 import java.util.*;
-
+import com.youngli.fileadmin.file.*;
+import com.youngli.fileadmin.file.impl.FileEditImpl;
 import com.youngli.fileadmin.upload.FileUpload;
 
 /**
- * @author lichunping 2010-5 jarryli@gmail.com 
- * upload file and save
+ * 文件上传后对文件移动增删操作
+ * @author lichunping 
+ * 		   jarryli@gmail.com 2010-5  
+ *         
+ * @sinace 1.0.1
  */
 public class FileUploadImpl implements FileUpload {
 	/**
@@ -16,9 +20,10 @@ public class FileUploadImpl implements FileUpload {
 	 */
 	private ArrayList<Map<String, String>> uploadsList = new ArrayList<Map<String, String>>();
 	private Map<String, String> properties = new HashMap<String, String>();
+	FileEdit fileEdit;
 	
     public FileUploadImpl() {
-
+    	fileEdit = new FileEditImpl();
     }
      
     public ArrayList<Map<String, String>> getUploadsList() {
@@ -44,35 +49,30 @@ public class FileUploadImpl implements FileUpload {
 		properties = new HashMap<String, String>();
 	}
     
-    /**
-     * move upload file to the path;
-     * @param file
-     * @param to
-     * @return
-     */
+	/**
+	 * 移动文件，如存在同名文件则不替换
+	 * @param from 要移动的文件路径
+	 * @param to 文件目标的路径
+	 * @return 是否成功移动文件
+	 */
 	public boolean move(String from, String to) {
 		try {
-			File fromFile = new File(to);
+			File fromFile = new File(from);
 			File toFile   = new File(to);
-			if (!toFile.exists()) {
-				return fromFile.renameTo(toFile);
+			
+			if (!fromFile.exists()) {
+				return false;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
-	public boolean move(File fromFile, String to) {
-		try {
-			String toPath = to;
-			File toFile   = new File(toPath);
-			if (fromFile.exists() && !toFile.exists()) {
-				return fromFile.renameTo(toFile);
-				// move or copy file to new path
-				//FileEdit fileEdit = new FileEdit();
-				//return fileEdit.copyFile(fromFile.getAbsolutePath(), toPath);
+		
+			boolean moveSuccess = fromFile.renameTo(toFile);		
+//			`renameTo` sometimes failed, add `copyFile`
+			if (!moveSuccess) {
+				moveSuccess = fileEdit.copyFile(from, to);
+				fromFile.deleteOnExit();
 			}
+			return moveSuccess;
+
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -80,29 +80,70 @@ public class FileUploadImpl implements FileUpload {
 	}
 	
 	/**
-	 * moveFileReplace:
-	 * 移动文件，若已存在移动到的同名文件，则提前删除
-	 * @param fromFile
-	 * @param to
-	 * @return      
-	 * @since
+	 * 移动文件，如存在同名文件则不替换
+	 * @param fromFile 要移动的文件
+	 * @param to 文件目标的路径
+	 * @return 是否成功移动文件
 	 */
-	public boolean moveFileReplace(File fromFile, String to) {
+	public boolean move(File fromFile, String to) {
 		try {
 			String toPath = to;
 			File toFile   = new File(toPath);
-			if (toFile.exists()) {
-				toFile.delete();
+			if (!fromFile.exists() ) {
+				return false;
 			}
-			if (fromFile.exists()) {
-				return fromFile.renameTo(toFile);
+			
+			boolean moveSuccess = fromFile.renameTo(toFile);		
+//			`renameTo` sometimes failed, add `copyFile`
+			if (!moveSuccess) {
+				moveSuccess = fileEdit.copyFile(fromFile.toString(), toPath);
+				fromFile.deleteOnExit();
 			}
+			return moveSuccess;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
 	
+	/**
+	 * 移动文件并替换同名文件
+	 * @param fromFile 要移动的文件
+	 * @param to 文件目标的路径
+	 * @return 是否成功移动文件
+	 */
+	public boolean moveFileReplace(File fromFile, String to) {
+		try {
+			String toPath = to;
+			File toFile   = new File(toPath);
+			if (!fromFile.exists()) {
+				return false;
+			}
+			if (toFile.exists()) {
+				toFile.deleteOnExit();
+			}	
+			
+			boolean moveSuccess = fromFile.renameTo(toFile);		
+//			`renameTo` sometimes failed, add `copyFile`
+			if (!moveSuccess) {
+				moveSuccess = fileEdit.copyFile(fromFile.toString(), toPath);
+				fromFile.deleteOnExit();
+			}
+			return moveSuccess;			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	/**
+	 * 批量移动文件
+	 * @param from 要移动的文件集合
+	 * @param toPath 文件目标的路径
+	 * @return 是否成功移动文件
+	 */
 	public boolean moveFiles(ArrayList<File> from, String toPath) {
 		boolean moveSuccess = true;
 		try {

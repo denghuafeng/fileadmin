@@ -4,7 +4,6 @@ import java.io.*;
 import com.youngli.fileadmin.common.FilePath;
 import com.youngli.fileadmin.file.FileEdit;
 
-//import com.youngli.fileadmin.common.FilePath;
 
 /**
  * 文件操作类
@@ -101,15 +100,28 @@ public class FileEditImpl implements FileEdit {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * 移动文件到指定路径
+	 * @param toPath 目标路径
+	 * @return 是否移动成功
+	 */
 	public boolean moveTo(String toPath) {
 		try {
 			if (toPath != null && file.exists()) {
 				int toPathLen = toPath.length();
 				String last = toPath.substring(toPathLen - 1, toPathLen);
 				if (!last.equals("/")) toPath += "/";
-				File newFile = new File(toPath + file.getName());   
-				return file.renameTo(newFile);
+				File newFile = new File(toPath + file.getName());
+				
+				boolean moveSuccess = file.renameTo(newFile);		
+//				`renameTo` sometimes failed, add `copyFile`
+				if (!moveSuccess) {
+					moveSuccess = copyFile(file.toString(), toPath);
+					file.deleteOnExit();
+				}
+				
+				return moveSuccess;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

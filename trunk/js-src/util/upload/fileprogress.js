@@ -69,7 +69,7 @@ var SWF_UPLOAD_BOX_HEIGHT = SWF_UPLOAD_BOX_HEIGHT || null;
  * when most files be uploading
  * @param {DOM object} obj
  * @author jarryli@gmail.com
- *¡¡
+ *ï¿½ï¿½
  */
 FileProgress.prototype.setUploadBoxHeight = function(obj) {
 	if ('object' != typeof obj) return;
@@ -88,7 +88,7 @@ FileProgress.prototype.setUploadBoxHeight = function(obj) {
  * reset the upload box height
  * @param {DOM object} obj
  * @author jarryli@gmail.com
- *¡¡
+ *ï¿½ï¿½
  */
 FileProgress.prototype.resetUploadBoxHeight = function(obj) {
 	if ('object' != typeof obj) return;
@@ -97,7 +97,27 @@ FileProgress.prototype.resetUploadBoxHeight = function(obj) {
 			obj.style.height = '';
 			obj.style.overflow = '';
 	}
+	
+	// The end of each section are to judge progress
+	this.finishedUpload(obj.offsetHeight);
 }
+ 
+/**
+ * 
+ * If current height of the targetProgress equals original height
+ * I think it has full loaded. Because not method that all files upload finished.
+ * jarryli@gmail.com
+ * 
+ */ 
+FileProgress.prototype.finishedUpload = function(currentHeight) {
+	 // original height from swfupload.js
+	var originalHeight = SWFUpload.CONST.PROGRESS_TARGET_HEIGHT;
+	if (originalHeight == currentHeight) {
+	    // close upload area after a short time	
+		window.setTimeout('UploadAction.hideUploadArea()', 1000);
+	}
+} 
+ 
 
 FileProgress.prototype.setTimer = function (timer) {
 	this.fileProgressElement["FP_TIMER"] = timer;
