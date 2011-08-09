@@ -92,6 +92,11 @@ SWFUpload.WINDOW_MODE = {
 	OPAQUE : "opaque"
 };
 
+// set SWFUpload constant field by jarryli
+SWFUpload.CONST = {
+		
+};
+
 // Private: takes a URL, determines if it is relative and converts to an absolute URL
 // using the current site. Only processes the URL if it can, otherwise returns the URL untouched
 SWFUpload.completeURL = function(url) {
@@ -184,6 +189,9 @@ SWFUpload.prototype.initSettings = function () {
 
 	// Other settings
 	this.customSettings = this.settings.custom_settings;
+	
+	// init progressTagrt height
+	SWFUpload.CONST.PROGRESS_TARGET_HEIGHT = document.getElementById(this.customSettings.progressTarget).offsetHeight;
 	
 	// Update the flash url if needed
 	if (!!this.settings.prevent_swf_caching) {

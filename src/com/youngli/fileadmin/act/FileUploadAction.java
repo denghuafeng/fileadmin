@@ -80,7 +80,7 @@ public class FileUploadAction extends ActionSupport {
 	public void saveFile() {
 		// for save the  upload single file
 		if (path != null && uploadFile != null) {
-			if (fileUpload.move(uploadFile, path + uploadFileFileName)) {
+			if (fileUpload.moveFileReplace(uploadFile, path + uploadFileFileName)) {
 				setMessage("UPLOAD_RESULT", "success");
 				setMessage("INFO", " upload file successfully.");
 			} else {
