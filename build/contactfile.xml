@@ -4,7 +4,7 @@
  最后采用合并为2个js的方式，不采用contactfile.xml
  contact multilateral files or single file by requirement
 -->
-<project name="JavaScript Contact 1.0" default="" basedir=".">
+<project name="Fileadmin JavaScript Contact" default="" basedir=".">
 	<property name="root-path" value="../" />
     <property name="js-src-path" value="${root-path}js-src" />
     <property name="js-path" value="${root-path}js" />
