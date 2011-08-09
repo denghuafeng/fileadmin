@@ -57,12 +57,21 @@
     </package>    
 
     <package name="Upload" namespace="/" extends="struts-default">
-	        <action name="upload" class="com.youngli.fileadmin.act.FileUploadAction">       
+	        <action name="upload" class="com.youngli.fileadmin.act.FileUploadAction">      
 			<result name="input">/WEB-INF/web/upload-input.jsp</result>
             <result name="success">/WEB-INF/web/upload.jsp</result>
             <result name="not_logon" >/WEB-INF/web/error/invalid.jsp</result>
         </action>
-        <!-- Add actions here -->
+       <!-- Add actions here -->
+
+        <!--Added upload test Action -->
+		<!--
+		<action name="uploadTest" class="com.youngli.fileadmin.act.FileUploadTestAction"> 
+			<result name="upload">/WEB-INF/web/upload-test.jsp</result>
+			<result name="not_logon" >/WEB-INF/web/error/invalid.jsp</result>
+		</action>
+		-->
+
     </package>  
     
 </struts>
