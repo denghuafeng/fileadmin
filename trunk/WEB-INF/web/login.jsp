@@ -23,7 +23,10 @@
 		<input type="checkbox" name="remember" style="margin:5px 0 0 0;" value="yes" id="RememberUser">
 		&nbsp;记住用户密码
 		</label>
-		<br/><button type="submit"> 登 录 </button>
+		<li class="login-txt">&nbsp;</li>
+		<li>
+		<button type="submit" style="margin-top:10px;padding:5px;width:60px"> 登 录 </button>
+		</li>
 	</ol>	
 		<div class="login-tips">
 		<c:if test="${userName == '' || passWord == ''}">

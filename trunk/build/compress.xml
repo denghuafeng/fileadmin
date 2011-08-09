@@ -10,7 +10,7 @@ process:
 
 mail: JarryLi@gmail.com	
 -->
-<project name="Files Compress" default="" basedir=".">
+<project name="Fileadmin Files Compress" default="" basedir=".">
 	<property name="root-path" value="../" />
     <property name="js-src-path" value="${root-path}js-src" />
     <property name="js-path" value="${root-path}js" />

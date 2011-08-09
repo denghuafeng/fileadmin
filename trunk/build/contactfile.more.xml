@@ -3,7 +3,7 @@
  根据需要合并成多个或者单个JS文件，本系统中为了减少请求提供2-3个js，本文件废弃，采用contactjs.xml的方案
  contact multilateral files or single file by requirement
 -->
-<project name="File Merge 1.0" default="" basedir=".">
+<project name="Fileadmin Merge multi files" default="" basedir=".">
 	<property name="root-path" value="../" />
     <property name="js-src-path" value="${root-path}js-src" />
     <property name="js-path" value="${root-path}js" />

@@ -3,7 +3,7 @@
  copy all include.js from js-sc dir to js dir
  copy all include.css from css-sc dir to css dir
  -->
-<project name="Files Copy" default="" basedir=".">
+<project name="Fileadmin Files Copy" default="" basedir=".">
 	<property name="root-path" value="../" />
     <property name="js-src-path" value="${root-path}js-src" />
     <property name="js-path" value="${root-path}js" />
