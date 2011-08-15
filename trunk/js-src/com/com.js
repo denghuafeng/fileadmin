@@ -336,7 +336,7 @@ var getTemplateHTMLContainer = function() {
  */ 
 var toggleMask = function(obj, act) {
 	var mask = (obj && typeof obj == 'object') ? obj : g('mask'); 
-	if (act != null && act.lenght > 0) {
+	if (act != null && act.length > 0) {
 		mask.style.display = act;
 	} else {
 		var isHide = (mask.style.display == '' || mask.style.display == 'none');

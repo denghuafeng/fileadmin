@@ -12,6 +12,7 @@
 	<div class="info-panel">&nbsp;</div>
 	<form acion="/login.action" method="post">
 	<div class="login-tit">欢迎使用 <strong><span>F</span>ile<span>A</span>dmin</strong> Web文件管理系统<br/></div><br/>
+
 	<c:set var="validateCodeURL" value="validateCode"/>
 	<ol>
 		<li class="login-txt">用户名：</li><li><input name="userName" size="10" type="text" /></li>

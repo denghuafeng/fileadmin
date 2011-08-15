@@ -30,7 +30,7 @@ UploadAction = (function () {
 
 	var hideUploadArea = function() {
 		g('UploadArea').style.display = 'none';
-		toggleMask();
+		toggleMask(null, 'none');
 	};
 	
 	var setUploadHTML = function() {
