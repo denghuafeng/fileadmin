@@ -107,7 +107,6 @@
 	+ js
 	+ swf
 	+ WEB-INF 
-	(WEB-INF/src不上线)
 
 
 ## 不需要上线的文件夹列表
