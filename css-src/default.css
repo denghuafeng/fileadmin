@@ -163,6 +163,7 @@ height:24px;white-space:nowrap;}
 .validate-tips{font-size:11px;color:#999}
 .login-tips{font-size:11px;color:red;margin-left:10px}
 .mask{display:none;z-index:100;top:0;left:0;position:absolute;filter:alpha(opacity=50); -moz-opacity:0.50; opacity:0.50;background:#b7c5e3;height:100%;width:100%}
-
+.close-button{font-size:14px;border:1px solid #b7c5e3;padding:2px 5px 2px 5px;}
+a.close-button:hover{text-decoration:none;background:#f1f1f1}
 
 
