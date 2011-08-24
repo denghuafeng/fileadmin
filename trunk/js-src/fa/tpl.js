@@ -21,7 +21,7 @@ var HTMLTemplate = {
 		+ '名称:<input type="text" size="20" name="name" id="NewFolderName"/><br/>'
 		+ '<div class="tips" id="CreateNewFolerTips"></div>'
 		+ '<input type="submit" value="提交" />'
-		+ '&nbsp;&nbsp;<a href="javascript:FileAction.hideCreateFolder();" id="CreateNewFolderCancelButton">关闭</a>'
+		+ '&nbsp;&nbsp;<a href="javascript:FileAction.hideCreateFolder();" id="CreateNewFolderCancelButton" class="close-button">关闭</a>'
 	 + '</form>'
 	 + '</div>',
 
@@ -36,7 +36,7 @@ var HTMLTemplate = {
 	+ '	<div>'
 	+ '		<span id="spanButtonPlaceHolder"></span>'
 	+ '		<input id="btnCancel" type="button" value="停止上传" onClick="SWFUP.cancelQueue();" disabled="disabled"  />'
-	+ '		&nbsp;<a href="javascript:UploadAction.hideUploadArea();">关闭</a>'
+	+ '		&nbsp;<a href="javascript:UploadAction.hideUploadArea();" class="close-button">关闭</a>'
 	+ '	</div>'
 	+ '</div>',
 
