@@ -193,9 +193,12 @@ dtmlXMLLoaderObject.prototype.loadXML=function(filePath, postMode, postVars, rpc
 	else {
 		if (document.implementation&&document.implementation.createDocument){
 			this.xmlDoc=document.implementation.createDocument("", "", null);
-			this.xmlDoc.onload=new this.waitLoadFunction(this);
-			this.xmlDoc.load(filePath);
-			return;
+            try{
+			    this.xmlDoc.onload=new this.waitLoadFunction(this);
+			    this.xmlDoc.load(filePath);
+			} catch(e) {
+                this.xmlDoc=new ActiveXObject("Microsoft.XMLHTTP");
+            }
 		} else
 			this.xmlDoc=new ActiveXObject("Microsoft.XMLHTTP");
 	}
